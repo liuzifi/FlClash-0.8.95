@@ -151,8 +151,10 @@ jobs:
           JSON
           fi
 
-          # Flutter 编译期环境变量文件（setup.dart 默认也是 pre）。
-          echo '{"APP_ENV":"pre"}' > env.json
+          # Flutter 编译期环境变量文件。
+          # APP_ENV=stable → isPre=false，主界面右上角不显示预发布标签。
+          # 可选值参考 state.dart：'stable'（正式）、'pre'（预发布）、'dev'（开发，会崩溃上报）。
+          echo '{"APP_ENV":"stable"}' > env.json
 
           # 传给 Gradle setup 插件的 NDK / 架构信息。
           if [ -n "${ANDROID_NDK_ROOT:-}" ]; then
