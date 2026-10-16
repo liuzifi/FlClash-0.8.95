@@ -6,7 +6,7 @@ name: build-android-apk
 # 运行，而它依赖官方 Secrets（KEYSTORE / SERVICE_JSON 等），在个人 fork 上必然
 # 失败并产生误导。如需按标签构建，可自行在此追加 push: tags: ['v*']。
 #
-# 产出：已应用 trojan `tls: false` (no-TLS) 补丁的 Android APK（arm64-v8a）。
+# 产出：已应用 trojan `tls: false` (no-TLS) + xhttp 补丁的 Android APK（arm64-v8a）。
 on:
   workflow_dispatch:
 
@@ -25,8 +25,8 @@ jobs:
         uses: actions/checkout@v4
 
       # core/go.mod 使用 `replace github.com/metacubex/mihomo => ./Clash.Meta`，
-      # 因此必须把完整内核源码填入 core/Clash.Meta，并打上 trojan no-TLS 补丁。
-      - name: Clone mihomo core and apply trojan no-TLS patch
+      # 因此必须把完整内核源码填入 core/Clash.Meta，并打上 trojan no-TLS + xhttp 补丁。
+      - name: Clone mihomo core and apply trojan patches
         run: |
           set -euo pipefail
           rm -rf core/Clash.Meta
@@ -34,7 +34,8 @@ jobs:
           cd core/Clash.Meta
           git checkout "$CLASH_META_REF"
           git apply -v "$GITHUB_WORKSPACE/trojan-notls.patch"
-          echo "--- patch applied, changed files ---"
+          git apply -v "$GITHUB_WORKSPACE/trojan-xhttp.patch"
+          echo "--- patches applied, changed files ---"
           git --no-pager diff --stat
 
       # 内核 go.mod 仅声明 `go 1.20`，而 FlClash 官方 CI 使用 1.26.4 构建该内核，
