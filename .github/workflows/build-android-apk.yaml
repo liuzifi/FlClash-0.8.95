@@ -1,0 +1,182 @@
+name: build-android-apk
+
+# 仅在 Actions 页面手动触发（Run workflow）。
+#
+# 注意：刻意不使用 push/tags 触发。仓库自带的官方 build.yaml 会在推送 v* 标签时
+# 运行，而它依赖官方 Secrets（KEYSTORE / SERVICE_JSON 等），在个人 fork 上必然
+# 失败并产生误导。如需按标签构建，可自行在此追加 push: tags: ['v*']。
+#
+# 产出：已应用 trojan `tls: false` (no-TLS) 补丁的 Android APK（arm64-v8a）。
+on:
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.44.4'
+  # FlClash 0.8.95 锁定的内核提交（= tag flclash/v0.8.95）
+  CLASH_META_REPO: https://github.com/chen08209/Clash.Meta.git
+  CLASH_META_REF: 0f7f05adff5e2c49775a112dcfe05a6aa36fda0c
+
+jobs:
+  apk:
+    name: Build APK (arm64)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # core/go.mod 使用 `replace github.com/metacubex/mihomo => ./Clash.Meta`，
+      # 因此必须把完整内核源码填入 core/Clash.Meta，并打上 trojan no-TLS 补丁。
+      - name: Clone mihomo core and apply trojan no-TLS patch
+        run: |
+          set -euo pipefail
+          rm -rf core/Clash.Meta
+          git clone --filter=blob:none "$CLASH_META_REPO" core/Clash.Meta
+          cd core/Clash.Meta
+          git checkout "$CLASH_META_REF"
+          git apply -v "$GITHUB_WORKSPACE/trojan-notls.patch"
+          echo "--- patch applied, changed files ---"
+          git --no-pager diff --stat
+
+      # 内核 go.mod 仅声明 `go 1.20`，而 FlClash 官方 CI 使用 1.26.4 构建该内核，
+      # 这里与官方保持一致（用 go-version-file 会解析出过低版本）。
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.4'
+          cache-dependency-path: core/Clash.Meta/go.sum
+
+      # 预先编译被补丁改动的包，尽早暴露语法/类型错误，避免到 APK 阶段才失败。
+      - name: Verify patched core compiles
+        working-directory: core/Clash.Meta
+        env:
+          CGO_ENABLED: '0'
+        run: |
+          go build -tags=with_gvisor ./adapter/outbound/... ./transport/... ./listener/...
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r28c
+          add-to-path: true
+          link-to-sdk: true
+
+      # 应用 release 构建所需的本地文件。
+      # 优先使用仓库 Secrets 提供的正式签名 / Firebase 配置；
+      # 缺失时回退到自签名 keystore + 占位 google-services，保证任何场景都能出包。
+      - name: Prepare local build files
+        env:
+          # 正式签名（base64 编码的 jks + 四件套）。未配置则为空字符串。
+          KEYSTORE:        ${{ secrets.KEYSTORE }}
+          KEY_ALIAS:       ${{ secrets.KEY_ALIAS }}
+          STORE_PASSWORD:  ${{ secrets.STORE_PASSWORD }}
+          KEY_PASSWORD:    ${{ secrets.KEY_PASSWORD }}
+          # Firebase google-services.json（base64）。未配置则为空字符串。
+          SERVICE_JSON:    ${{ secrets.SERVICE_JSON }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "$KEYSTORE" ] && [ -n "$KEY_ALIAS" ] \
+             && [ -n "$STORE_PASSWORD" ] && [ -n "$KEY_PASSWORD" ]; then
+            echo "::notice::Using official keystore from Secrets."
+            printf '%s' "$KEYSTORE" | base64 --decode > android/app/keystore.jks
+            {
+              echo "storePassword=$STORE_PASSWORD"
+              echo "keyAlias=$KEY_ALIAS"
+              echo "keyPassword=$KEY_PASSWORD"
+            } >> android/local.properties
+          else
+            echo "::warning::No keystore secrets found; using self-signed keystore. APK will not be officially signed."
+            keytool -genkeypair -v \
+              -keystore android/app/keystore.jks \
+              -storetype PKCS12 \
+              -storepass android -keypass android \
+              -alias androiddebugkey \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+            {
+              echo "storePassword=android"
+              echo "keyAlias=androiddebugkey"
+              echo "keyPassword=android"
+            } >> android/local.properties
+          fi
+
+          if [ -n "$SERVICE_JSON" ]; then
+            echo "::notice::Using official google-services.json from Secrets."
+            printf '%s' "$SERVICE_JSON" | base64 --decode > android/app/google-services.json
+          else
+            echo "::warning::No SERVICE_JSON secret; using placeholder google-services.json. Firebase features will be inert."
+            cat > android/app/google-services.json <<'JSON'
+          {
+            "project_info": {
+              "project_number": "000000000000",
+              "project_id": "flclash-trojan-notls",
+              "storage_bucket": "flclash-trojan-notls.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+                  "android_client_info": {
+                    "package_name": "com.follow.clash"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [
+                  {
+                    "current_key": "AIzaSyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                  }
+                ],
+                "services": {
+                  "appinvite_service": {
+                    "other_platform_oauth_client": []
+                  }
+                }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          JSON
+          fi
+
+          # Flutter 编译期环境变量文件（setup.dart 默认也是 pre）。
+          echo '{"APP_ENV":"pre"}' > env.json
+
+          # 传给 Gradle setup 插件的 NDK / 架构信息。
+          if [ -n "${ANDROID_NDK_ROOT:-}" ]; then
+            echo "ANDROID_NDK=${ANDROID_NDK_ROOT}" >> "$GITHUB_ENV"
+          fi
+          echo "ANDROID_ARCH=arm64" >> "$GITHUB_ENV"
+
+      - name: Flutter pub get
+        run: flutter pub get
+
+      # 触发 Gradle assembleRelease，其 setup 插件会调用 build_tool
+      # （go build -buildmode=c-shared -tags=with_gvisor）生成 libclash.so，
+      # 再由 CMake 链入 APK。
+      - name: Build release APK (arm64-v8a)
+        run: |
+          flutter build apk \
+            --release \
+            --target-platform android-arm64 \
+            --dart-define-from-file=env.json
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: flclash-trojan-notls-arm64
+          path: build/app/outputs/flutter-apk/*.apk
+          if-no-files-found: error
+          retention-days: 30
