@@ -55,6 +55,7 @@ class _EditorPageState extends ConsumerState<EditorPage> {
   late FocusNode _focusNode;
   late bool readOnly = false;
   late bool _wordWrap = false;
+  CodeChunkController? _chunkController;
   late final SelectionToolbarController _toolbarController;
 
   @override
@@ -161,6 +162,33 @@ class _EditorPageState extends ConsumerState<EditorPage> {
         _titleController.text,
         _controller.text,
       );
+    }
+  }
+
+  void _handleCollapseAll() {
+    final controller = _chunkController;
+    if (controller == null) return;
+    final chunks = List<CodeChunk>.of(controller.value);
+    for (int i = chunks.length - 1; i >= 0; i--) {
+      final chunk = chunks[i];
+      if (chunk.canCollapse) {
+        controller.collapse(chunk.index);
+      }
+    }
+  }
+
+  void _handleExpandAll() {
+    final controller = _chunkController;
+    if (controller == null) return;
+    final codeLines = _controller.codeLines;
+    final indexes = <int>[];
+    for (int i = 0; i < codeLines.length; i++) {
+      if (codeLines[i].chunkParent) {
+        indexes.add(i);
+      }
+    }
+    for (int i = indexes.length - 1; i >= 0; i--) {
+      controller.expand(indexes[i]);
     }
   }
 
@@ -293,6 +321,16 @@ class _EditorPageState extends ConsumerState<EditorPage> {
                       label: 'Word Wrap',
                       onPressed: _toggleWordWrap,
                     ),
+                    PopupMenuItemData(
+                      icon: Icons.unfold_less,
+                      label: 'Collapse All',
+                      onPressed: _handleCollapseAll,
+                    ),
+                    PopupMenuItemData(
+                      icon: Icons.unfold_more,
+                      label: 'Expand All',
+                      onPressed: _handleExpandAll,
+                    ),
                     if (widget.supportRemoteDownload && !readOnly)
                       PopupMenuItemData(
                         icon: Icons.arrow_downward,
@@ -339,6 +377,7 @@ class _EditorPageState extends ConsumerState<EditorPage> {
               toolbarController: _toolbarController,
               indicatorBuilder:
                   (context, editingController, chunkController, notifier) {
+                    _chunkController = chunkController;
                     return Row(
                       children: [
                         DefaultCodeLineNumber(
@@ -355,6 +394,9 @@ class _EditorPageState extends ConsumerState<EditorPage> {
                   },
               shortcutsActivatorsBuilder:
                   const DefaultCodeShortcutsActivatorsBuilder(),
+              chunkAnalyzer: widget.languages.contains(Language.yaml)
+                  ? const YamlChunkAnalyzer()
+                  : const DefaultCodeChunkAnalyzer(),
               controller: _controller,
               style: CodeEditorStyle(
                 fontSize: context.textTheme.bodyLarge?.fontSize?.ap,
@@ -820,4 +862,62 @@ class _ImportOptionsDialogState extends State<_ImportOptionsDialog> {
       ),
     );
   }
+}
+
+class YamlChunkAnalyzer implements CodeChunkAnalyzer {
+  const YamlChunkAnalyzer();
+
+  @override
+  List<CodeChunk> run(CodeLines codeLines) {
+    final List<CodeChunk> chunks = [];
+    final List<_IndentEntry> stack = [];
+
+    for (int i = 0; i < codeLines.length; i++) {
+      final String text = codeLines[i].text;
+      final int indent = _getIndent(text);
+      if (indent < 0) continue;
+
+      while (stack.isNotEmpty && stack.last.indent >= indent) {
+        final entry = stack.removeLast();
+        final int end = i - 1;
+        if (end > entry.index) {
+          chunks.add(CodeChunk(entry.index, end));
+        }
+      }
+      stack.add(_IndentEntry(index: i, indent: indent));
+    }
+
+    int lastContentIndex = codeLines.length - 1;
+    while (lastContentIndex >= 0 &&
+        _getIndent(codeLines[lastContentIndex].text) < 0) {
+      lastContentIndex--;
+    }
+    while (stack.isNotEmpty) {
+      final entry = stack.removeLast();
+      if (lastContentIndex > entry.index) {
+        chunks.add(CodeChunk(entry.index, lastContentIndex));
+      }
+    }
+
+    chunks.sort((a, b) => a.index - b.index);
+    return chunks;
+  }
+
+  static int _getIndent(String text) {
+    final line = text.trimRight();
+    int i = 0;
+    while (i < line.length && line[i] == ' ') {
+      i++;
+    }
+    if (i >= line.length || line[i] == '#') {
+      return -1;
+    }
+    return i;
+  }
+}
+
+class _IndentEntry {
+  final int index;
+  final int indent;
+  const _IndentEntry({required this.index, required this.indent});
 }
