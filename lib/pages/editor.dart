@@ -571,11 +571,13 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildToggleChip(
+                context,
                 'Aa',
                 value.option.caseSensitive,
                 controller.toggleCaseSensitive,
               ),
               _buildToggleChip(
+                context,
                 '.*',
                 value.option.regex,
                 controller.toggleRegex,
@@ -608,6 +610,7 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildToggleChip(
+                context,
                 '✓',
                 false,
                 () {
@@ -616,6 +619,7 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
                 },
               ),
               _buildToggleChip(
+                context,
                 '⇄',
                 false,
                 controller.replaceAllMatches,
@@ -627,7 +631,12 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget _buildToggleChip(String text, bool selected, VoidCallback onPressed) {
+  Widget _buildToggleChip(
+    BuildContext context,
+    String text,
+    bool selected,
+    VoidCallback onPressed,
+  ) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: InkWell(
