@@ -31,6 +31,9 @@ class Request {
   }
 
   Future<Response<Uint8List>> getFileResponseForUrl(String url) async {
+    if (url.isFileUrl) {
+      return _getFileResponseForUrl(url);
+    }
     try {
       return await _clashDio.get<Uint8List>(
         url,
@@ -51,11 +54,93 @@ class Request {
   }
 
   Future<Response<String>> getTextResponseForUrl(String url) async {
+    if (url.isFileUrl) {
+      return _getTextResponseForFileUrl(url);
+    }
     final response = await _clashDio.get<String>(
       url,
       options: Options(responseType: ResponseType.plain),
     );
     return response;
+  }
+
+  String _buildFilePath(Uri uri) {
+    final segments =
+        uri.pathSegments.where((s) => s.isNotEmpty).toList();
+    if (segments.isNotEmpty && segments.first.contains(':')) {
+      return segments.join('/');
+    }
+    final host = uri.host;
+    if (host.isNotEmpty && host.toLowerCase() != 'localhost') {
+      if (host.length == 1 && RegExp(r'^[a-zA-Z]$').hasMatch(host)) {
+        return '$host:/${segments.join('/')}';
+      }
+      return '//$host/${segments.join('/')}';
+    }
+    return '/${segments.join('/')}';
+  }
+
+  Response<Uint8List> _buildBytesResponse({
+    required String url,
+    required Uint8List bytes,
+    String? fileName,
+  }) {
+    final requestOptions = RequestOptions(path: url);
+    final disposition = fileName == null
+        ? null
+        : "attachment; filename*=UTF-8''${Uri.encodeComponent(fileName)}";
+    final headers = disposition == null
+        ? null
+        : Headers.fromMap({
+            'content-disposition': [disposition],
+          });
+    return Response(
+      requestOptions: requestOptions,
+      data: bytes,
+      statusCode: HttpStatus.ok,
+      headers: headers,
+    );
+  }
+
+  Future<Response<Uint8List>> _getFileResponseForUrl(String url) async {
+    final uri = Uri.parse(url);
+    final segments =
+        uri.pathSegments.where((s) => s.isNotEmpty).toList();
+    if (segments.isEmpty && uri.host.isEmpty) {
+      throw Exception('Empty file path in file url: $url');
+    }
+    final filePath = _buildFilePath(uri);
+    final file = File(filePath);
+    if (!await file.exists()) {
+      throw Exception('Local file not found: $filePath');
+    }
+    final bytes = await file.readAsBytes();
+    return _buildBytesResponse(
+      url: url,
+      bytes: bytes,
+      fileName: segments.lastOrNull,
+    );
+  }
+
+  Future<Response<String>> _getTextResponseForFileUrl(String url) async {
+    final uri = Uri.parse(url);
+    final segments =
+        uri.pathSegments.where((s) => s.isNotEmpty).toList();
+    if (segments.isEmpty && uri.host.isEmpty) {
+      throw Exception('Empty file path in file url: $url');
+    }
+    final filePath = _buildFilePath(uri);
+    final file = File(filePath);
+    if (!await file.exists()) {
+      throw Exception('Local file not found: $filePath');
+    }
+    final content = await file.readAsString();
+    final requestOptions = RequestOptions(path: url);
+    return Response(
+      requestOptions: requestOptions,
+      data: content,
+      statusCode: HttpStatus.ok,
+    );
   }
 
   Future<MemoryImage?> getImage(String url) async {

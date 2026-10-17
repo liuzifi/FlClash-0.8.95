@@ -7,11 +7,17 @@ import 'package:fl_clash/common/common.dart';
 extension StringExtension on String {
   bool get isUrl {
     final uri = Uri.tryParse(this);
-    return uri != null &&
-        (uri.scheme == 'http' ||
-            uri.scheme == 'https' ||
-            uri.scheme == 'ftp') &&
+    if (uri == null) return false;
+    if (uri.scheme == 'file') return true;
+    return (uri.scheme == 'http' ||
+        uri.scheme == 'https' ||
+        uri.scheme == 'ftp') &&
         uri.host.isNotEmpty;
+  }
+
+  bool get isFileUrl {
+    final uri = Uri.tryParse(this);
+    return uri != null && uri.scheme == 'file';
   }
 
   dynamic get splitByMultipleSeparators {
