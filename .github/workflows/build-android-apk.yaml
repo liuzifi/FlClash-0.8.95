@@ -45,20 +45,22 @@ jobs:
         uses: actions/checkout@v4
 
       # 根据 workflow_dispatch 输入计算最终版本号，并更新 pubspec.yaml。
-      # versionCode 用时间戳（秒）自动生成，确保每次构建递增。
-      # versionName 为 0.8.95 + 后缀（如 0.8.95.1），便于区分不同构建。
+      # pubspec version 格式必须为 X.Y.Z+buildNumber（3 段语义化版本 + 整数构建号），
+      # 后缀（如 .1）不能写入 version 字段，否则 flutter pub get 会因 4 段版本号失败。
+      # suffix 仅用于 version_name 输出（APK 文件名、Release tag 等人类可读标识）。
       - name: Set version
         id: version
         run: |
           suffix="${{ github.event.inputs.version_suffix }}"
-          version="${BASE_VERSION}${suffix}"
+          version="${BASE_VERSION}"
           # versionCode：时间戳（秒），确保递增
           code=$(date +%s)
-          # 更新 pubspec.yaml
+          # 更新 pubspec.yaml（version 字段保持 3 段 + 整数 build number）
           sed -i "s/^version: .*/version: ${version}+${code}/" pubspec.yaml
-          echo "version_name=${version}" >> "$GITHUB_OUTPUT"
+          # version_name 用于 APK 文件名和 Release tag，可带后缀（如 0.8.95.1）
+          echo "version_name=${version}${suffix}" >> "$GITHUB_OUTPUT"
           echo "version_code=${code}" >> "$GITHUB_OUTPUT"
-          echo "::notice::Version: ${version} (code: ${code})"
+          echo "::notice::Version: ${version}${suffix} (code: ${code})"
 
       # core/go.mod 使用 `replace github.com/metacubex/mihomo => ./Clash.Meta`，
       # 因此必须把完整内核源码填入 core/Clash.Meta，并打上 trojan no-TLS + xhttp 补丁。
