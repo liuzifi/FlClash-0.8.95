@@ -451,10 +451,16 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
     required this.isMobileView,
   });
 
-  double get _baseHeight =>
-      (isMobileView ? _kDefaultFindPanelHeight * 2 : _kDefaultFindPanelHeight) +
-      8;
+  // 桌面端：搜索行高度（52）+ padding
+  // 移动端：搜索行（52）+ 操作行（28）+ 间距（8）
+  double get _baseHeight {
+    if (isMobileView) {
+      return _kDefaultFindPanelHeight + 28 + 8 + 8;
+    }
+    return _kDefaultFindPanelHeight + 8;
+  }
 
+  // 替换模式额外加一行替换输入框（52）+ 间距（8）
   double get _replaceHeight => _baseHeight + _kDefaultFindPanelHeight + 8;
 
   @override
@@ -494,171 +500,120 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
     } else {
       result = '${value.result!.index + 1}/${value.result!.matches.length}';
     }
-    final bar = CommonMinIconButtonTheme(
+    // 搜索输入框行：输入框 + 大小写/正则开关
+    final Widget findInput = _buildFindInput(context, value);
+    // 替换输入框行：替换框 + 替换/全部替换按钮
+    final Widget replaceInput = _buildReplaceInput(context);
+    // 右侧操作按钮：切换 + 上下箭头 + 关闭（切换按钮在箭头左边）
+    final Widget actionBar = CommonMinIconButtonTheme(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
+        spacing: 2,
         children: [
           _buildModeToggle(context, isReplaceMode),
-          if (!isMobileView) ...[
-            const SizedBox(width: 8),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 360),
-              child: _buildFindInput(context, value),
-            ),
-            const SizedBox(width: 8),
-          ],
-          Text(result, style: context.textTheme.bodyMedium),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              spacing: 2,
-              children: [
-                _buildIconButton(
-                  onPressed: value.result == null
-                      ? null
-                      : () {
-                          controller.previousMatch();
-                        },
-                  icon: Icons.arrow_upward,
-                ),
-                _buildIconButton(
-                  onPressed: value.result == null
-                      ? null
-                      : () {
-                          controller.nextMatch();
-                        },
-                  icon: Icons.arrow_downward,
-                ),
-                const SizedBox(width: 2),
-                IconButton.filledTonal(
-                  onPressed: controller.close,
-                  icon: const Icon(Icons.close, size: 16),
-                ),
-              ],
-            ),
+          _buildIconButton(
+            onPressed: value.result == null
+                ? null
+                : () {
+                    controller.previousMatch();
+                  },
+            icon: Icons.arrow_upward,
+          ),
+          _buildIconButton(
+            onPressed: value.result == null
+                ? null
+                : () {
+                    controller.nextMatch();
+                  },
+            icon: Icons.arrow_downward,
+          ),
+          const SizedBox(width: 2),
+          IconButton.filledTonal(
+            onPressed: controller.close,
+            icon: const Icon(Icons.close, size: 16),
           ),
         ],
       ),
     );
-    if (isReplaceMode) {
-      final replaceBar = CommonMinIconButtonTheme(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (!isMobileView) ...[
-              const SizedBox(width: 66),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 360),
-                child: _buildReplaceInput(context),
-              ),
-            ],
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                spacing: 2,
-                children: [
-                  _buildIconButton(
-                    onPressed: () {
-                      controller.replaceMatch();
-                    },
-                    icon: Icons.check,
-                  ),
-                  _buildIconButton(
-                    onPressed: () {
-                      controller.replaceAllMatches();
-                    },
-                    icon: Icons.done_all,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-      if (isMobileView) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            bar,
-            const SizedBox(height: 8),
-            _buildFindInput(context, value),
-            const SizedBox(height: 8),
-            replaceBar,
-            const SizedBox(height: 8),
-            _buildReplaceInput(context),
-          ],
-        );
-      }
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          bar,
-          const SizedBox(height: 8),
-          replaceBar,
-        ],
-      );
-    }
+    // 移动端：输入框占满宽度，操作按钮单独一行
     if (isMobileView) {
       return Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          bar,
+          findInput,
+          if (isReplaceMode) ...[
+            const SizedBox(height: 8),
+            replaceInput,
+          ],
           const SizedBox(height: 8),
-          _buildFindInput(context, value),
+          Row(
+            children: [
+              Text(result, style: context.textTheme.bodyMedium),
+              const Spacer(),
+              actionBar,
+            ],
+          ),
         ],
       );
     }
-    return bar;
-  }
-
-  Widget _buildModeToggle(BuildContext context, bool isReplaceMode) {
-    return Row(
+    // 桌面端：搜索行（输入框 + 结果 + 操作按钮），替换行单独一行
+    // 两个输入框用相同 maxWidth 约束，宽度对齐，上下整体布局
+    return Column(
       mainAxisSize: MainAxisSize.min,
-      spacing: 2,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildModeButton(
-          context: context,
-          icon: Icons.search,
-          isSelected: !isReplaceMode,
-          onPressed: () {
-            controller.findMode();
-          },
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          spacing: 8,
+          children: [
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 360),
+              child: findInput,
+            ),
+            Text(result, style: context.textTheme.bodyMedium),
+            const Spacer(),
+            actionBar,
+          ],
         ),
-        _buildModeButton(
-          context: context,
-          icon: Icons.find_replace,
-          isSelected: isReplaceMode,
-          onPressed: readOnly
-              ? null
-              : () {
-                  controller.replaceMode();
-                },
-        ),
+        if (isReplaceMode) ...[
+          const SizedBox(height: 8),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 360),
+            child: replaceInput,
+          ),
+        ],
       ],
     );
   }
 
-  Widget _buildModeButton({
-    required BuildContext context,
-    required IconData icon,
-    required bool isSelected,
-    required VoidCallback? onPressed,
-  }) {
+  // 单个 toggle 按钮：点击展开/折叠替换输入框。
+  // replaceMode 时点击 → findMode（折叠）；findMode 时点击 → replaceMode（展开）。
+  Widget _buildModeToggle(BuildContext context, bool isReplaceMode) {
     return SizedBox(
       width: 28,
       height: 28,
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
-        child: isSelected
+        child: isReplaceMode
             ? IconButton.filledTonal(
-                onPressed: onPressed,
+                onPressed: readOnly
+                    ? null
+                    : () {
+                        controller.findMode();
+                      },
                 padding: const EdgeInsets.all(2),
-                icon: Icon(icon, size: 16),
+                icon: const Icon(Icons.find_replace, size: 16),
               )
             : IconButton(
-                onPressed: onPressed,
+                onPressed: readOnly
+                    ? null
+                    : () {
+                        controller.replaceMode();
+                      },
                 padding: const EdgeInsets.all(2),
-                icon: Icon(icon, size: 16),
+                icon: const Icon(Icons.find_replace, size: 16),
               ),
       ),
     );
@@ -666,7 +621,7 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
 
   Widget _buildReplaceInput(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
       spacing: 8,
       children: [
         Flexible(
@@ -680,14 +635,25 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
             focusNode: controller.replaceInputFocusNode,
           ),
         ),
-        const SizedBox(width: 4),
+        _buildIconButton(
+          onPressed: () {
+            controller.replaceMatch();
+          },
+          icon: Icons.check,
+        ),
+        _buildIconButton(
+          onPressed: () {
+            controller.replaceAllMatches();
+          },
+          icon: Icons.done_all,
+        ),
       ],
     );
   }
 
   Widget _buildFindInput(BuildContext context, CodeFindValue value) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
       spacing: 8,
       children: [
         Flexible(
@@ -720,7 +686,6 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
             controller.toggleRegex();
           },
         ),
-        const SizedBox(width: 4),
       ],
     );
   }
@@ -948,21 +913,22 @@ class ContextMenuControllerImpl implements SelectionToolbarController {
             final isAllSelected = controller.isAllSelected;
             final hasSelected = controller.selectedText.isNotEmpty;
             // Layer 2：长按时自动选值。
-            // _isFirstRender 表示用户刚触发的这一次渲染，
-            // 用 PostFrameCallback 延迟一帧修改 selection，
-            // 避免在 build 阶段修改 controller 状态。
+            // yamlKey 检测在每次构建时执行，确保 PostFrameCallback
+            // 修改 selection 触发重建后，deleteValue/editValue 菜单仍然存在。
+            // 自动选值动作仅在首次渲染时调度一次。
             String? yamlKey;
-            if (_isFirstRender) {
-              _isFirstRender = false;
-              try {
-                final CodeLineSelection sel = controller.selection;
-                final int lineIndex = sel.startIndex;
-                if (lineIndex >= 0 &&
-                    lineIndex < controller.codeLines.length) {
-                  final String lineText =
-                      controller.codeLines[lineIndex].text;
-                  final _YamlValue? parsed = _parseYamlValueRange(lineText);
-                  if (parsed != null && _isTargetKey(parsed.key)) {
+            try {
+              final CodeLineSelection sel = controller.selection;
+              final int lineIndex = sel.startIndex;
+              if (lineIndex >= 0 &&
+                  lineIndex < controller.codeLines.length) {
+                final String lineText =
+                    controller.codeLines[lineIndex].text;
+                final _YamlValue? parsed = _parseYamlValueRange(lineText);
+                if (parsed != null && _isTargetKey(parsed.key)) {
+                  yamlKey = parsed.key;
+                  if (_isFirstRender) {
+                    _isFirstRender = false;
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       try {
                         controller.selection = CodeLineSelection(
@@ -979,11 +945,11 @@ class ContextMenuControllerImpl implements SelectionToolbarController {
                         );
                       } catch (_) {}
                     });
-                    yamlKey = parsed.key;
                   }
                 }
-              } catch (_) {}
-            } else if (controller.selectedText.isEmpty) {
+              }
+            } catch (_) {}
+            if (yamlKey == null && controller.selectedText.isEmpty) {
               _removeOverLayEntry();
             }
             final List<PopupMenuItemData> menus = [
