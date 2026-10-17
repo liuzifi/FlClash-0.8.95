@@ -2,27 +2,63 @@ name: build-android-apk
 
 # 仅在 Actions 页面手动触发（Run workflow）。
 #
+# 触发时可输入版本后缀（如 .1、.2），最终版本号为 0.8.95{后缀}。
+# 不填则版本号保持 0.8.95，versionCode 用时间戳自动生成。
+#
+# 产出：
+#   - APK：FlClash-{version}-android-arm64-v8a.apk（固定签名）
+#   - GitHub Release：含 APK + Source code (zip/tar.gz)
+#
 # 注意：刻意不使用 push/tags 触发。仓库自带的官方 build.yaml 会在推送 v* 标签时
 # 运行，而它依赖官方 Secrets（KEYSTORE / SERVICE_JSON 等），在个人 fork 上必然
 # 失败并产生误导。如需按标签构建，可自行在此追加 push: tags: ['v*']。
 #
-# 产出：已应用 trojan `tls: false` (no-TLS) + xhttp 补丁的 Android APK（arm64-v8a）。
+# 产出：已应用 trojan no-TLS + xhttp 补丁的 Android APK（arm64-v8a）。
 on:
   workflow_dispatch:
+    inputs:
+      version_suffix:
+        description: '版本号后缀，如 .1、.2（留空则版本号为 0.8.95）'
+        required: false
+        default: ''
+      create_release:
+        description: '构建后创建 GitHub Release'
+        required: false
+        default: 'true'
 
 env:
   FLUTTER_VERSION: '3.44.4'
   # FlClash 0.8.95 锁定的内核提交（= tag flclash/v0.8.95）
   CLASH_META_REPO: https://github.com/chen08209/Clash.Meta.git
   CLASH_META_REF: 0f7f05adff5e2c49775a112dcfe05a6aa36fda0c
+  # 基础版本号（不含后缀）
+  BASE_VERSION: '0.8.95'
 
 jobs:
   apk:
     name: Build APK (arm64)
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # 根据 workflow_dispatch 输入计算最终版本号，并更新 pubspec.yaml。
+      # versionCode 用时间戳（秒）自动生成，确保每次构建递增。
+      # versionName 为 0.8.95 + 后缀（如 0.8.95.1），便于区分不同构建。
+      - name: Set version
+        id: version
+        run: |
+          suffix="${{ github.event.inputs.version_suffix }}"
+          version="${BASE_VERSION}${suffix}"
+          # versionCode：时间戳（秒），确保递增
+          code=$(date +%s)
+          # 更新 pubspec.yaml
+          sed -i "s/^version: .*/version: ${version}+${code}/" pubspec.yaml
+          echo "version_name=${version}" >> "$GITHUB_OUTPUT"
+          echo "version_code=${code}" >> "$GITHUB_OUTPUT"
+          echo "::notice::Version: ${version} (code: ${code})"
 
       # core/go.mod 使用 `replace github.com/metacubex/mihomo => ./Clash.Meta`，
       # 因此必须把完整内核源码填入 core/Clash.Meta，并打上 trojan no-TLS + xhttp 补丁。
@@ -75,11 +111,11 @@ jobs:
           link-to-sdk: true
 
       # 应用 release 构建所需的本地文件。
-      # 优先使用仓库 Secrets 提供的正式签名 / Firebase 配置；
+      # 优先使用仓库 Secrets 提供的固定签名 keystore / Firebase 配置；
       # 缺失时回退到自签名 keystore + 占位 google-services，保证任何场景都能出包。
       - name: Prepare local build files
         env:
-          # 正式签名（base64 编码的 jks + 四件套）。未配置则为空字符串。
+          # 固定签名（base64 编码的 jks + 四件套）。未配置则为空字符串。
           KEYSTORE:        ${{ secrets.KEYSTORE }}
           KEY_ALIAS:       ${{ secrets.KEY_ALIAS }}
           STORE_PASSWORD:  ${{ secrets.STORE_PASSWORD }}
@@ -91,7 +127,7 @@ jobs:
 
           if [ -n "$KEYSTORE" ] && [ -n "$KEY_ALIAS" ] \
              && [ -n "$STORE_PASSWORD" ] && [ -n "$KEY_PASSWORD" ]; then
-            echo "::notice::Using official keystore from Secrets."
+            echo "::notice::Using fixed keystore from Secrets."
             printf '%s' "$KEYSTORE" | base64 --decode > android/app/keystore.jks
             {
               echo "storePassword=$STORE_PASSWORD"
@@ -176,10 +212,48 @@ jobs:
             --target-platform android-arm64 \
             --dart-define-from-file=env.json
 
-      - name: Upload APK
+      # 构建后重命名 APK 为官方风格命名：FlClash-{version}-android-arm64-v8a.apk
+      - name: Rename APK
+        id: apk
+        run: |
+          version="${{ steps.version.outputs.version_name }}"
+          apk_name="FlClash-${version}-android-arm64-v8a.apk"
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-release.apk "dist/${apk_name}"
+          echo "apk_name=${apk_name}" >> "$GITHUB_OUTPUT"
+          echo "::notice::APK renamed to ${apk_name}"
+          ls -la dist/
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: flclash-trojan-notls-arm64
-          path: build/app/outputs/flutter-apk/*.apk
+          name: FlClash-${{ steps.version.outputs.version_name }}-android-arm64-v8a
+          path: dist/*.apk
           if-no-files-found: error
           retention-days: 30
+
+      # 构建成功后创建 GitHub Release，包含 APK + Source code。
+      # 仅在 create_release 输入为 'true' 时执行。
+      - name: Create GitHub Release
+        if: github.event.inputs.create_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version_name }}
+          name: FlClash v${{ steps.version.outputs.version_name }}
+          body: |
+            ## FlClash v${{ steps.version.outputs.version_name }}
+
+            ### 内核改动
+            - Trojan 协议 xhttp 传输支持（突破官方"仅 VLESS 支持 xhttp"限制）
+            - Trojan 协议 ws/grpc 传输 tls:false 支持
+            - 固定签名 keystore（每次构建签名一致，可直接覆盖安装）
+
+            ### 下载
+            - `FlClash-${{ steps.version.outputs.version_name }}-android-arm64-v8a.apk` — Android arm64 APK
+            - Source code (zip) / Source code (tar.gz) — 完整源码
+
+            ### 安装
+            首次安装后，后续更新可直接覆盖安装（签名固定）。
+          files: |
+            dist/*.apk
+          generate_release_notes: true

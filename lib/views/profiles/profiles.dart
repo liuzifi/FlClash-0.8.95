@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:fl_clash/common/common.dart';
+import 'package:fl_clash/core/controller.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
+import 'package:fl_clash/pages/editor.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
 import 'package:fl_clash/views/profiles/overwrite/overwrite.dart';
@@ -212,6 +218,74 @@ class ProfileItem extends StatelessWidget {
     BaseNavigator.push<String>(context, PreviewProfileView(profile: profile));
   }
 
+  Future<void> _handleEditFile(BuildContext context) async {
+    String? rawText;
+    final profilePath = await appPath.getProfilePath(profile.id.toString());
+    final file = File(profilePath);
+    if (await file.exists()) {
+      rawText = await file.readAsString();
+    } else {
+      rawText = '';
+    }
+    if (!context.mounted) return;
+    final title = profile.label.takeFirstValid([profile.id.toString()]);
+    final editorPage = EditorPage(
+      title: title,
+      content: rawText,
+      onSave: (context, _, content) async {
+        final message = await globalState.safeRun<String>(() async {
+          return await coreController.validateConfigWithData(content);
+        }, silence: false);
+        if (message?.isNotEmpty == true) {
+          globalState.showMessage(
+            title: currentAppLocalizations.tip,
+            message: TextSpan(text: message),
+          );
+          return;
+        }
+        if (context.mounted) {
+          Navigator.of(context).pop(content);
+        }
+      },
+      onPop: (context, _, content) async {
+        if (content == rawText) {
+          return true;
+        }
+        final res = await globalState.showMessage(
+          title: title,
+          message: TextSpan(text: context.appLocalizations.hasCacheChange),
+        );
+        if (res == true && context.mounted) {
+          final message = await globalState.safeRun<String>(() async {
+            return await coreController.validateConfigWithData(content);
+          }, silence: false);
+          if (message?.isNotEmpty == true) {
+            globalState.showMessage(
+              title: currentAppLocalizations.tip,
+              message: TextSpan(text: message),
+            );
+          } else if (context.mounted) {
+            Navigator.of(context).pop(content);
+          }
+        } else {
+          return true;
+        }
+        return false;
+      },
+    );
+    final data = await BaseNavigator.push<String>(context, editorPage);
+    if (data == null || data == rawText) {
+      return;
+    }
+    final bytes = Uint8List.fromList(utf8.encode(data));
+    await globalState.loadingRun(() async {
+      final updatedProfile = await profile.saveFile(bytes);
+      globalState.container
+          .read(profilesActionProvider.notifier)
+          .putProfile(updatedProfile);
+    }, tag: LoadingTag.profiles);
+  }
+
   Future updateProfile() async {
     if (profile.type == ProfileType.file) return;
     await globalState.loadingRun(() async {
@@ -320,6 +394,13 @@ class ProfileItem extends StatelessWidget {
                               label: appLocalizations.edit,
                               onPressed: () {
                                 _handleShowEditExtendPage(context);
+                              },
+                            ),
+                            PopupMenuItemData(
+                              icon: Icons.description_outlined,
+                              label: '编辑文件',
+                              onPressed: () {
+                                _handleEditFile(context);
                               },
                             ),
                             PopupMenuItemData(
