@@ -781,12 +781,141 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+class _YamlValue {
+  final String key;
+  final int start;
+  final int end;
+  const _YamlValue(this.key, this.start, this.end);
+}
+
 class ContextMenuControllerImpl implements SelectionToolbarController {
   OverlayEntry? _overlayEntry;
   bool _isFirstRender = true;
   bool readOnly = false;
 
   ContextMenuControllerImpl(this.readOnly);
+
+  /// 目标字段集合（大小写不敏感比较）。
+  static const Set<String> _targetKeys = {
+    'server',
+    'port',
+    'path',
+    'host',
+    'sni',
+    'password',
+  };
+
+  /// 解析一行 YAML 的「键: 值」结构。
+  /// 对于 path/host 字段，若值内含 `=`，范围缩窄到 `=` 之后。
+  static _YamlValue? _parseYamlValueRange(String text) {
+    int i = 0;
+    while (i < text.length && text[i] == ' ') {
+      i++;
+    }
+    if (i >= text.length) return null;
+    final int keyStart = i;
+    while (i < text.length && text[i] != ':' && text[i] != ' ') {
+      i++;
+    }
+    if (i >= text.length || text[i] != ':') return null;
+    final String key = text.substring(keyStart, i);
+    if (key.isEmpty) return null;
+    i++;
+    while (i < text.length && (text[i] == ' ' || text[i] == '\t')) {
+      i++;
+    }
+    if (i >= text.length) return null;
+    int valueStart = i;
+    int valueEnd = text.length;
+    while (valueEnd > valueStart &&
+        (text[valueEnd - 1] == ' ' ||
+            text[valueEnd - 1] == '\t' ||
+            text[valueEnd - 1] == '\r')) {
+      valueEnd--;
+    }
+    if (valueEnd <= valueStart) return null;
+    final String firstChar = text[valueStart];
+    if (firstChar == '"' || firstChar == "'") {
+      final int closePos = text.indexOf(firstChar, valueStart + 1);
+      if (closePos > valueStart) {
+        valueStart = valueStart + 1;
+        valueEnd = closePos;
+      }
+    } else {
+      final int hash = text.indexOf('#', valueStart);
+      if (hash >= 0 && hash < valueEnd) {
+        valueEnd = hash;
+        while (valueEnd > valueStart &&
+            (text[valueEnd - 1] == ' ' || text[valueEnd - 1] == '\t')) {
+          valueEnd--;
+        }
+      }
+    }
+    if (valueEnd <= valueStart) return null;
+    final String lowerKey = key.toLowerCase();
+    if (lowerKey == 'path' || lowerKey == 'host') {
+      final int eq = text.indexOf('=', valueStart);
+      if (eq >= 0 && eq < valueEnd) {
+        int newStart = eq + 1;
+        while (newStart < valueEnd &&
+            (text[newStart] == ' ' || text[newStart] == '\t')) {
+          newStart++;
+        }
+        if (newStart < valueEnd) {
+          valueStart = newStart;
+        }
+      }
+    }
+    return _YamlValue(key, valueStart, valueEnd);
+  }
+
+  bool _isTargetKey(String key) {
+    return _targetKeys.contains(key.toLowerCase());
+  }
+
+  void _showEditValueDialog(
+    BuildContext context,
+    CodeLineEditingController controller,
+    String key,
+  ) {
+    final TextEditingController textController = TextEditingController(
+      text: controller.selectedText,
+    );
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        final appLocalizations = dialogContext.appLocalizations;
+        return AlertDialog(
+          title: Text(appLocalizations.editValue),
+          content: TextField(
+            controller: textController,
+            autofocus: true,
+            decoration: InputDecoration(
+              labelText: key,
+              border: const OutlineInputBorder(),
+            ),
+            onSubmitted: (value) {
+              controller.replaceSelection(value);
+              Navigator.of(dialogContext).pop();
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(appLocalizations.cancel),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.replaceSelection(textController.text);
+                Navigator.of(dialogContext).pop();
+              },
+              child: Text(appLocalizations.confirm),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _removeOverLayEntry() {
     _overlayEntry?.remove();
@@ -818,7 +947,64 @@ class ContextMenuControllerImpl implements SelectionToolbarController {
             final isNotEmpty = controller.selectedText.isNotEmpty;
             final isAllSelected = controller.isAllSelected;
             final hasSelected = controller.selectedText.isNotEmpty;
+            // Layer 2：长按时自动选值。
+            // _isFirstRender 表示用户刚触发的这一次渲染，
+            // 用 PostFrameCallback 延迟一帧修改 selection，
+            // 避免在 build 阶段修改 controller 状态。
+            String? yamlKey;
+            if (_isFirstRender) {
+              _isFirstRender = false;
+              try {
+                final CodeLineSelection sel = controller.selection;
+                final int lineIndex = sel.startIndex;
+                if (lineIndex >= 0 &&
+                    lineIndex < controller.codeLines.length) {
+                  final String lineText =
+                      controller.codeLines[lineIndex].text;
+                  final _YamlValue? parsed = _parseYamlValueRange(lineText);
+                  if (parsed != null && _isTargetKey(parsed.key)) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      try {
+                        controller.selection = CodeLineSelection(
+                          baseIndex: lineIndex,
+                          baseOffset: parsed.start,
+                          extentIndex: lineIndex,
+                          extentOffset: parsed.end,
+                        );
+                        controller.makePositionCenterIfInvisible(
+                          CodeLinePosition(
+                            index: lineIndex,
+                            offset: parsed.start,
+                          ),
+                        );
+                      } catch (_) {}
+                    });
+                    yamlKey = parsed.key;
+                  }
+                }
+              } catch (_) {}
+            } else if (controller.selectedText.isEmpty) {
+              _removeOverLayEntry();
+            }
             final List<PopupMenuItemData> menus = [
+              if (yamlKey != null && !readOnly)
+                PopupMenuItemData(
+                  label: appLocalizations.deleteValue,
+                  onPressed: () {
+                    controller.deleteSelection();
+                  },
+                ),
+              if (yamlKey != null && !readOnly)
+                PopupMenuItemData(
+                  label: appLocalizations.editValue,
+                  onPressed: () {
+                    _showEditValueDialog(
+                      context,
+                      controller,
+                      yamlKey!,
+                    );
+                  },
+                ),
               if (isNotEmpty)
                 PopupMenuItemData(
                   label: appLocalizations.copy,
@@ -840,11 +1026,6 @@ class ContextMenuControllerImpl implements SelectionToolbarController {
                   onPressed: controller.selectAll,
                 ),
             ];
-            if (_isFirstRender) {
-              _isFirstRender = false;
-            } else if (controller.selectedText.isEmpty) {
-              _removeOverLayEntry();
-            }
             if (menus.isEmpty) {
               _removeOverLayEntry();
               return const SizedBox();

@@ -459,6 +459,11 @@ class AppLocalizations {
     return Intl.message('Delete', name: 'delete', desc: '', args: []);
   }
 
+  /// `Delete Value`
+  String get deleteValue {
+    return Intl.message('Delete Value', name: 'deleteValue', desc: '', args: []);
+  }
+
   /// `Seconds`
   String get seconds {
     return Intl.message('Seconds', name: 'seconds', desc: '', args: []);
@@ -4497,6 +4502,11 @@ class AppLocalizations {
   /// `Edit SSID`
   String get editSsid {
     return Intl.message('Edit SSID', name: 'editSsid', desc: '', args: []);
+  }
+
+  /// `Edit Value`
+  String get editValue {
+    return Intl.message('Edit Value', name: 'editValue', desc: '', args: []);
   }
 
   /// `Authorized`
