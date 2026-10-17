@@ -56,6 +56,16 @@ class App {
     return methodChannel.invokeMethod<bool>('requestNotificationsPermission');
   }
 
+  Future<bool> isManageStorageGranted() async {
+    return await methodChannel.invokeMethod<bool>('isManageStorageGranted') ??
+        false;
+  }
+
+  Future<bool> requestManageStorage() async {
+    return await methodChannel.invokeMethod<bool>('requestManageStorage') ??
+        false;
+  }
+
   Future<bool> openFile(String path) async {
     return await methodChannel.invokeMethod<bool>('openFile', {'path': path}) ??
         false;

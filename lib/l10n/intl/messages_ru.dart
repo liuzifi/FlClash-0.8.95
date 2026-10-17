@@ -242,6 +242,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "pathImportDesc": MessageLookupByLibrary.simpleMessage(
       "Импортировать локальный файл конфигурации, введя его полный путь",
     ),
+    "storagePermissionMessage": MessageLookupByLibrary.simpleMessage(
+      "Для импорта по пути требуется разрешение «Доступ ко всем файлам» для чтения файлов вне каталога приложения. Предоставьте это разрешение в настройках системы.",
+    ),
+    "storagePermissionSettings": MessageLookupByLibrary.simpleMessage(
+      "Открыть настройки",
+    ),
+    "storagePermissionTitle": MessageLookupByLibrary.simpleMessage(
+      "Требуется доступ к хранилищу",
+    ),
     "color": MessageLookupByLibrary.simpleMessage("Цвет"),
     "colorSchemes": MessageLookupByLibrary.simpleMessage("Цветовые схемы"),
     "columns": MessageLookupByLibrary.simpleMessage("Столбцы"),

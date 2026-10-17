@@ -1489,6 +1489,36 @@ class AppLocalizations {
     );
   }
 
+  /// `Storage access required`
+  String get storagePermissionTitle {
+    return Intl.message(
+      'Storage access required',
+      name: 'storagePermissionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Path import requires "All files access" permission to read files outside the app directory. Please grant this permission in system settings.`
+  String get storagePermissionMessage {
+    return Intl.message(
+      'Path import requires "All files access" permission to read files outside the app directory. Please grant this permission in system settings.',
+      name: 'storagePermissionMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open settings`
+  String get storagePermissionSettings {
+    return Intl.message(
+      'Open settings',
+      name: 'storagePermissionSettings',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Layout`
   String get layout {
     return Intl.message('Layout', name: 'layout', desc: '', args: []);

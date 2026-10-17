@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.VpnService
 import android.os.Build
+import android.os.Environment
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
@@ -120,6 +121,14 @@ class AppPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware 
                 result.success(openAppSettings())
             }
 
+            "isManageStorageGranted" -> {
+                result.success(isManageStorageGranted())
+            }
+
+            "requestManageStorage" -> {
+                result.success(requestManageStorage())
+            }
+
             "didCrashOnPreviousExecution" -> {
                 result.success(GlobalState.didCrashOnPreviousExecution())
             }
@@ -191,6 +200,38 @@ class AppPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware 
             true
         } catch (_: Exception) {
             false
+        }
+    }
+
+    private fun isManageStorageGranted(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Environment.isExternalStorageManager()
+        } else {
+            true
+        }
+    }
+
+    private fun requestManageStorage(): Boolean {
+        val activity = activity ?: return false
+        return try {
+            val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+                    data = "package:${GlobalState.application.packageName}".toUri()
+                }
+            } else {
+                return false
+            }
+            activity.startActivity(intent)
+            true
+        } catch (_: Exception) {
+            // Fallback to generic all-files settings page
+            try {
+                val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                activity.startActivity(intent)
+                true
+            } catch (_: Exception) {
+                false
+            }
         }
     }
 

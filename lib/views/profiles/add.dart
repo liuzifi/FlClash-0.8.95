@@ -1,5 +1,6 @@
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/pages/scan.dart';
+import 'package:fl_clash/plugins/app.dart';
 import 'package:fl_clash/providers/action.dart';
 import 'package:fl_clash/state.dart';
 import 'package:fl_clash/widgets/widgets.dart';
@@ -76,6 +77,22 @@ class AddProfileView extends StatelessWidget {
 
   Future<void> _toAddByPath() async {
     final appLocalizations = context.appLocalizations;
+    if (system.isAndroid) {
+      final granted = await app?.isManageStorageGranted() ?? false;
+      if (!granted) {
+        final confirmed = await globalState.showMessage(
+          message: TextSpan(
+            text: appLocalizations.storagePermissionMessage,
+          ),
+          title: appLocalizations.storagePermissionTitle,
+          confirmText: appLocalizations.storagePermissionSettings,
+        );
+        if (confirmed == true) {
+          await app?.requestManageStorage();
+        }
+        return;
+      }
+    }
     final path = await globalState.showCommonDialog<String>(
       child: InputDialog(
         autovalidateMode: AutovalidateMode.onUnfocus,

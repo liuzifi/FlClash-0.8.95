@@ -235,6 +235,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "pathImportDesc": MessageLookupByLibrary.simpleMessage(
       "Import a local configuration file by entering its full file path",
     ),
+    "storagePermissionMessage": MessageLookupByLibrary.simpleMessage(
+      "Path import requires \"All files access\" permission to read files outside the app directory. Please grant this permission in system settings.",
+    ),
+    "storagePermissionSettings": MessageLookupByLibrary.simpleMessage(
+      "Open settings",
+    ),
+    "storagePermissionTitle": MessageLookupByLibrary.simpleMessage(
+      "Storage access required",
+    ),
     "color": MessageLookupByLibrary.simpleMessage("Color"),
     "colorSchemes": MessageLookupByLibrary.simpleMessage("Color schemes"),
     "columns": MessageLookupByLibrary.simpleMessage("Columns"),

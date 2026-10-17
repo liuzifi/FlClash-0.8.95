@@ -181,6 +181,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "pathImportDesc": MessageLookupByLibrary.simpleMessage(
       "完全なファイルパスを入力してローカル設定ファイルをインポート",
     ),
+    "storagePermissionMessage": MessageLookupByLibrary.simpleMessage(
+      "パスインポートにはアプリディレクトリ外のファイルを読み取るために「すべてのファイルへのアクセス」権限が必要です。システム設定でこの権限を付与してください。",
+    ),
+    "storagePermissionSettings": MessageLookupByLibrary.simpleMessage(
+      "設定を開く",
+    ),
+    "storagePermissionTitle": MessageLookupByLibrary.simpleMessage(
+      "ストレージアクセスが必要です",
+    ),
     "color": MessageLookupByLibrary.simpleMessage("カラー"),
     "colorSchemes": MessageLookupByLibrary.simpleMessage("カラースキーム"),
     "columns": MessageLookupByLibrary.simpleMessage("列"),
