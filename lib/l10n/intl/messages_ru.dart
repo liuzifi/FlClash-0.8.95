@@ -231,6 +231,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "clipboardImport": MessageLookupByLibrary.simpleMessage(
       "Импорт из буфера обмена",
     ),
+    "clipboardImportDesc": MessageLookupByLibrary.simpleMessage(
+      "Импортировать конфигурацию из содержимого буфера обмена",
+    ),
+    "filePathLabel": MessageLookupByLibrary.simpleMessage("Путь к файлу"),
+    "filePathTip": MessageLookupByLibrary.simpleMessage(
+      "Пожалуйста, введите корректный абсолютный путь к файлу",
+    ),
+    "pathImport": MessageLookupByLibrary.simpleMessage("Импорт по пути"),
+    "pathImportDesc": MessageLookupByLibrary.simpleMessage(
+      "Импортировать локальный файл конфигурации, введя его полный путь",
+    ),
     "color": MessageLookupByLibrary.simpleMessage("Цвет"),
     "colorSchemes": MessageLookupByLibrary.simpleMessage("Цветовые схемы"),
     "columns": MessageLookupByLibrary.simpleMessage("Столбцы"),

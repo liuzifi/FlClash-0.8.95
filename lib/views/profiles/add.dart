@@ -16,10 +16,22 @@ class AddProfileView extends StatelessWidget {
         .addProfileFormFile();
   }
 
+  Future<void> _handleAddProfileFormClipboard() async {
+    globalState.container
+        .read(profilesActionProvider.notifier)
+        .addProfileFormClipboard();
+  }
+
   Future<void> _handleAddProfileFormURL(String url) async {
     globalState.container
         .read(profilesActionProvider.notifier)
         .addProfileFormURL(url);
+  }
+
+  Future<void> _handleAddProfileFormPath(String path) async {
+    globalState.container
+        .read(profilesActionProvider.notifier)
+        .addProfileFormPath(path);
   }
 
   Future<void> _toScan() async {
@@ -62,6 +74,31 @@ class AddProfileView extends StatelessWidget {
     }
   }
 
+  Future<void> _toAddByPath() async {
+    final appLocalizations = context.appLocalizations;
+    final path = await globalState.showCommonDialog<String>(
+      child: InputDialog(
+        autovalidateMode: AutovalidateMode.onUnfocus,
+        title: appLocalizations.pathImport,
+        labelText: appLocalizations.filePathLabel,
+        value: '',
+        inputFormatters: TextInputLimits.limit(TextInputLimits.fileName),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return appLocalizations.emptyTip('').trim();
+          }
+          if (!value.startsWith('/') && !value.contains(RegExp(r'^[A-Za-z]:'))) {
+            return appLocalizations.filePathTip.trim();
+          }
+          return null;
+        },
+      ),
+    );
+    if (path != null) {
+      _handleAddProfileFormPath(path);
+    }
+  }
+
   @override
   Widget build(context) {
     final appLocalizations = context.appLocalizations;
@@ -78,6 +115,18 @@ class AddProfileView extends StatelessWidget {
           title: Text(appLocalizations.file),
           subtitle: Text(appLocalizations.fileDesc),
           onTap: _handleAddProfileFormFile,
+        ),
+        ListItem(
+          leading: const Icon(Icons.drive_folder_upload_sharp),
+          title: Text(appLocalizations.pathImport),
+          subtitle: Text(appLocalizations.pathImportDesc),
+          onTap: _toAddByPath,
+        ),
+        ListItem(
+          leading: const Icon(Icons.content_paste_sharp),
+          title: Text(appLocalizations.clipboardImport),
+          subtitle: Text(appLocalizations.clipboardImportDesc),
+          onTap: _handleAddProfileFormClipboard,
         ),
         ListItem(
           leading: const Icon(Icons.cloud_download_sharp),

@@ -224,6 +224,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "clearData": MessageLookupByLibrary.simpleMessage("Clear Data"),
     "clipboardExport": MessageLookupByLibrary.simpleMessage("Export clipboard"),
     "clipboardImport": MessageLookupByLibrary.simpleMessage("Clipboard import"),
+    "clipboardImportDesc": MessageLookupByLibrary.simpleMessage(
+      "Import configuration from clipboard content",
+    ),
+    "filePathLabel": MessageLookupByLibrary.simpleMessage("File path"),
+    "filePathTip": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid absolute file path",
+    ),
+    "pathImport": MessageLookupByLibrary.simpleMessage("Path import"),
+    "pathImportDesc": MessageLookupByLibrary.simpleMessage(
+      "Import a local configuration file by entering its full file path",
+    ),
     "color": MessageLookupByLibrary.simpleMessage("Color"),
     "colorSchemes": MessageLookupByLibrary.simpleMessage("Color schemes"),
     "columns": MessageLookupByLibrary.simpleMessage("Columns"),

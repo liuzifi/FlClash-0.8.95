@@ -102,6 +102,24 @@ class ProfilesAction extends _$ProfilesAction {
     }
   }
 
+  Future<void> addProfileFormPath(String path) async {
+    final trimmedPath = path.trim();
+    if (trimmedPath.isEmpty) return;
+    globalState.navigatorKey.currentState?.popUntil((route) => route.isFirst);
+    ref.read(currentPageLabelProvider.notifier).toProfiles();
+    final label = trimmedPath.split(RegExp(r'[/\\]')).last;
+    final profile = await globalState.loadingRun(
+      tag: LoadingTag.profiles,
+      () async {
+        return Profile.normal(label: label).saveFileWithPath(trimmedPath);
+      },
+      title: currentAppLocalizations.addProfile,
+    );
+    if (profile != null) {
+      putProfile(profile);
+    }
+  }
+
   Future<void> addProfileFormURL(String url) async {
     if (globalState.navigatorKey.currentState?.canPop() ?? false) {
       globalState.navigatorKey.currentState?.popUntil((route) => route.isFirst);
@@ -130,6 +148,40 @@ class ProfilesAction extends _$ProfilesAction {
     final url = await globalState.safeRun(picker.pickerConfigQRCode);
     if (url == null) return;
     addProfileFormURL(url);
+  }
+
+  Future<void> addProfileFormClipboard() async {
+    final clipboardData = await Clipboard.getData(Clipboard.kTextPlain);
+    final content = clipboardData?.text?.trim() ?? '';
+    if (content.isEmpty) {
+      globalState.showMessage(
+        title: currentAppLocalizations.tip,
+        message: TextSpan(
+          text: currentAppLocalizations.emptyTip(
+            currentAppLocalizations.clipboardImport,
+          ).trim(),
+        ),
+      );
+      return;
+    }
+    globalState.navigatorKey.currentState?.popUntil((route) => route.isFirst);
+    ref.read(currentPageLabelProvider.notifier).toProfiles();
+    if (content.isUrl) {
+      addProfileFormURL(content);
+    } else {
+      final bytes = Uint8List.fromList(utf8.encode(content));
+      final profile = await globalState.loadingRun(
+        tag: LoadingTag.profiles,
+        () async {
+          return Profile.normal(label: currentAppLocalizations.clipboardImport)
+              .saveFile(bytes);
+        },
+        title: currentAppLocalizations.addProfile,
+      );
+      if (profile != null) {
+        putProfile(profile);
+      }
+    }
   }
 
   void reorder(List<Profile> profiles) {

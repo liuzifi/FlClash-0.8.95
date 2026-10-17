@@ -170,6 +170,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "clearData": MessageLookupByLibrary.simpleMessage("データを消去"),
     "clipboardExport": MessageLookupByLibrary.simpleMessage("クリップボードにエクスポート"),
     "clipboardImport": MessageLookupByLibrary.simpleMessage("クリップボードからインポート"),
+    "clipboardImportDesc": MessageLookupByLibrary.simpleMessage(
+      "クリップボードの内容から設定をインポート",
+    ),
+    "filePathLabel": MessageLookupByLibrary.simpleMessage("ファイルパス"),
+    "filePathTip": MessageLookupByLibrary.simpleMessage(
+      "有効な絶対ファイルパスを入力してください",
+    ),
+    "pathImport": MessageLookupByLibrary.simpleMessage("パスインポート"),
+    "pathImportDesc": MessageLookupByLibrary.simpleMessage(
+      "完全なファイルパスを入力してローカル設定ファイルをインポート",
+    ),
     "color": MessageLookupByLibrary.simpleMessage("カラー"),
     "colorSchemes": MessageLookupByLibrary.simpleMessage("カラースキーム"),
     "columns": MessageLookupByLibrary.simpleMessage("列"),

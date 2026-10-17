@@ -1439,6 +1439,56 @@ class AppLocalizations {
     );
   }
 
+  /// `Import configuration from clipboard content`
+  String get clipboardImportDesc {
+    return Intl.message(
+      'Import configuration from clipboard content',
+      name: 'clipboardImportDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Path import`
+  String get pathImport {
+    return Intl.message(
+      'Path import',
+      name: 'pathImport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import a local configuration file by entering its full file path`
+  String get pathImportDesc {
+    return Intl.message(
+      'Import a local configuration file by entering its full file path',
+      name: 'pathImportDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `File path`
+  String get filePathLabel {
+    return Intl.message(
+      'File path',
+      name: 'filePathLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid absolute file path`
+  String get filePathTip {
+    return Intl.message(
+      'Please enter a valid absolute file path',
+      name: 'filePathTip',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Layout`
   String get layout {
     return Intl.message('Layout', name: 'layout', desc: '', args: []);

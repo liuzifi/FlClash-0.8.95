@@ -2,8 +2,8 @@ name: build-android-apk
 
 # 仅在 Actions 页面手动触发（Run workflow）。
 #
-# 触发时可输入版本后缀（如 .1、.2），最终版本号为 0.8.95{后缀}。
-# 不填则版本号保持 0.8.95，versionCode 用时间戳自动生成。
+# 触发时可输入完整版本号（如 0.8.96、0.8.97），直接覆盖默认版本号。
+# 不填则版本号保持 BASE_VERSION（0.8.95），versionCode 用时间戳自动生成。
 #
 # 产出：
 #   - APK：FlClash-{version}-android-arm64-v8a.apk（固定签名）
@@ -17,8 +17,8 @@ name: build-android-apk
 on:
   workflow_dispatch:
     inputs:
-      version_suffix:
-        description: '版本号后缀，如 .1、.2（留空则版本号为 0.8.95）'
+      version_override:
+        description: '完整版本号，如 0.8.96（留空则使用默认 0.8.95）'
         required: false
         default: ''
       create_release:
@@ -45,22 +45,25 @@ jobs:
         uses: actions/checkout@v4
 
       # 根据 workflow_dispatch 输入计算最终版本号，并更新 pubspec.yaml。
-      # pubspec version 格式必须为 X.Y.Z+buildNumber（3 段语义化版本 + 整数构建号），
-      # 后缀（如 .1）不能写入 version 字段，否则 flutter pub get 会因 4 段版本号失败。
-      # suffix 仅用于 version_name 输出（APK 文件名、Release tag 等人类可读标识）。
+      # version_override 直接指定完整 3 段版本号（如 0.8.96），不填则用 BASE_VERSION。
+      # pubspec version 格式必须为 X.Y.Z+buildNumber（3 段语义化版本 + 整数构建号）。
       - name: Set version
         id: version
         run: |
-          suffix="${{ github.event.inputs.version_suffix }}"
-          version="${BASE_VERSION}"
+          override="${{ github.event.inputs.version_override }}"
+          if [ -n "$override" ]; then
+            version="$override"
+          else
+            version="${BASE_VERSION}"
+          fi
           # versionCode：时间戳（秒），确保递增
           code=$(date +%s)
-          # 更新 pubspec.yaml（version 字段保持 3 段 + 整数 build number）
+          # 更新 pubspec.yaml（version 字段 = 3 段版本 + 整数 build number）
           sed -i "s/^version: .*/version: ${version}+${code}/" pubspec.yaml
-          # version_name 用于 APK 文件名和 Release tag，可带后缀（如 0.8.95.1）
-          echo "version_name=${version}${suffix}" >> "$GITHUB_OUTPUT"
+          # version_name 用于 APK 文件名和 Release tag，与 pubspec version 一致
+          echo "version_name=${version}" >> "$GITHUB_OUTPUT"
           echo "version_code=${code}" >> "$GITHUB_OUTPUT"
-          echo "::notice::Version: ${version}${suffix} (code: ${code})"
+          echo "::notice::Version: ${version} (code: ${code})"
 
       # core/go.mod 使用 `replace github.com/metacubex/mihomo => ./Clash.Meta`，
       # 因此必须把完整内核源码填入 core/Clash.Meta，并打上 trojan no-TLS + xhttp 补丁。

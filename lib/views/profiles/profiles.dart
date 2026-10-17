@@ -568,17 +568,11 @@ class _ReorderableProfilesSheetState extends State<ReorderableProfilesSheet> {
     );
   }
 
-  void _handleSave() {
-    Navigator.of(context).pop();
-    globalState.container.read(profilesProvider.notifier).reorder(profiles);
-  }
-
   @override
   Widget build(BuildContext context) {
     final appLocalizations = context.appLocalizations;
     return AdaptiveSheetScaffold(
       sheetTransparentToolBar: true,
-      actions: [IconButtonData(icon: Icons.check, onPressed: _handleSave)],
       body: Padding(
         padding: const EdgeInsets.only(bottom: 32),
         child: ReorderableListView.builder(
@@ -593,6 +587,9 @@ class _ReorderableProfilesSheetState extends State<ReorderableProfilesSheet> {
             setState(() {
               profiles = profiles.copyAndReorder(oldIndex, newIndex);
             });
+            globalState.container
+                .read(profilesProvider.notifier)
+                .reorder(profiles);
           },
           itemBuilder: (_, index) {
             return _buildItem(index);
