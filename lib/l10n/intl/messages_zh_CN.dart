@@ -166,7 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pathImport": MessageLookupByLibrary.simpleMessage("路径导入"),
     "pathImportDesc": MessageLookupByLibrary.simpleMessage("输入完整文件路径导入本地配置文件"),
     "storagePermissionMessage": MessageLookupByLibrary.simpleMessage(
-      "路径导入需要"所有文件访问"权限才能读取应用目录外的文件。请在系统设置中授予此权限。",
+      "路径导入需要「所有文件访问」权限才能读取应用目录外的文件。请在系统设置中授予此权限。",
     ),
     "storagePermissionSettings": MessageLookupByLibrary.simpleMessage(
       "打开设置",
