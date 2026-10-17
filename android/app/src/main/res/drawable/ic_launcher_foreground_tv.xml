@@ -3,19 +3,19 @@
         android:height="108dp"
         android:viewportWidth="240"
         android:viewportHeight="240">
-    <!-- Minimal design: bold white "L" with a single cyan dot accent. -->
+    <!-- Minimal design: bold deep-blue "L" with a single powder-pink dot accent. -->
     <group
         android:scaleX="0.6"
         android:scaleY="0.6"
         android:translateX="48"
         android:translateY="48">
-        <!-- bold L, optically centered -->
+        <!-- bold L in app background blue, optically centered -->
         <path
             android:pathData="M78,58 L110,58 L110,150 L162,150 L162,182 L78,182 Z"
-            android:fillColor="#FFFFFF"/>
-        <!-- single cyan dot accent -->
+            android:fillColor="#0D47A1"/>
+        <!-- single powder-pink dot accent -->
         <path
             android:pathData="M127,88 a11,11 0 1,0 22,0 a11,11 0 1,0 -22,0"
-            android:fillColor="#00E5FF"/>
+            android:fillColor="#EC407A"/>
     </group>
 </vector>

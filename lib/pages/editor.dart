@@ -54,7 +54,8 @@ class _EditorPageState extends ConsumerState<EditorPage> {
   late TextEditingController _titleController;
   late FocusNode _focusNode;
   late bool readOnly = false;
-  late bool _wordWrap = false;
+  // 安卓端默认开启自动换行，桌面端默认关闭。
+  late bool _wordWrap = system.isAndroid;
   CodeChunkController? _chunkController;
   late final SelectionToolbarController _toolbarController;
 
@@ -437,7 +438,9 @@ class _EditorPageState extends ConsumerState<EditorPage> {
   }
 }
 
-const double _kDefaultFindPanelHeight = 52;
+const double _kInputHeight = 40;
+const double _kActionHeight = 32;
+const double _kGap = 6;
 
 class FindPanel extends StatelessWidget implements PreferredSizeWidget {
   final CodeFindController controller;
@@ -451,441 +454,219 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
     required this.isMobileView,
   });
 
-  // 桌面端：搜索行高度（52）+ padding
-  // 移动端：搜索行（52）+ 操作行（28）+ 间距（8）
-  double get _baseHeight {
-    if (isMobileView) {
-      return _kDefaultFindPanelHeight + 28 + 8 + 8;
-    }
-    return _kDefaultFindPanelHeight + 8;
-  }
-
-  // 替换模式额外加一行替换输入框（52）+ 间距（8）
-  double get _replaceHeight => _baseHeight + _kDefaultFindPanelHeight + 8;
-
   @override
   Size get preferredSize {
-    if (controller.value == null) {
-      return Size.zero;
-    }
-    final isReplaceMode =
-        controller.value!.replaceMode && !readOnly;
-    return Size(double.infinity, isReplaceMode ? _replaceHeight : _baseHeight);
+    if (controller.value == null) return Size.zero;
+    final isReplaceMode = controller.value!.replaceMode && !readOnly;
+    double h = _kActionHeight + _kGap + _kInputHeight;
+    if (isReplaceMode) h += _kGap + _kInputHeight;
+    return Size(double.infinity, h + 16);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (controller.value == null) {
-      return const SizedBox(width: 0, height: 0);
-    }
-    final isReplaceMode =
-        controller.value!.replaceMode && !readOnly;
-    final height = isReplaceMode ? _replaceHeight : _baseHeight;
+    if (controller.value == null) return const SizedBox.shrink();
+    final isReplaceMode = controller.value!.replaceMode && !readOnly;
+    double h = _kActionHeight + _kGap + _kInputHeight;
+    if (isReplaceMode) h += _kGap + _kInputHeight;
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       margin: const EdgeInsets.only(bottom: 8),
       color: context.colorScheme.surface,
       alignment: Alignment.centerLeft,
-      height: height,
-      child: _buildFindInputView(context),
+      height: h + 16,
+      child: _buildContent(context, isReplaceMode),
     );
   }
 
-  Widget _buildFindInputView(BuildContext context) {
-    final CodeFindValue value = controller.value!;
-    final isReplaceMode = value.replaceMode && !readOnly;
-    final String result;
-    if (value.result == null) {
-      result = context.appLocalizations.none;
-    } else {
-      result = '${value.result!.index + 1}/${value.result!.matches.length}';
-    }
-    // 搜索输入框行：输入框 + 大小写/正则开关
-    final Widget findInput = _buildFindInput(context, value);
-    // 替换输入框行：替换框 + 替换/全部替换按钮
-    final Widget replaceInput = _buildReplaceInput(context);
-    // 右侧操作按钮：切换 + 上下箭头 + 关闭（切换按钮在箭头左边）
-    final Widget actionBar = CommonMinIconButtonTheme(
+  Widget _buildContent(BuildContext context, bool isReplaceMode) {
+    final value = controller.value!;
+    final result = value.result == null
+        ? context.appLocalizations.none
+        : '${value.result!.index + 1}/${value.result!.matches.length}';
+
+    final Widget replaceToggle = _buildReplaceToggle(context, isReplaceMode);
+
+    final Widget actions = CommonMinIconButtonTheme(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
         spacing: 2,
         children: [
-          _buildModeToggle(context, isReplaceMode),
-          _buildIconButton(
-            onPressed: value.result == null
-                ? null
-                : () {
-                    controller.previousMatch();
-                  },
+          if (!isMobileView) Text(result, style: context.textTheme.bodySmall),
+          _buildIconBtn(
+            onPressed: value.result == null ? null : controller.previousMatch,
             icon: Icons.arrow_upward,
           ),
-          _buildIconButton(
-            onPressed: value.result == null
-                ? null
-                : () {
-                    controller.nextMatch();
-                  },
+          _buildIconBtn(
+            onPressed: value.result == null ? null : controller.nextMatch,
             icon: Icons.arrow_downward,
           ),
-          const SizedBox(width: 2),
-          IconButton.filledTonal(
-            onPressed: controller.close,
-            icon: const Icon(Icons.close, size: 16),
-          ),
+          _buildIconBtn(onPressed: controller.close, icon: Icons.close),
         ],
       ),
     );
-    // 移动端：输入框占满宽度，操作按钮单独一行
-    if (isMobileView) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          findInput,
-          if (isReplaceMode) ...[
-            const SizedBox(height: 8),
-            replaceInput,
-          ],
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Text(result, style: context.textTheme.bodyMedium),
-              const Spacer(),
-              actionBar,
-            ],
-          ),
-        ],
-      );
-    }
-    // 桌面端：搜索行（输入框 + 结果 + 操作按钮），替换行单独一行
-    // 两个输入框用相同 maxWidth 约束，宽度对齐，上下整体布局
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          spacing: 8,
-          children: [
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 360),
-              child: findInput,
-            ),
-            Text(result, style: context.textTheme.bodyMedium),
-            const Spacer(),
-            actionBar,
-          ],
-        ),
+        Row(children: [replaceToggle, const Spacer(), actions]),
+        SizedBox(height: _kGap),
+        _buildFindField(context, value),
         if (isReplaceMode) ...[
-          const SizedBox(height: 8),
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 360),
-            child: replaceInput,
-          ),
+          SizedBox(height: _kGap),
+          _buildReplaceField(context),
         ],
+        if (isMobileView)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(result, style: context.textTheme.bodySmall),
+          ),
       ],
     );
   }
 
-  // 单个 toggle 按钮：点击展开/折叠替换输入框。
-  // replaceMode 时点击 → findMode（折叠）；findMode 时点击 → replaceMode（展开）。
-  Widget _buildModeToggle(BuildContext context, bool isReplaceMode) {
+  Widget _buildReplaceToggle(BuildContext context, bool isReplaceMode) {
     return SizedBox(
       width: 28,
       height: 28,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: isReplaceMode
-            ? IconButton.filledTonal(
-                onPressed: readOnly
-                    ? null
-                    : () {
-                        controller.findMode();
-                      },
-                padding: const EdgeInsets.all(2),
-                icon: const Icon(Icons.find_replace, size: 16),
-              )
-            : IconButton(
-                onPressed: readOnly
-                    ? null
-                    : () {
-                        controller.replaceMode();
-                      },
-                padding: const EdgeInsets.all(2),
-                icon: const Icon(Icons.find_replace, size: 16),
-              ),
+      child: IconButton(
+        onPressed: readOnly
+            ? null
+            : () {
+                if (isReplaceMode) {
+                  controller.findMode();
+                } else {
+                  controller.replaceMode();
+                }
+              },
+        padding: EdgeInsets.zero,
+        iconSize: 16,
+        icon: Icon(isReplaceMode ? Icons.expand_less : Icons.expand_more),
+        tooltip: isReplaceMode ? 'Hide replace' : 'Show replace',
       ),
     );
   }
 
-  Widget _buildReplaceInput(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      spacing: 8,
-      children: [
-        Flexible(
-          child: _buildTextField(
-            context: context,
-            onSubmitted: () {
-              controller.replaceMatch();
-              controller.replaceInputFocusNode.requestFocus();
-            },
-            controller: controller.replaceInputController,
-            focusNode: controller.replaceInputFocusNode,
-          ),
-        ),
-        _buildIconButton(
-          onPressed: () {
-            controller.replaceMatch();
-          },
-          icon: Icons.check,
-        ),
-        _buildIconButton(
-          onPressed: () {
-            controller.replaceAllMatches();
-          },
-          icon: Icons.done_all,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFindInput(BuildContext context, CodeFindValue value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      spacing: 8,
-      children: [
-        Flexible(
-          child: _buildTextField(
-            context: context,
-            onSubmitted: () {
-              if (value.result == null) {
-                return;
-              }
-              controller.nextMatch();
-              controller.findInputFocusNode.requestFocus();
-            },
-            controller: controller.findInputController,
-            focusNode: controller.findInputFocusNode,
-          ),
-        ),
-        _buildCheckText(
-          context: context,
-          text: 'Aa',
-          isSelected: value.option.caseSensitive,
-          onPressed: () {
-            controller.toggleCaseSensitive();
-          },
-        ),
-        _buildCheckText(
-          context: context,
-          text: '.*',
-          isSelected: value.option.regex,
-          onPressed: () {
-            controller.toggleRegex();
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTextField({
-    required BuildContext context,
-    required TextEditingController controller,
-    required FocusNode focusNode,
-    required VoidCallback onSubmitted,
-  }) {
+  Widget _buildFindField(BuildContext context, CodeFindValue value) {
     return SizedBox(
-      height: globalState.measure.bodyMediumHeight + 8 * 2,
+      height: _kInputHeight,
       child: TextField(
         maxLines: 1,
-        focusNode: focusNode,
+        focusNode: controller.findInputFocusNode,
         inputFormatters: TextInputLimits.limit(TextInputLimits.search),
         style: context.textTheme.bodyMedium,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.symmetric(horizontal: 12),
-        ),
+        controller: controller.findInputController,
         onSubmitted: (_) {
-          onSubmitted();
+          if (value.result != null) {
+            controller.nextMatch();
+            controller.findInputFocusNode.requestFocus();
+          }
         },
-        controller: controller,
-      ),
-    );
-  }
-
-  Widget _buildCheckText({
-    required BuildContext context,
-    required String text,
-    required bool isSelected,
-    required VoidCallback onPressed,
-  }) {
-    return SizedBox(
-      width: 28,
-      height: 28,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: isSelected
-            ? IconButton.filledTonal(
-                onPressed: onPressed,
-                padding: const EdgeInsets.all(2),
-                icon: Text(text, style: context.textTheme.bodySmall),
-              )
-            : IconButton(
-                onPressed: onPressed,
-                padding: const EdgeInsets.all(2),
-                icon: Text(text, style: context.textTheme.bodySmall),
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+          isDense: true,
+          suffixIcon: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildToggleChip(
+                'Aa',
+                value.option.caseSensitive,
+                controller.toggleCaseSensitive,
               ),
+              _buildToggleChip(
+                '.*',
+                value.option.regex,
+                controller.toggleRegex,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildIconButton({required IconData icon, VoidCallback? onPressed}) {
-    return IconButton(onPressed: onPressed, icon: Icon(icon, size: 16));
+  Widget _buildReplaceField(BuildContext context) {
+    return SizedBox(
+      height: _kInputHeight,
+      child: TextField(
+        maxLines: 1,
+        focusNode: controller.replaceInputFocusNode,
+        inputFormatters: TextInputLimits.limit(TextInputLimits.search),
+        style: context.textTheme.bodyMedium,
+        controller: controller.replaceInputController,
+        onSubmitted: (_) {
+          controller.replaceMatch();
+          controller.replaceInputFocusNode.requestFocus();
+        },
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+          isDense: true,
+          suffixIcon: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildToggleChip(
+                '✓',
+                false,
+                () {
+                  controller.replaceMatch();
+                  controller.replaceInputFocusNode.requestFocus();
+                },
+              ),
+              _buildToggleChip(
+                '⇄',
+                false,
+                controller.replaceAllMatches,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
-}
 
-class _YamlValue {
-  final String key;
-  final int start;
-  final int end;
-  const _YamlValue(this.key, this.start, this.end);
+  Widget _buildToggleChip(String text, bool selected, VoidCallback onPressed) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: InkWell(
+        onTap: onPressed,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          decoration: BoxDecoration(
+            color: selected ? context.colorScheme.primaryContainer : null,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Text(
+            text,
+            style: context.textTheme.bodySmall?.copyWith(
+              fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIconBtn({required IconData icon, VoidCallback? onPressed}) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: Icon(icon, size: 16),
+      visualDensity: VisualDensity.compact,
+    );
+  }
 }
 
 class ContextMenuControllerImpl implements SelectionToolbarController {
   OverlayEntry? _overlayEntry;
-  bool _isFirstRender = true;
   bool readOnly = false;
 
   ContextMenuControllerImpl(this.readOnly);
 
-  /// 目标字段集合（大小写不敏感比较）。
-  static const Set<String> _targetKeys = {
-    'server',
-    'port',
-    'path',
-    'host',
-    'sni',
-    'password',
-  };
-
-  /// 解析一行 YAML 的「键: 值」结构。
-  /// 对于 path/host 字段，若值内含 `=`，范围缩窄到 `=` 之后。
-  static _YamlValue? _parseYamlValueRange(String text) {
-    int i = 0;
-    while (i < text.length && text[i] == ' ') {
-      i++;
-    }
-    if (i >= text.length) return null;
-    final int keyStart = i;
-    while (i < text.length && text[i] != ':' && text[i] != ' ') {
-      i++;
-    }
-    if (i >= text.length || text[i] != ':') return null;
-    final String key = text.substring(keyStart, i);
-    if (key.isEmpty) return null;
-    i++;
-    while (i < text.length && (text[i] == ' ' || text[i] == '\t')) {
-      i++;
-    }
-    if (i >= text.length) return null;
-    int valueStart = i;
-    int valueEnd = text.length;
-    while (valueEnd > valueStart &&
-        (text[valueEnd - 1] == ' ' ||
-            text[valueEnd - 1] == '\t' ||
-            text[valueEnd - 1] == '\r')) {
-      valueEnd--;
-    }
-    if (valueEnd <= valueStart) return null;
-    final String firstChar = text[valueStart];
-    if (firstChar == '"' || firstChar == "'") {
-      final int closePos = text.indexOf(firstChar, valueStart + 1);
-      if (closePos > valueStart) {
-        valueStart = valueStart + 1;
-        valueEnd = closePos;
-      }
-    } else {
-      final int hash = text.indexOf('#', valueStart);
-      if (hash >= 0 && hash < valueEnd) {
-        valueEnd = hash;
-        while (valueEnd > valueStart &&
-            (text[valueEnd - 1] == ' ' || text[valueEnd - 1] == '\t')) {
-          valueEnd--;
-        }
-      }
-    }
-    if (valueEnd <= valueStart) return null;
-    final String lowerKey = key.toLowerCase();
-    if (lowerKey == 'path' || lowerKey == 'host') {
-      final int eq = text.indexOf('=', valueStart);
-      if (eq >= 0 && eq < valueEnd) {
-        int newStart = eq + 1;
-        while (newStart < valueEnd &&
-            (text[newStart] == ' ' || text[newStart] == '\t')) {
-          newStart++;
-        }
-        if (newStart < valueEnd) {
-          valueStart = newStart;
-        }
-      }
-    }
-    return _YamlValue(key, valueStart, valueEnd);
-  }
-
-  bool _isTargetKey(String key) {
-    return _targetKeys.contains(key.toLowerCase());
-  }
-
-  void _showEditValueDialog(
-    BuildContext context,
-    CodeLineEditingController controller,
-    String key,
-  ) {
-    final TextEditingController textController = TextEditingController(
-      text: controller.selectedText,
-    );
-    showDialog(
-      context: context,
-      builder: (dialogContext) {
-        final appLocalizations = dialogContext.appLocalizations;
-        return AlertDialog(
-          title: Text(appLocalizations.editValue),
-          content: TextField(
-            controller: textController,
-            autofocus: true,
-            decoration: InputDecoration(
-              labelText: key,
-              border: const OutlineInputBorder(),
-            ),
-            onSubmitted: (value) {
-              controller.replaceSelection(value);
-              Navigator.of(dialogContext).pop();
-            },
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(appLocalizations.cancel),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.replaceSelection(textController.text);
-                Navigator.of(dialogContext).pop();
-              },
-              child: Text(appLocalizations.confirm),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _removeOverLayEntry() {
     _overlayEntry?.remove();
     _overlayEntry = null;
-    _isFirstRender = true;
   }
 
   @override
@@ -912,65 +693,10 @@ class ContextMenuControllerImpl implements SelectionToolbarController {
             final isNotEmpty = controller.selectedText.isNotEmpty;
             final isAllSelected = controller.isAllSelected;
             final hasSelected = controller.selectedText.isNotEmpty;
-            // Layer 2：长按时自动选值。
-            // yamlKey 检测在每次构建时执行，确保 PostFrameCallback
-            // 修改 selection 触发重建后，deleteValue/editValue 菜单仍然存在。
-            // 自动选值动作仅在首次渲染时调度一次。
-            String? yamlKey;
-            try {
-              final CodeLineSelection sel = controller.selection;
-              final int lineIndex = sel.startIndex;
-              if (lineIndex >= 0 &&
-                  lineIndex < controller.codeLines.length) {
-                final String lineText =
-                    controller.codeLines[lineIndex].text;
-                final _YamlValue? parsed = _parseYamlValueRange(lineText);
-                if (parsed != null && _isTargetKey(parsed.key)) {
-                  yamlKey = parsed.key;
-                  if (_isFirstRender) {
-                    _isFirstRender = false;
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      try {
-                        controller.selection = CodeLineSelection(
-                          baseIndex: lineIndex,
-                          baseOffset: parsed.start,
-                          extentIndex: lineIndex,
-                          extentOffset: parsed.end,
-                        );
-                        controller.makePositionCenterIfInvisible(
-                          CodeLinePosition(
-                            index: lineIndex,
-                            offset: parsed.start,
-                          ),
-                        );
-                      } catch (_) {}
-                    });
-                  }
-                }
-              }
-            } catch (_) {}
-            if (yamlKey == null && controller.selectedText.isEmpty) {
+            if (!hasSelected) {
               _removeOverLayEntry();
             }
             final List<PopupMenuItemData> menus = [
-              if (yamlKey != null && !readOnly)
-                PopupMenuItemData(
-                  label: appLocalizations.deleteValue,
-                  onPressed: () {
-                    controller.deleteSelection();
-                  },
-                ),
-              if (yamlKey != null && !readOnly)
-                PopupMenuItemData(
-                  label: appLocalizations.editValue,
-                  onPressed: () {
-                    _showEditValueDialog(
-                      context,
-                      controller,
-                      yamlKey!,
-                    );
-                  },
-                ),
               if (isNotEmpty)
                 PopupMenuItemData(
                   label: appLocalizations.copy,
