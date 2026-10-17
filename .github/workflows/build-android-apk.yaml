@@ -43,6 +43,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # 完整历史：Release 说明需要用 git log 对比上一个 tag 以来的提交
+          fetch-depth: 0
 
       # 根据 workflow_dispatch 输入计算最终版本号，并更新 pubspec.yaml。
       # version_override 直接指定完整 3 段版本号（如 0.8.96），不填则用 BASE_VERSION。
@@ -237,28 +240,52 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      # 生成本次 Release 说明：以"自上一个 Release tag 以来的实际提交"为更新内容，
+      # 避免每次发布重复同一份写死的说明；首个版本（无 tag）列出全部提交。
+      - name: Generate release notes
+        run: |
+          set -euo pipefail
+          version="${{ steps.version.outputs.version_name }}"
+          prev_tag="$(git describe --tags --abbrev=0 2>/dev/null || true)"
+          if [ -n "$prev_tag" ]; then
+            range="${prev_tag}..HEAD"
+            base_desc="${prev_tag}"
+          else
+            range="HEAD"
+            base_desc="项目起始"
+          fi
+          commits="$(git log --no-merges --pretty=format:'- %s (%h)' "${range}" 2>/dev/null || true)"
+          {
+            echo "## FlClash v${version}"
+            echo ""
+            echo "### 本版更新（自 ${base_desc} 以来）"
+            echo ""
+            if [ -n "$commits" ]; then
+              echo "${commits}"
+            else
+              echo "- 无新增提交（同版本号重新构建）"
+            fi
+            echo ""
+            echo "### 下载"
+            echo "- APK: FlClash-${version}-android-arm64-v8a.apk（Android arm64）"
+            echo "- Source code (zip) / Source code (tar.gz)：完整源码"
+            echo ""
+            echo "### 安装"
+            echo "- 固定签名，可与历史版本直接覆盖安装。"
+            echo "- 内核: mihomo ${CLASH_META_REF} + Trojan no-TLS / xhttp 补丁。"
+          } > release_notes.md
+          echo "--- release_notes.md ---"
+          cat release_notes.md
+
       # 构建成功后创建 GitHub Release，包含 APK + Source code。
-      # 仅在 create_release 输入为 'true' 时执行。
+      # 仅在 create_release 输入为 'true' 时执行。说明内容来自 release_notes.md。
       - name: Create GitHub Release
         if: github.event.inputs.create_release == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version_name }}
           name: FlClash v${{ steps.version.outputs.version_name }}
-          body: |
-            ## FlClash v${{ steps.version.outputs.version_name }}
-
-            ### 内核改动
-            - Trojan 协议 xhttp 传输支持（突破官方"仅 VLESS 支持 xhttp"限制）
-            - Trojan 协议 ws/grpc 传输 tls:false 支持
-            - 固定签名 keystore（每次构建签名一致，可直接覆盖安装）
-
-            ### 下载
-            - `FlClash-${{ steps.version.outputs.version_name }}-android-arm64-v8a.apk` — Android arm64 APK
-            - Source code (zip) / Source code (tar.gz) — 完整源码
-
-            ### 安装
-            首次安装后，后续更新可直接覆盖安装（签名固定）。
+          body_path: release_notes.md
           files: |
             dist/*.apk
           generate_release_notes: true
