@@ -5,12 +5,12 @@
     android:viewportWidth="240"
     android:viewportHeight="240"
     tools:ignore="VectorRaster">
-  <!-- L 字样 -->
+  <!-- L 字样：加粗竖条与横脚，使其在快速设置磁贴中更清晰 -->
   <path
-      android:pathData="M78,58 L110,58 L110,150 L162,150 L162,182 L78,182 Z"
+      android:pathData="M64,48 L104,48 L104,168 L176,168 L176,208 L64,208 Z"
       android:fillColor="#FFFFFF"/>
-  <!-- 点 -->
+  <!-- 点：放大半径，与加粗后的 L 协调 -->
   <path
-      android:pathData="M127,88 a11,11 0 1,0 22,0 a11,11 0 1,0 -22,0"
+      android:pathData="M122,76 a16,16 0 1,0 32,0 a16,16 0 1,0 -32,0"
       android:fillColor="#FFFFFF"/>
 </vector>

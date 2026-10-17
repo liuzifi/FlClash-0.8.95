@@ -34,50 +34,35 @@ class _ProxiesViewState extends ConsumerState<ProxiesView> {
           },
           icon: const Icon(Icons.adjust, weight: 1),
         ),
-      CommonPopupBox(
-        targetBuilder: (open) {
-          return IconButton(
-            onPressed: () {
-              final isMobile = ref.read(isMobileViewProvider);
-              open(offset: Offset(0, isMobile ? 0 : 20));
+      IconButton(
+        tooltip: appLocalizations.settings,
+        onPressed: () {
+          showSheet(
+            context: context,
+            props: const SheetProps(isScrollControlled: true),
+            builder: (_) {
+              return AdaptiveSheetScaffold(
+                body: const ProxiesSetting(),
+                title: appLocalizations.settings,
+              );
             },
-            icon: const Icon(Icons.more_vert),
           );
         },
-        popup: CommonPopupMenu(
-          items: [
-            PopupMenuItemData(
-              icon: Icons.tune,
-              label: appLocalizations.settings,
-              onPressed: () {
-                showSheet(
-                  context: context,
-                  props: const SheetProps(isScrollControlled: true),
-                  builder: (_) {
-                    return AdaptiveSheetScaffold(
-                      body: const ProxiesSetting(),
-                      title: appLocalizations.settings,
-                    );
-                  },
-                );
-              },
-            ),
-            if (_hasProviders)
-              PopupMenuItemData(
-                icon: Icons.poll_outlined,
-                label: appLocalizations.providers,
-                onPressed: () {
-                  showExtend(
-                    context,
-                    builder: (_) {
-                      return const ProvidersView();
-                    },
-                  );
-                },
-              ),
-          ],
-        ),
+        icon: const Icon(Icons.tune),
       ),
+      if (_hasProviders)
+        IconButton(
+          tooltip: appLocalizations.providers,
+          onPressed: () {
+            showExtend(
+              context,
+              builder: (_) {
+                return const ProvidersView();
+              },
+            );
+          },
+          icon: const Icon(Icons.poll_outlined),
+        ),
     ];
   }
 

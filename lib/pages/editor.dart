@@ -512,16 +512,17 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
       children: [
         Row(children: [replaceToggle, const Spacer(), actions]),
         SizedBox(height: _kGap),
+        // 移动端将结果数量显示在搜索框上方，便于查看匹配进度
+        if (isMobileView)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Text(result, style: context.textTheme.bodySmall),
+          ),
         _buildFindField(context, value),
         if (isReplaceMode) ...[
           SizedBox(height: _kGap),
           _buildReplaceField(context),
         ],
-        if (isMobileView)
-          Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Text(result, style: context.textTheme.bodySmall),
-          ),
       ],
     );
   }
@@ -535,7 +536,10 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
             ? null
             : () {
                 if (isReplaceMode) {
-                  controller.findMode();
+                  // findMode() 不会重置 replaceMode（re_editor 0.10.0 的
+                  // 实现中 copyWith 省略了 replaceMode），导致替换框无法折叠。
+                  // 改用 toggleMode() 正确切换 replaceMode 为 false。
+                  controller.toggleMode();
                 } else {
                   controller.replaceMode();
                 }
