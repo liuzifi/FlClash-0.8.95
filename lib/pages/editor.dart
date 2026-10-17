@@ -13,6 +13,7 @@ import 'package:re_editor/re_editor.dart';
 import 'package:re_highlight/languages/javascript.dart';
 import 'package:re_highlight/languages/json.dart';
 import 'package:re_highlight/languages/yaml.dart';
+import 'package:re_highlight/styles/atom-one-dark.dart';
 import 'package:re_highlight/styles/atom-one-light.dart';
 
 typedef EditingValueChangeBuilder = Widget Function(CodeLineEditingValue value);
@@ -53,6 +54,7 @@ class _EditorPageState extends ConsumerState<EditorPage> {
   late TextEditingController _titleController;
   late FocusNode _focusNode;
   late bool readOnly = false;
+  late bool _wordWrap = false;
   late final SelectionToolbarController _toolbarController;
 
   @override
@@ -132,6 +134,34 @@ class _EditorPageState extends ConsumerState<EditorPage> {
 
   void _handleSearch() {
     _findController.findMode();
+  }
+
+  void _handleReplace() {
+    _findController.replaceMode();
+  }
+
+  void _handleReplaceNext() {
+    _findController.replaceMatch();
+  }
+
+  void _handleReplaceAll() {
+    _findController.replaceAllMatches();
+  }
+
+  void _toggleWordWrap() {
+    setState(() {
+      _wordWrap = !_wordWrap;
+    });
+  }
+
+  void _handleSave() {
+    if (widget.onSave != null) {
+      widget.onSave!(
+        context,
+        _titleController.text,
+        _controller.text,
+      );
+    }
   }
 
   Future<void> _handleImportFormFile() async {
@@ -240,6 +270,12 @@ class _EditorPageState extends ConsumerState<EditorPage> {
                       label: appLocalizations.search,
                       onPressed: _handleSearch,
                     ),
+                    if (!readOnly)
+                      PopupMenuItemData(
+                        icon: Icons.find_replace,
+                        label: 'Replace',
+                        onPressed: _handleReplace,
+                      ),
                     PopupMenuItemData(
                       icon: Icons.undo,
                       label: appLocalizations.undo,
@@ -249,6 +285,13 @@ class _EditorPageState extends ConsumerState<EditorPage> {
                       icon: Icons.redo,
                       label: appLocalizations.redo,
                       onPressed: _controller.canRedo ? _controller.redo : null,
+                    ),
+                    PopupMenuItemData(
+                      icon: _wordWrap
+                          ? Icons.wrap_text
+                          : Icons.notes,
+                      label: 'Word Wrap',
+                      onPressed: _toggleWordWrap,
                     ),
                     if (widget.supportRemoteDownload && !readOnly)
                       PopupMenuItemData(
@@ -284,6 +327,7 @@ class _EditorPageState extends ConsumerState<EditorPage> {
                 isMobileView: isMobileView,
               ),
               padding: const EdgeInsets.only(right: 16),
+              wordWrap: _wordWrap,
               autocompleteSymbols: true,
               focusNode: _focusNode,
               scrollbarBuilder: (context, child, details) {
@@ -326,7 +370,9 @@ class _EditorPageState extends ConsumerState<EditorPage> {
                     if (widget.languages.contains(Language.json))
                       'json': CodeHighlightThemeMode(mode: langJson),
                   },
-                  theme: atomOneLightTheme,
+                  theme: Theme.of(context).brightness == Brightness.dark
+                      ? atomOneDarkTheme
+                      : atomOneLightTheme,
                 ),
               ),
             ),
@@ -355,28 +401,38 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
   final CodeFindController controller;
   final bool readOnly;
   final bool isMobileView;
-  final double height;
 
   const FindPanel({
     super.key,
     required this.controller,
     required this.readOnly,
     required this.isMobileView,
-  }) : height =
-           (isMobileView
-               ? _kDefaultFindPanelHeight * 2
-               : _kDefaultFindPanelHeight) +
-           8;
+  });
+
+  double get _baseHeight =>
+      (isMobileView ? _kDefaultFindPanelHeight * 2 : _kDefaultFindPanelHeight) +
+      8;
+
+  double get _replaceHeight => _baseHeight + _kDefaultFindPanelHeight + 8;
 
   @override
-  Size get preferredSize =>
-      Size(double.infinity, controller.value == null ? 0 : height);
+  Size get preferredSize {
+    if (controller.value == null) {
+      return Size.zero;
+    }
+    final isReplaceMode =
+        controller.value!.replaceMode && !readOnly;
+    return Size(double.infinity, isReplaceMode ? _replaceHeight : _baseHeight);
+  }
 
   @override
   Widget build(BuildContext context) {
     if (controller.value == null) {
       return const SizedBox(width: 0, height: 0);
     }
+    final isReplaceMode =
+        controller.value!.replaceMode && !readOnly;
+    final height = isReplaceMode ? _replaceHeight : _baseHeight;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       margin: const EdgeInsets.only(bottom: 8),
@@ -389,6 +445,7 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
 
   Widget _buildFindInputView(BuildContext context) {
     final CodeFindValue value = controller.value!;
+    final isReplaceMode = value.replaceMode && !readOnly;
     final String result;
     if (value.result == null) {
       result = context.appLocalizations.none;
@@ -439,6 +496,64 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
     );
+    if (isReplaceMode) {
+      final replaceBar = CommonMinIconButtonTheme(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (!isMobileView) ...[
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 360),
+                child: _buildReplaceInput(context),
+              ),
+              const SizedBox(width: 12),
+            ],
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                spacing: 2,
+                children: [
+                  _buildIconButton(
+                    onPressed: () {
+                      controller.replaceMatch();
+                    },
+                    icon: Icons.check,
+                  ),
+                  _buildIconButton(
+                    onPressed: () {
+                      controller.replaceAllMatches();
+                    },
+                    icon: Icons.done_all,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+      if (isMobileView) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            bar,
+            const SizedBox(height: 8),
+            _buildFindInput(context, value),
+            const SizedBox(height: 8),
+            replaceBar,
+            const SizedBox(height: 4),
+            _buildReplaceInput(context),
+          ],
+        );
+      }
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          bar,
+          const SizedBox(height: 8),
+          replaceBar,
+        ],
+      );
+    }
     if (isMobileView) {
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -451,6 +566,27 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
       );
     }
     return bar;
+  }
+
+  Widget _buildReplaceInput(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      spacing: 8,
+      children: [
+        Flexible(
+          child: _buildTextField(
+            context: context,
+            onSubmitted: () {
+              controller.replaceMatch();
+              controller.replaceInputFocusNode.requestFocus();
+            },
+            controller: controller.replaceInputController,
+            focusNode: controller.replaceInputFocusNode,
+          ),
+        ),
+        const SizedBox(width: 4),
+      ],
+    );
   }
 
   Widget _buildFindInput(BuildContext context, CodeFindValue value) {
