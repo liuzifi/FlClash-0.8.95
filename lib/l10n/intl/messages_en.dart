@@ -283,6 +283,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "controlGlobalAddedRules": MessageLookupByLibrary.simpleMessage(
       "Control global added rules",
     ),
+    "collapseAll": MessageLookupByLibrary.simpleMessage("Collapse All"),
     "copy": MessageLookupByLibrary.simpleMessage("Copy"),
     "copyEnvVar": MessageLookupByLibrary.simpleMessage(
       "Copying environment variables",
@@ -395,6 +396,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "existsTip": m6,
     "exit": MessageLookupByLibrary.simpleMessage("Exit"),
     "expand": MessageLookupByLibrary.simpleMessage("Standard"),
+    "expandAll": MessageLookupByLibrary.simpleMessage("Expand All"),
     "expectedStatus": MessageLookupByLibrary.simpleMessage("Expected status"),
     "exportFile": MessageLookupByLibrary.simpleMessage("Export file"),
     "exportLogs": MessageLookupByLibrary.simpleMessage("Export logs"),
@@ -775,6 +777,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "remove": MessageLookupByLibrary.simpleMessage("Remove"),
     "rename": MessageLookupByLibrary.simpleMessage("Rename"),
+    "replace": MessageLookupByLibrary.simpleMessage("Replace"),
     "request": MessageLookupByLibrary.simpleMessage("Request"),
     "requests": MessageLookupByLibrary.simpleMessage("Requests"),
     "requestsDesc": MessageLookupByLibrary.simpleMessage(
@@ -1078,6 +1081,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "WebDAV configuration",
     ),
     "whitelistMode": MessageLookupByLibrary.simpleMessage("Whitelist mode"),
+    "wordWrap": MessageLookupByLibrary.simpleMessage("Word Wrap"),
     "yearsAgo": m25,
     "zh_CN": MessageLookupByLibrary.simpleMessage("Simplified Chinese"),
   };

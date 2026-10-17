@@ -301,7 +301,7 @@ class _EditorPageState extends ConsumerState<EditorPage> {
                     if (!readOnly)
                       PopupMenuItemData(
                         icon: Icons.find_replace,
-                        label: 'Replace',
+                        label: appLocalizations.replace,
                         onPressed: _handleReplace,
                       ),
                     PopupMenuItemData(
@@ -318,17 +318,17 @@ class _EditorPageState extends ConsumerState<EditorPage> {
                       icon: _wordWrap
                           ? Icons.wrap_text
                           : Icons.notes,
-                      label: 'Word Wrap',
+                      label: appLocalizations.wordWrap,
                       onPressed: _toggleWordWrap,
                     ),
                     PopupMenuItemData(
                       icon: Icons.unfold_less,
-                      label: 'Collapse All',
+                      label: appLocalizations.collapseAll,
                       onPressed: _handleCollapseAll,
                     ),
                     PopupMenuItemData(
                       icon: Icons.unfold_more,
-                      label: 'Expand All',
+                      label: appLocalizations.expandAll,
                       onPressed: _handleExpandAll,
                     ),
                     if (widget.supportRemoteDownload && !readOnly)
@@ -498,12 +498,14 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          _buildModeToggle(context, isReplaceMode),
           if (!isMobileView) ...[
+            const SizedBox(width: 8),
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 360),
               child: _buildFindInput(context, value),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 8),
           ],
           Text(result, style: context.textTheme.bodyMedium),
           Expanded(
@@ -544,11 +546,11 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (!isMobileView) ...[
+              const SizedBox(width: 66),
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 360),
                 child: _buildReplaceInput(context),
               ),
-              const SizedBox(width: 12),
             ],
             Expanded(
               child: Row(
@@ -582,7 +584,7 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
             _buildFindInput(context, value),
             const SizedBox(height: 8),
             replaceBar,
-            const SizedBox(height: 4),
+            const SizedBox(height: 8),
             _buildReplaceInput(context),
           ],
         );
@@ -599,15 +601,67 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
     if (isMobileView) {
       return Column(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           bar,
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _buildFindInput(context, value),
         ],
       );
     }
     return bar;
+  }
+
+  Widget _buildModeToggle(BuildContext context, bool isReplaceMode) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 2,
+      children: [
+        _buildModeButton(
+          context: context,
+          icon: Icons.search,
+          isSelected: !isReplaceMode,
+          onPressed: () {
+            controller.findMode();
+          },
+        ),
+        _buildModeButton(
+          context: context,
+          icon: Icons.find_replace,
+          isSelected: isReplaceMode,
+          onPressed: readOnly
+              ? null
+              : () {
+                  controller.replaceMode();
+                },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildModeButton({
+    required BuildContext context,
+    required IconData icon,
+    required bool isSelected,
+    required VoidCallback? onPressed,
+  }) {
+    return SizedBox(
+      width: 28,
+      height: 28,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: isSelected
+            ? IconButton.filledTonal(
+                onPressed: onPressed,
+                padding: const EdgeInsets.all(2),
+                icon: Icon(icon, size: 16),
+              )
+            : IconButton(
+                onPressed: onPressed,
+                padding: const EdgeInsets.all(2),
+                icon: Icon(icon, size: 16),
+              ),
+      ),
+    );
   }
 
   Widget _buildReplaceInput(BuildContext context) {

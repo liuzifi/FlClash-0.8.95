@@ -2264,6 +2264,31 @@ class AppLocalizations {
     return Intl.message('redo', name: 'redo', desc: '', args: []);
   }
 
+  /// `Replace`
+  String get replace {
+    return Intl.message('Replace', name: 'replace', desc: '', args: []);
+  }
+
+  /// `Word Wrap`
+  String get wordWrap {
+    return Intl.message('Word Wrap', name: 'wordWrap', desc: '', args: []);
+  }
+
+  /// `Collapse All`
+  String get collapseAll {
+    return Intl.message(
+      'Collapse All',
+      name: 'collapseAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expand All`
+  String get expandAll {
+    return Intl.message('Expand All', name: 'expandAll', desc: '', args: []);
+  }
+
   /// `none`
   String get none {
     return Intl.message('none', name: 'none', desc: '', args: []);
