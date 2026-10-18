@@ -70,9 +70,16 @@ class SetupAction extends _$SetupAction {
 
   /// 恢复前台流量轮询（回前台/唤醒时调用）。
   /// 立即刷新一次实现"秒连"体验，再重建周期 Timer。
+  /// 同时调用 closeConnections() 关闭可能因后台 Doze 暂停导致
+  /// 的 TCP 失效连接，让 Mihomo 按需重建，避免"后台唤醒假死"。
   void resumeRuntime() {
     if (!_isRunning) return;
     _runtimeTimer?.cancel();
+    // 关闭后台期间可能失效的 TCP 连接，Mihomo 会按需重建。
+    // 使用 unawaited 不阻塞 UI，失败也不影响后续流量轮询。
+    unawaited(
+      coreController.closeConnections().catchError((_) {}),
+    );
     _refreshRunningState();
     _runtimeTimer = Timer.periodic(
       const Duration(seconds: 1),

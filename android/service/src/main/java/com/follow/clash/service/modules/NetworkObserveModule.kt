@@ -1,6 +1,7 @@
 package com.follow.clash.service.modules
 
 import android.app.Service
+import android.content.Context
 import android.net.ConnectivityManager
 import android.net.LinkProperties
 import android.net.Network
@@ -15,6 +16,10 @@ import java.net.Inet4Address
 import java.net.Inet6Address
 import java.net.InetAddress
 import java.util.concurrent.ConcurrentHashMap
+
+private const val DNS_PREFS_NAME = "flclash_dns_cache"
+private const val DNS_PREFS_KEY = "last_dns_list"
+private const val DNS_PREFS_JOIN = "|"
 
 private data class NetworkInfo(
     @Volatile var losingUntilMillis: Long = 0,
@@ -31,6 +36,12 @@ internal class NetworkObserveModule(private val service: Service) : ServiceModul
         service.getSystemService<ConnectivityManager>()
     }
     private var currentDnsList = listOf<String>()
+
+    // SharedPreferences 持久化层：缓存最后已知良好的 DNS 列表，
+    // 供冷启动/进程被杀重启后、首个 NetworkCallback 到达前使用。
+    private val prefs by lazy {
+        service.getSharedPreferences(DNS_PREFS_NAME, Context.MODE_PRIVATE)
+    }
 
     private val request = NetworkRequest.Builder().apply {
         addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)
@@ -64,7 +75,19 @@ internal class NetworkObserveModule(private val service: Service) : ServiceModul
     }
 
     override fun start() {
-        updateDns()
+        // 冷启动时 NetworkCallback 尚未回调，networkInfos 为空。
+        // 加载上次持久化的 DNS 列表，让 core 在首个 NetworkCallback 到达前
+        // 就有 DNS 可用，避免冷启动/进程被杀重启后的"无网假死"窗口。
+        // 注意：此处不再调用 updateDns()——原始调用在 networkInfos 为空时是
+        // no-op（空==空提前返回），但若已加载 persisted 到 currentDnsList，
+        // 再调用会导致 emptyList != persisted 而立即清空刚加载的值。
+        if (currentDnsList.isEmpty()) {
+            val persisted = loadPersistedDns()
+            if (persisted.isNotEmpty()) {
+                currentDnsList = persisted
+                Core.updateDNS(persisted.joinToString(","))
+            }
+        }
         connectivity?.registerNetworkCallback(request, callback)
     }
 
@@ -101,6 +124,19 @@ internal class NetworkObserveModule(private val service: Service) : ServiceModul
         }
         currentDnsList = dnsList
         Core.updateDNS(dnsList.joinToString(","))
+        // 持久化最新非空 DNS 列表，保留"最后已知良好"值供下次冷启动使用。
+        // 网络完全丢失（dnsList 空）时不清除缓存，避免下次冷启动无 DNS 可用。
+        // apply() 异步写盘，不阻塞 NetworkCallback 线程。
+        if (dnsList.isNotEmpty()) {
+            prefs.edit().putString(DNS_PREFS_KEY, dnsList.joinToString(DNS_PREFS_JOIN)).apply()
+        }
+    }
+
+    private fun loadPersistedDns(): List<String> {
+        return prefs.getString(DNS_PREFS_KEY, "")
+            ?.split(DNS_PREFS_JOIN)
+            ?.filter { it.isNotEmpty() }
+            ?: emptyList()
     }
 
     override fun stop() {

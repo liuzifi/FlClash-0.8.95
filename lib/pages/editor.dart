@@ -355,46 +355,33 @@ class _EditorPageState extends ConsumerState<EditorPage> {
         ),
         body: Stack(
           children: [
-            ValueListenableBuilder(
-              valueListenable: _findController,
-              builder: (context, findValue, child) {
-                // FindPanel 可见时给编辑区顶部留出面板高度，
-                // 避免搜索框遮挡 yaml 第一行内容。
-                final findPanelHeight = findValue == null
-                    ? 0.0
-                    : (_kActionHeight +
-                        _kGap +
-                        _kInputHeight +
-                        16 +
-                        (findValue.replaceMode && !readOnly
-                            ? _kGap + _kInputHeight
-                            : 0));
-                return CodeEditor(
-                  readOnly: readOnly,
-                  autofocus: false,
-                  showCursorWhenReadOnly: false,
-                  findController: _findController,
-                  findBuilder: (context, controller, readOnly) => FindPanel(
-                    controller: controller,
-                    readOnly: readOnly,
-                    isMobileView: isMobileView,
-                  ),
-                  padding: EdgeInsets.only(
-                    right: 16,
-                    top: findPanelHeight,
-                  ),
-                  wordWrap: _wordWrap,
-                  autocompleteSymbols: true,
-                  focusNode: _focusNode,
-                  scrollbarBuilder: (context, child, details) {
-                    return CommonScrollBar(
-                      controller: details.controller,
-                      child: child,
-                    );
-                  },
-                  toolbarController: _toolbarController,
-                  indicatorBuilder:
-                      (context, editingController, chunkController, notifier) {
+            // re_editor 的 _CodeEditorState.build 内部已经会读取
+            // FindPanel.preferredSize.height 并将其加入 editable 的
+            // padding.top，无需在此处再手动添加 top padding，
+            // 否则会导致 FindPanel 与 yaml 内容之间出现双重间距。
+            CodeEditor(
+              readOnly: readOnly,
+              autofocus: false,
+              showCursorWhenReadOnly: false,
+              findController: _findController,
+              findBuilder: (context, controller, readOnly) => FindPanel(
+                controller: controller,
+                readOnly: readOnly,
+                isMobileView: isMobileView,
+              ),
+              padding: const EdgeInsets.only(right: 16),
+              wordWrap: _wordWrap,
+              autocompleteSymbols: true,
+              focusNode: _focusNode,
+              scrollbarBuilder: (context, child, details) {
+                return CommonScrollBar(
+                  controller: details.controller,
+                  child: child,
+                );
+              },
+              toolbarController: _toolbarController,
+              indicatorBuilder:
+                  (context, editingController, chunkController, notifier) {
                     _chunkController = chunkController;
                     return Row(
                       children: [
@@ -410,33 +397,31 @@ class _EditorPageState extends ConsumerState<EditorPage> {
                       ],
                     );
                   },
-                  shortcutsActivatorsBuilder:
-                      const DefaultCodeShortcutsActivatorsBuilder(),
-                  chunkAnalyzer: widget.languages.contains(Language.yaml)
-                      ? const YamlChunkAnalyzer()
-                      : const DefaultCodeChunkAnalyzer(),
-                  controller: _controller,
-                  style: CodeEditorStyle(
-                    fontSize: context.textTheme.bodyLarge?.fontSize?.ap,
-                    fontFamily: FontFamily.jetBrainsMono.value,
-                    codeTheme: CodeHighlightTheme(
-                      languages: {
-                        if (widget.languages.contains(Language.yaml))
-                          'yaml': CodeHighlightThemeMode(mode: langYaml),
-                        if (widget.languages.contains(Language.javaScript))
-                          'javascript': CodeHighlightThemeMode(
-                            mode: langJavascript,
-                          ),
-                        if (widget.languages.contains(Language.json))
-                          'json': CodeHighlightThemeMode(mode: langJson),
-                      },
-                      theme: Theme.of(context).brightness == Brightness.dark
-                          ? atomOneDarkTheme
-                          : atomOneLightTheme,
-                    ),
-                  ),
-                );
-              },
+              shortcutsActivatorsBuilder:
+                  const DefaultCodeShortcutsActivatorsBuilder(),
+              chunkAnalyzer: widget.languages.contains(Language.yaml)
+                  ? const YamlChunkAnalyzer()
+                  : const DefaultCodeChunkAnalyzer(),
+              controller: _controller,
+              style: CodeEditorStyle(
+                fontSize: context.textTheme.bodyLarge?.fontSize?.ap,
+                fontFamily: FontFamily.jetBrainsMono.value,
+                codeTheme: CodeHighlightTheme(
+                  languages: {
+                    if (widget.languages.contains(Language.yaml))
+                      'yaml': CodeHighlightThemeMode(mode: langYaml),
+                    if (widget.languages.contains(Language.javaScript))
+                      'javascript': CodeHighlightThemeMode(
+                        mode: langJavascript,
+                      ),
+                    if (widget.languages.contains(Language.json))
+                      'json': CodeHighlightThemeMode(mode: langJson),
+                  },
+                  theme: Theme.of(context).brightness == Brightness.dark
+                      ? atomOneDarkTheme
+                      : atomOneLightTheme,
+                ),
+              ),
             ),
             FadeBox(
               child: widget.content == null
@@ -479,6 +464,10 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
     final isReplaceMode = controller.value!.replaceMode && !readOnly;
     double h = _kActionHeight + _kGap + _kInputHeight;
     if (isReplaceMode) h += _kGap + _kInputHeight;
+    // 16 = Container vertical padding (8 * 2)。
+    // preferredSize 必须与 Container 的实际渲染高度一致，
+    // 否则 re_editor 据此设置的 editable top padding 会与 FindPanel
+    // 实际占用高度不匹配，导致遮挡或间距过大。
     return Size(double.infinity, h + 16);
   }
 
@@ -490,7 +479,6 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
     if (isReplaceMode) h += _kGap + _kInputHeight;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      margin: const EdgeInsets.only(bottom: 8),
       color: context.colorScheme.surface,
       alignment: Alignment.centerLeft,
       height: h + 16,
@@ -511,7 +499,9 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         spacing: 2,
         children: [
-          if (!isMobileView) Text(result, style: context.textTheme.bodySmall),
+          // 结果计数（如 3/5）与上下箭头按钮同一行显示，
+          // 避免在移动端单独占一行浪费垂直空间。
+          Text(result, style: context.textTheme.bodySmall),
           _buildIconBtn(
             onPressed: value.result == null ? null : controller.previousMatch,
             icon: Icons.arrow_upward,
@@ -531,12 +521,6 @@ class FindPanel extends StatelessWidget implements PreferredSizeWidget {
       children: [
         Row(children: [replaceToggle, const Spacer(), actions]),
         SizedBox(height: _kGap),
-        // 移动端将结果数量显示在搜索框上方，便于查看匹配进度
-        if (isMobileView)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 4),
-            child: Text(result, style: context.textTheme.bodySmall),
-          ),
         _buildFindField(context, value),
         if (isReplaceMode) ...[
           SizedBox(height: _kGap),

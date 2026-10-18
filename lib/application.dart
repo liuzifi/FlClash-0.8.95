@@ -195,21 +195,33 @@ class ApplicationState extends ConsumerState<Application>
     final setupAction = ref.read(setupActionProvider.notifier);
     switch (state) {
       case AppLifecycleState.paused:
-        // 切后台/休眠：暂停流量轮询与订阅自动更新，零后台功耗。
-        // VPN 隧道由 foreground service 保持，不受影响。
+        // 仅暂停订阅自动更新（网络请求省电）。
+        // 不再暂停 _runtimeTimer：流量轮询每秒一次的 IPC 开销极小，
+        // 但能让后台期间持续监控 core 状态，避免"假死"。
+        // 真正的 core 暂停由 SuspendModule.kt 的 Core.suspended()
+        // 基于 PowerManager.isInteractive + isDeviceIdleMode 精确控制。
         if (!_isPaused) {
           _isPaused = true;
-          setupAction.pauseRuntime();
           _autoUpdateProfilesTaskTimer?.cancel();
           _autoUpdateProfilesTaskTimer = null;
         }
         break;
       case AppLifecycleState.resumed:
-        // 回前台/唤醒：立即刷新一次实现"秒连"，再重建周期轮询与订阅更新。
+        // 回前台：触发连接重建（关闭后台期间失效的 TCP 连接），
+        // 让 Mihomo 按需重建，解决"后台唤醒假死"。
         if (_isPaused) {
           _isPaused = false;
           setupAction.resumeRuntime();
           _autoUpdateProfilesTask();
+        }
+        break;
+      case AppLifecycleState.detached:
+        // 应用即将销毁：彻底停止 Timer，避免悬空回调。
+        if (!_isPaused) {
+          _isPaused = true;
+          setupAction.pauseRuntime();
+          _autoUpdateProfilesTaskTimer?.cancel();
+          _autoUpdateProfilesTaskTimer = null;
         }
         break;
       default:
