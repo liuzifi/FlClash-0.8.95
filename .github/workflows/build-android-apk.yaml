@@ -74,10 +74,12 @@ jobs:
 
       # core/go.mod 使用 `replace github.com/metacubex/mihomo => ./Clash.Meta`，
       # 因此必须把完整内核源码填入 core/Clash.Meta，并打上 trojan no-TLS + xhttp 补丁，
-      # 以及 vless xhttp 断流修复补丁（stream-one 下 recvResponse 与 WaitReadCloser 死锁）。
+      # 以及 vless xhttp 断流修复补丁（stream-one 下 recvResponse 与 WaitReadCloser 死锁），
+      # 以及 xhttp Conn deadline 并发修复补丁（拆分 r/w timer、Close 幂等、避免 stale timer 误关 conn）。
       #
-      # 补丁顺序不可调整：trojan-notls → trojan-xhttp → vless-xhttp，且均基于
-      # CLASH_META_REF 固定提交的上下文行。使用 `--3way` 以便在目标文件小幅变动时
+      # 补丁顺序：trojan-notls → trojan-xhttp → vless-xhttp → xhttp-conn-deadline-fix。
+      # 前三者改 adapter/outbound/*，最后一个改 transport/xhttp/conn.go（独立文件，无冲突）。
+      # 均基于 CLASH_META_REF 固定提交的上下文行。使用 `--3way` 以便在目标文件小幅变动时
       # 仍可合并；若仍失败请先更新对应 .patch 再重跑。
       - name: Clone mihomo core and apply patches
         run: |
@@ -89,6 +91,7 @@ jobs:
           git apply -v --3way "$GITHUB_WORKSPACE/trojan-notls.patch"
           git apply -v --3way "$GITHUB_WORKSPACE/trojan-xhttp.patch"
           git apply -v --3way "$GITHUB_WORKSPACE/vless-xhttp.patch"
+          git apply -v --3way "$GITHUB_WORKSPACE/xhttp-conn-deadline-fix.patch"
           echo "--- patches applied, changed files ---"
           git --no-pager diff --stat
 
@@ -107,6 +110,16 @@ jobs:
           CGO_ENABLED: '0'
         run: |
           go build -tags=with_gvisor ./adapter/outbound/... ./transport/... ./listener/...
+
+      # 运行 xhttp-conn-deadline-fix.patch 新增的并发安全测试：
+      # TestConnConcurrentSetDeadlineNoStaleTimer / TestConnDeadlineClosesAndCloseIsIdempotent /
+      # TestConnReadWriteDeadlineIndependent。若 stale timer 误关 conn 或 Close 非幂等，构建失败。
+      - name: Run xhttp conn deadline tests
+        working-directory: core/Clash.Meta
+        env:
+          CGO_ENABLED: '0'
+        run: |
+          go test -count=1 -race -timeout=60s ./transport/xhttp/...
 
       - name: Setup Java
         uses: actions/setup-java@v4

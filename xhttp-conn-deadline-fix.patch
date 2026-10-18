@@ -1,0 +1,198 @@
+diff --git a/transport/xhttp/conn.go b/transport/xhttp/conn.go
+index f7f2acc..7443b47 100644
+--- a/transport/xhttp/conn.go
++++ b/transport/xhttp/conn.go
+@@ -3,6 +3,7 @@ package xhttp
+ import (
+ 	"errors"
+ 	"io"
++	"sync"
+ 	"time"
+ 
+ 	"github.com/metacubex/mihomo/common/httputils"
+@@ -14,8 +15,15 @@ type Conn struct {
+ 	onClose func()
+ 	httputils.NetAddr
+ 
++	closeOnce sync.Once
++	closeErr  error
++
+ 	// deadlines
+-	deadline *time.Timer
++	// SetReadDeadline/SetWriteDeadline are called concurrently by different goroutines
++	// (e.g. tunnel's UDP read loop and write path), so every access must hold mu.
++	mu     sync.Mutex
++	rTimer *time.Timer
++	wTimer *time.Timer
+ }
+ 
+ func (c *Conn) Write(b []byte) (int, error) {
+@@ -27,32 +35,68 @@ func (c *Conn) Read(b []byte) (int, error) {
+ }
+ 
+ func (c *Conn) Close() error {
+-	err := c.writer.Close()
+-	err2 := c.reader.Close()
+-	if c.onClose != nil {
+-		c.onClose()
+-	}
+-	return errors.Join(err, err2)
++	c.closeOnce.Do(func() {
++		c.stopTimers()
++		err := c.writer.Close()
++		err2 := c.reader.Close()
++		if c.onClose != nil {
++			c.onClose()
++		}
++		c.closeErr = errors.Join(err, err2)
++	})
++	return c.closeErr
+ }
+ 
+-func (c *Conn) SetReadDeadline(t time.Time) error  { return c.SetDeadline(t) }
+-func (c *Conn) SetWriteDeadline(t time.Time) error { return c.SetDeadline(t) }
++func (c *Conn) stopTimers() {
++	c.mu.Lock()
++	defer c.mu.Unlock()
++	if c.rTimer != nil {
++		c.rTimer.Stop()
++		c.rTimer = nil
++	}
++	if c.wTimer != nil {
++		c.wTimer.Stop()
++		c.wTimer = nil
++	}
++}
+ 
+-func (c *Conn) SetDeadline(t time.Time) error {
++// setTimer must be called with c.mu held.
++// The xhttp conn can't interrupt a single blocked Read/Write, so when a deadline
++// is exceeded the whole conn is closed (consistent with the previous behavior).
++func (c *Conn) setTimer(slot **time.Timer, t time.Time) {
+ 	if t.IsZero() {
+-		if c.deadline != nil {
+-			c.deadline.Stop()
+-			c.deadline = nil
++		if *slot != nil {
++			(*slot).Stop()
++			*slot = nil
+ 		}
+-		return nil
++		return
+ 	}
+ 	d := time.Until(t)
+-	if c.deadline != nil {
+-		c.deadline.Reset(d)
+-		return nil
++	if *slot != nil {
++		(*slot).Reset(d)
++		return
+ 	}
+-	c.deadline = time.AfterFunc(d, func() {
+-		c.Close()
+-	})
++	*slot = time.AfterFunc(d, func() { _ = c.Close() })
++}
++
++func (c *Conn) SetReadDeadline(t time.Time) error {
++	c.mu.Lock()
++	defer c.mu.Unlock()
++	c.setTimer(&c.rTimer, t)
++	return nil
++}
++
++func (c *Conn) SetWriteDeadline(t time.Time) error {
++	c.mu.Lock()
++	defer c.mu.Unlock()
++	c.setTimer(&c.wTimer, t)
++	return nil
++}
++
++func (c *Conn) SetDeadline(t time.Time) error {
++	c.mu.Lock()
++	defer c.mu.Unlock()
++	c.setTimer(&c.rTimer, t)
++	c.setTimer(&c.wTimer, t)
+ 	return nil
+ }
+diff --git a/transport/xhttp/conn_test.go b/transport/xhttp/conn_test.go
+new file mode 100644
+index 0000000..e395f5f
+--- /dev/null
++++ b/transport/xhttp/conn_test.go
+@@ -0,0 +1,75 @@
++package xhttp
++
++import (
++	"io"
++	"sync"
++	"testing"
++	"time"
++)
++
++// Concurrent SetReadDeadline calls must never leak a timer that later closes a live conn.
++func TestConnConcurrentSetDeadlineNoStaleTimer(t *testing.T) {
++	pr, pw := io.Pipe()
++	closed := make(chan struct{}, 1)
++	c := &Conn{writer: pw, reader: pr, onClose: func() { closed <- struct{}{} }}
++
++	var wg sync.WaitGroup
++	for i := 0; i < 8; i++ {
++		wg.Add(1)
++		go func() {
++			defer wg.Done()
++			for j := 0; j < 200; j++ {
++				_ = c.SetReadDeadline(time.Now().Add(50 * time.Millisecond))
++			}
++		}()
++	}
++	wg.Wait()
++	_ = c.SetReadDeadline(time.Time{}) // clear
++
++	select {
++	case <-closed:
++		t.Fatal("conn was closed by a stale deadline timer")
++	case <-time.After(200 * time.Millisecond):
++	}
++	_ = c.Close()
++}
++
++func TestConnDeadlineClosesAndCloseIsIdempotent(t *testing.T) {
++	pr, pw := io.Pipe()
++	var n int
++	var mu sync.Mutex
++	done := make(chan struct{})
++	c := &Conn{writer: pw, reader: pr, onClose: func() {
++		mu.Lock()
++		n++
++		mu.Unlock()
++		close(done)
++	}}
++	_ = c.SetReadDeadline(time.Now().Add(20 * time.Millisecond))
++	select {
++	case <-done:
++	case <-time.After(time.Second):
++		t.Fatal("deadline did not close the conn")
++	}
++	_ = c.Close()
++	_ = c.Close()
++	mu.Lock()
++	defer mu.Unlock()
++	if n != 1 {
++		t.Fatalf("onClose called %d times, want 1", n)
++	}
++}
++
++// Clearing the write deadline must not cancel an active read deadline.
++func TestConnReadWriteDeadlineIndependent(t *testing.T) {
++	pr, pw := io.Pipe()
++	done := make(chan struct{})
++	c := &Conn{writer: pw, reader: pr, onClose: func() { close(done) }}
++	_ = c.SetReadDeadline(time.Now().Add(30 * time.Millisecond))
++	_ = c.SetWriteDeadline(time.Time{})
++	select {
++	case <-done:
++	case <-time.After(time.Second):
++		t.Fatal("read deadline was cancelled by clearing the write deadline")
++	}
++}
