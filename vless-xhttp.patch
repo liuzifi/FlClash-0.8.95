@@ -1,23 +1,26 @@
+diff --git a/adapter/outbound/vless.go b/adapter/outbound/vless.go
+index 4d076b5..4742479 100644
 --- a/adapter/outbound/vless.go
 +++ b/adapter/outbound/vless.go
-@@ -299,6 +299,24 @@ func (v *Vless) streamConnContext(ctx context.Context, c net.Conn, metadata *C.Metadata) (conn net.Conn, err error) {
+@@ -298,6 +298,25 @@ func (v *Vless) streamConnContext(ctx context.Context, c net.Conn, metadata *C.M
  	}
  	if err != nil {
  		conn = nil
 +		return
 +	}
-+	// For xhttp transport, proactively flush the vless handshake header by
-+	// writing an empty payload. This triggers sendRequest with a zero-length
-+	// payload, sending the full vless request header (version + uuid +
-+	// addons + command + port + addr) to the server so it can return the
-+	// response header immediately. Without this, the first Read on the conn
-+	// would block in recvResponse waiting for the server's 2-byte response,
-+	// while the server waits for our request body — a deadlock in xhttp
-+	// stream-one mode where the response body arrives asynchronously via
-+	// WaitReadCloser. Trojan does not have this issue because
++	// For xhttp transport, proactively flush the vless request header by writing
++	// an empty payload. This makes sendRequest emit the full vless header
++	// (version + uuid + addons + command + port + addr) with a zero-length
++	// payload, so the server can reply with its response header immediately.
++	// Without this, the first Read on the conn blocks in recvResponse waiting
++	// for the server's 2-byte response while the server waits for our request
++	// body — a deadlock in xhttp stream-one mode, where the response body
++	// arrives asynchronously via WaitReadCloser. Trojan avoids this because
 +	// trojan.WriteHeader is called eagerly before returning the conn.
-+	// Only apply to TCP streams; UDP (PacketConn) flushes its own handshake.
-+	if v.option.Network == "xhttp" && metadata.NetWork != C.UDP {
++	// Only for TCP streams and only when not using XTLS vision flow (flow wraps
++	// the conn in a vision layer whose first-write semantics differ); UDP
++	// (PacketConn) flushes its own handshake.
++	if v.option.Network == "xhttp" && v.option.Flow == "" && metadata.NetWork != C.UDP {
 +		if _, werr := conn.Write([]byte{}); werr != nil {
 +			conn = nil
 +			err = werr
