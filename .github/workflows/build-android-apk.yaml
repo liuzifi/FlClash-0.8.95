@@ -114,12 +114,14 @@ jobs:
       # 运行 xhttp-conn-deadline-fix.patch 新增的并发安全测试：
       # TestConnConcurrentSetDeadlineNoStaleTimer / TestConnDeadlineClosesAndCloseIsIdempotent /
       # TestConnReadWriteDeadlineIndependent。若 stale timer 误关 conn 或 Close 非幂等，构建失败。
+      # 注意：不能用 -race，因为 -race 依赖 cgo，而本步骤 CGO_ENABLED=0（与 Android 交叉编译配置一致）；
+      # 测试用例本身通过 channel/select 验证逻辑层面的幂等性和时序，不依赖 race detector。
       - name: Run xhttp conn deadline tests
         working-directory: core/Clash.Meta
         env:
           CGO_ENABLED: '0'
         run: |
-          go test -count=1 -race -timeout=60s ./transport/xhttp/...
+          go test -count=1 -timeout=60s ./transport/xhttp/...
 
       - name: Setup Java
         uses: actions/setup-java@v4
