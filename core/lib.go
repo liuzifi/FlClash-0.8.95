@@ -24,8 +24,15 @@ import (
 	"strings"
 	"sync"
 	"syscall"
+	"time"
 	"unsafe"
 )
+
+// tunHookTimeout bounds how long a single protect/resolve hook may wait for a
+// slot in the shared TUN semaphore. A bounded wait is what keeps a saturated
+// semaphore from stalling the whole connection path indefinitely (the old code
+// used context.Background(), i.e. an unbounded wait).
+const tunHookTimeout = 5 * time.Second
 
 var eventListener unsafe.Pointer
 
@@ -70,7 +77,15 @@ func (th *TunHandler) clear() {
 }
 
 func (th *TunHandler) handleProtect(fd int) {
-	_ = th.limit.Acquire(context.Background(), 1)
+	ctx, cancel := context.WithTimeout(context.Background(), tunHookTimeout)
+	defer cancel()
+
+	// Failing to acquire within the timeout must not break the connection:
+	// skipping protect only means this socket might be routed back into the
+	// TUN, whereas blocking here would freeze every new connection.
+	if err := th.limit.Acquire(ctx, 1); err != nil {
+		return
+	}
 	defer th.limit.Release(1)
 
 	if th.listener == nil {
@@ -81,7 +96,14 @@ func (th *TunHandler) handleProtect(fd int) {
 }
 
 func (th *TunHandler) handleResolveProcess(source, target net.Addr) string {
-	_ = th.limit.Acquire(context.Background(), 1)
+	ctx, cancel := context.WithTimeout(context.Background(), tunHookTimeout)
+	defer cancel()
+
+	// As with protect, a timed-out acquire degrades to "unknown process"
+	// instead of stalling the dial path.
+	if err := th.limit.Acquire(ctx, 1); err != nil {
+		return ""
+	}
 	defer th.limit.Release(1)
 
 	if th.listener == nil {
