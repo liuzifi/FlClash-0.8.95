@@ -13,7 +13,7 @@ name: build-android-apk
 # 运行，而它依赖官方 Secrets（KEYSTORE / SERVICE_JSON 等），在个人 fork 上必然
 # 失败并产生误导。如需按标签构建，可自行在此追加 push: tags: ['v*']。
 #
-# 产出：已应用 trojan no-TLS + xhttp 补丁的 Android APK（arm64-v8a）。
+# 产出：已应用 trojan no-TLS + xhttp 补丁及 vless xhttp 断流修复的 Android APK（arm64-v8a）。
 on:
   workflow_dispatch:
     inputs:
@@ -69,8 +69,9 @@ jobs:
           echo "::notice::Version: ${version} (code: ${code})"
 
       # core/go.mod 使用 `replace github.com/metacubex/mihomo => ./Clash.Meta`，
-      # 因此必须把完整内核源码填入 core/Clash.Meta，并打上 trojan no-TLS + xhttp 补丁。
-      - name: Clone mihomo core and apply trojan patches
+      # 因此必须把完整内核源码填入 core/Clash.Meta，并打上 trojan no-TLS + xhttp 补丁，
+      # 以及 vless xhttp 断流修复补丁（stream-one 下 recvResponse 与 WaitReadCloser 死锁）。
+      - name: Clone mihomo core and apply patches
         run: |
           set -euo pipefail
           rm -rf core/Clash.Meta
@@ -79,6 +80,7 @@ jobs:
           git checkout "$CLASH_META_REF"
           git apply -v "$GITHUB_WORKSPACE/trojan-notls.patch"
           git apply -v "$GITHUB_WORKSPACE/trojan-xhttp.patch"
+          git apply -v "$GITHUB_WORKSPACE/vless-xhttp.patch"
           echo "--- patches applied, changed files ---"
           git --no-pager diff --stat
 
@@ -272,7 +274,7 @@ jobs:
             echo ""
             echo "### 安装"
             echo "- 固定签名，可与历史版本直接覆盖安装。"
-            echo "- 内核: mihomo ${CLASH_META_REF} + Trojan no-TLS / xhttp 补丁。"
+            echo "- 内核: mihomo ${CLASH_META_REF} + Trojan no-TLS / xhttp 补丁及 vless xhttp 断流修复。"
           } > release_notes.md
           echo "--- release_notes.md ---"
           cat release_notes.md
