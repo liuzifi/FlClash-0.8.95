@@ -1061,7 +1061,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "upload": MessageLookupByLibrary.simpleMessage("Upload"),
     "url": MessageLookupByLibrary.simpleMessage("URL"),
     "urlDesc": MessageLookupByLibrary.simpleMessage(
-      "Obtain profile through URL",
+      "Obtain profile through URL (supports http/https/ftp/file)",
     ),
     "urlTip": m24,
     "useHosts": MessageLookupByLibrary.simpleMessage("Use hosts"),

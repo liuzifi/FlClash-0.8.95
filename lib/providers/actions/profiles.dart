@@ -120,6 +120,10 @@ class ProfilesAction extends _$ProfilesAction {
     }
   }
 
+  /// 通过 URL 添加配置文件。
+  ///
+  /// 支持 http/https/ftp 远程地址，也支持 file:// 本地文件 URI
+  /// （[String.isUrl] 对 file 协议直接放行）。
   Future<void> addProfileFormURL(String url) async {
     if (globalState.navigatorKey.currentState?.canPop() ?? false) {
       globalState.navigatorKey.currentState?.popUntil((route) => route.isFirst);

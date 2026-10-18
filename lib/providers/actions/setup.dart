@@ -61,6 +61,25 @@ class SetupAction extends _$SetupAction {
     unawaited(ref.read(commonActionProvider.notifier).updateTraffic());
   }
 
+  /// 暂停后台流量轮询（切后台/休眠时调用）。
+  /// 只取消 Timer，不重置 _startTime，保持 running 状态语义。
+  void pauseRuntime() {
+    _runtimeTimer?.cancel();
+    _runtimeTimer = null;
+  }
+
+  /// 恢复前台流量轮询（回前台/唤醒时调用）。
+  /// 立即刷新一次实现"秒连"体验，再重建周期 Timer。
+  void resumeRuntime() {
+    if (!_isRunning) return;
+    _runtimeTimer?.cancel();
+    _refreshRunningState();
+    _runtimeTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => _refreshRunningState(),
+    );
+  }
+
   void _updateRunTime() {
     final startTime = _startTime;
     ref.read(runTimeProvider.notifier).value = startTime == null

@@ -61,7 +61,7 @@
   "qrcode": "二维码",
   "qrcodeDesc": "扫描二维码获取配置文件",
   "url": "URL",
-  "urlDesc": "通过URL获取配置文件",
+  "urlDesc": "通过URL获取配置文件（支持 http/https/ftp/file 协议）",
   "file": "文件",
   "fileDesc": "直接上传配置文件",
   "name": "名称",

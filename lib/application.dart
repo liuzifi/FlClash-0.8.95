@@ -23,9 +23,11 @@ class Application extends ConsumerStatefulWidget {
   ConsumerState<Application> createState() => ApplicationState();
 }
 
-class ApplicationState extends ConsumerState<Application> {
+class ApplicationState extends ConsumerState<Application>
+    with WidgetsBindingObserver {
   Timer? _autoUpdateProfilesTaskTimer;
   bool _preHasVpn = false;
+  bool _isPaused = false;
 
   final _pageTransitionsTheme = const PageTransitionsTheme(
     builders: <TargetPlatform, PageTransitionsBuilder>{
@@ -46,6 +48,7 @@ class ApplicationState extends ConsumerState<Application> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     SystemNavigator.setFrameworkHandlesBack(true);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (globalState.navigatorKey.currentContext != null) {
@@ -187,7 +190,36 @@ class ApplicationState extends ConsumerState<Application> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    final setupAction = ref.read(setupActionProvider.notifier);
+    switch (state) {
+      case AppLifecycleState.paused:
+        // 切后台/休眠：暂停流量轮询与订阅自动更新，零后台功耗。
+        // VPN 隧道由 foreground service 保持，不受影响。
+        if (!_isPaused) {
+          _isPaused = true;
+          setupAction.pauseRuntime();
+          _autoUpdateProfilesTaskTimer?.cancel();
+          _autoUpdateProfilesTaskTimer = null;
+        }
+        break;
+      case AppLifecycleState.resumed:
+        // 回前台/唤醒：立即刷新一次实现"秒连"，再重建周期轮询与订阅更新。
+        if (_isPaused) {
+          _isPaused = false;
+          setupAction.resumeRuntime();
+          _autoUpdateProfilesTask();
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     linkManager.destroy();
     _autoUpdateProfilesTaskTimer?.cancel();
     super.dispose();

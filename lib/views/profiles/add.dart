@@ -50,6 +50,10 @@ class AddProfileView extends StatelessWidget {
     }
   }
 
+  /// 打开 URL 导入对话框。
+  ///
+  /// 输入框接受 http/https/ftp 远程地址，也支持 file:// 本地文件 URI
+  /// （[String.isUrl] 验证器对 file 协议直接放行）。
   Future<void> _toAdd() async {
     final appLocalizations = context.appLocalizations;
     final url = await globalState.showCommonDialog<String>(

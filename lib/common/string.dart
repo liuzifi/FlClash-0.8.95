@@ -5,6 +5,10 @@ import 'package:crypto/crypto.dart';
 import 'package:fl_clash/common/common.dart';
 
 extension StringExtension on String {
+  /// 判断字符串是否为有效的 URL。
+  ///
+  /// 支持 file:// 本地文件 URI（无需 host），以及
+  /// http/https/ftp 远程地址（需 host 非空）。
   bool get isUrl {
     final uri = Uri.tryParse(this);
     if (uri == null) return false;

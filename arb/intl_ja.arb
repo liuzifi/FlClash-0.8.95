@@ -61,7 +61,7 @@
   "qrcode": "QRコード",
   "qrcodeDesc": "QRコードをスキャンしてプロファイルを取得",
   "url": "URL",
-  "urlDesc": "URL経由でプロファイルを取得",
+  "urlDesc": "URL経由でプロファイルを取得（http/https/ftp/file 対応）",
   "file": "ファイル",
   "fileDesc": "プロファイルを直接アップロード",
   "name": "名前",

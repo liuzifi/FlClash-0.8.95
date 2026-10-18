@@ -61,7 +61,7 @@
   "qrcode": "QR code",
   "qrcodeDesc": "Scan QR code to obtain profile",
   "url": "URL",
-  "urlDesc": "Obtain profile through URL",
+  "urlDesc": "Obtain profile through URL (supports http/https/ftp/file)",
   "file": "File",
   "fileDesc": "Directly upload profile",
   "name": "Name",

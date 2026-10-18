@@ -355,29 +355,46 @@ class _EditorPageState extends ConsumerState<EditorPage> {
         ),
         body: Stack(
           children: [
-            CodeEditor(
-              readOnly: readOnly,
-              autofocus: false,
-              showCursorWhenReadOnly: false,
-              findController: _findController,
-              findBuilder: (context, controller, readOnly) => FindPanel(
-                controller: controller,
-                readOnly: readOnly,
-                isMobileView: isMobileView,
-              ),
-              padding: const EdgeInsets.only(right: 16),
-              wordWrap: _wordWrap,
-              autocompleteSymbols: true,
-              focusNode: _focusNode,
-              scrollbarBuilder: (context, child, details) {
-                return CommonScrollBar(
-                  controller: details.controller,
-                  child: child,
-                );
-              },
-              toolbarController: _toolbarController,
-              indicatorBuilder:
-                  (context, editingController, chunkController, notifier) {
+            ValueListenableBuilder(
+              valueListenable: _findController,
+              builder: (context, findValue, child) {
+                // FindPanel 可见时给编辑区顶部留出面板高度，
+                // 避免搜索框遮挡 yaml 第一行内容。
+                final findPanelHeight = findValue == null
+                    ? 0.0
+                    : (_kActionHeight +
+                        _kGap +
+                        _kInputHeight +
+                        16 +
+                        (findValue.replaceMode && !readOnly
+                            ? _kGap + _kInputHeight
+                            : 0));
+                return CodeEditor(
+                  readOnly: readOnly,
+                  autofocus: false,
+                  showCursorWhenReadOnly: false,
+                  findController: _findController,
+                  findBuilder: (context, controller, readOnly) => FindPanel(
+                    controller: controller,
+                    readOnly: readOnly,
+                    isMobileView: isMobileView,
+                  ),
+                  padding: EdgeInsets.only(
+                    right: 16,
+                    top: findPanelHeight,
+                  ),
+                  wordWrap: _wordWrap,
+                  autocompleteSymbols: true,
+                  focusNode: _focusNode,
+                  scrollbarBuilder: (context, child, details) {
+                    return CommonScrollBar(
+                      controller: details.controller,
+                      child: child,
+                    );
+                  },
+                  toolbarController: _toolbarController,
+                  indicatorBuilder:
+                      (context, editingController, chunkController, notifier) {
                     _chunkController = chunkController;
                     return Row(
                       children: [
@@ -393,31 +410,33 @@ class _EditorPageState extends ConsumerState<EditorPage> {
                       ],
                     );
                   },
-              shortcutsActivatorsBuilder:
-                  const DefaultCodeShortcutsActivatorsBuilder(),
-              chunkAnalyzer: widget.languages.contains(Language.yaml)
-                  ? const YamlChunkAnalyzer()
-                  : const DefaultCodeChunkAnalyzer(),
-              controller: _controller,
-              style: CodeEditorStyle(
-                fontSize: context.textTheme.bodyLarge?.fontSize?.ap,
-                fontFamily: FontFamily.jetBrainsMono.value,
-                codeTheme: CodeHighlightTheme(
-                  languages: {
-                    if (widget.languages.contains(Language.yaml))
-                      'yaml': CodeHighlightThemeMode(mode: langYaml),
-                    if (widget.languages.contains(Language.javaScript))
-                      'javascript': CodeHighlightThemeMode(
-                        mode: langJavascript,
-                      ),
-                    if (widget.languages.contains(Language.json))
-                      'json': CodeHighlightThemeMode(mode: langJson),
-                  },
-                  theme: Theme.of(context).brightness == Brightness.dark
-                      ? atomOneDarkTheme
-                      : atomOneLightTheme,
-                ),
-              ),
+                  shortcutsActivatorsBuilder:
+                      const DefaultCodeShortcutsActivatorsBuilder(),
+                  chunkAnalyzer: widget.languages.contains(Language.yaml)
+                      ? const YamlChunkAnalyzer()
+                      : const DefaultCodeChunkAnalyzer(),
+                  controller: _controller,
+                  style: CodeEditorStyle(
+                    fontSize: context.textTheme.bodyLarge?.fontSize?.ap,
+                    fontFamily: FontFamily.jetBrainsMono.value,
+                    codeTheme: CodeHighlightTheme(
+                      languages: {
+                        if (widget.languages.contains(Language.yaml))
+                          'yaml': CodeHighlightThemeMode(mode: langYaml),
+                        if (widget.languages.contains(Language.javaScript))
+                          'javascript': CodeHighlightThemeMode(
+                            mode: langJavascript,
+                          ),
+                        if (widget.languages.contains(Language.json))
+                          'json': CodeHighlightThemeMode(mode: langJson),
+                      },
+                      theme: Theme.of(context).brightness == Brightness.dark
+                          ? atomOneDarkTheme
+                          : atomOneLightTheme,
+                    ),
+                  ),
+                );
+              },
             ),
             FadeBox(
               child: widget.content == null

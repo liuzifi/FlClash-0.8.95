@@ -11,11 +11,11 @@
         android:translateY="40.8">
         <!-- bold L in app background blue, optically centered -->
         <path
-            android:pathData="M78,58 L110,58 L110,150 L162,150 L162,182 L78,182 Z"
+            android:pathData="M64,48 L104,48 L104,168 L176,168 L176,208 L64,208 Z"
             android:fillColor="#0D47A1"/>
         <!-- single powder-pink dot accent -->
         <path
-            android:pathData="M127,88 a11,11 0 1,0 22,0 a11,11 0 1,0 -22,0"
+            android:pathData="M122,76 a16,16 0 1,0 32,0 a16,16 0 1,0 -32,0"
             android:fillColor="#EC407A"/>
     </group>
 </vector>
