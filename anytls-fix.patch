@@ -1,0 +1,24 @@
+diff --git a/transport/anytls/session/session.go b/transport/anytls/session/session.go
+index 08dce4e..91bb099 100644
+--- a/transport/anytls/session/session.go
++++ b/transport/anytls/session/session.go
+@@ -144,8 +144,17 @@ func (s *Session) OpenStream() (*Stream, error) {
+ 		if s.synDone != nil {
+ 			s.synDone()
+ 		}
+-		s.synDone = util.NewDeadlineWatcher(time.Second*3, func() {
+-			s.Close()
++		s.synDone = util.NewDeadlineWatcher(time.Second*10, func() {
++			// FIX: anytls v=2 SYNACK watcher should not kill the entire session
++			// on timeout. Only close the offending stream so other streams can
++			// continue to work. Also extend the timeout from 3s to 10s to give
++			// the peer more time to respond under poor network conditions.
++			s.streamLock.RLock()
++			st, ok := s.streams[sid]
++			s.streamLock.RUnlock()
++			if ok {
++				st.closeWithError(fmt.Errorf("anytls: synack timeout after 10s"))
++			}
+ 		})
+ 		s.synDoneLock.Unlock()
+ 	}

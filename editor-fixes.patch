@@ -1,0 +1,1002 @@
+diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_en.arb fl/FlClash-0.8.95-0.9.1/arb/intl_en.arb
+--- orig/FlClash-0.8.95-0.9.1/arb/intl_en.arb	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_en.arb	2026-10-21 08:27:42.309841578 +0900
+@@ -553,5 +553,12 @@
+   "geoSkipped": "{name} is already up to date",
+   "geoUpdated": "{name} updated",
+   "secondsCount": "{count} seconds",
+-  "entriesCount": "{count} entries"
++  "entriesCount": "{count} entries",
++  "wordWrap": "Word Wrap",
++  "collapseAll": "Collapse All",
++  "expandAll": "Expand All",
++  "replace": "Replace",
++  "goToLine": "Go to line",
++  "outline": "Outline",
++  "replaceAll": "Replace all"
+ }
+diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ja.arb fl/FlClash-0.8.95-0.9.1/arb/intl_ja.arb
+--- orig/FlClash-0.8.95-0.9.1/arb/intl_ja.arb	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_ja.arb	2026-10-21 08:27:42.428747664 +0900
+@@ -553,5 +553,12 @@
+   "geoSkipped": "{name} はすでに最新です",
+   "geoUpdated": "{name} 更新済み",
+   "secondsCount": "{count} 秒",
+-  "entriesCount": "{count} エントリ"
++  "entriesCount": "{count} エントリ",
++  "wordWrap": "折り返し",
++  "collapseAll": "すべて折りたたむ",
++  "expandAll": "すべて展開",
++  "replace": "置換",
++  "goToLine": "行へ移動",
++  "outline": "アウトライン",
++  "replaceAll": "すべて置換"
+ }
+diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ru.arb fl/FlClash-0.8.95-0.9.1/arb/intl_ru.arb
+--- orig/FlClash-0.8.95-0.9.1/arb/intl_ru.arb	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_ru.arb	2026-10-21 08:27:42.430777428 +0900
+@@ -553,5 +553,12 @@
+   "geoSkipped": "Для {name} уже установлена последняя версия",
+   "geoUpdated": "{name} обновлено",
+   "secondsCount": "{count} секунд",
+-  "entriesCount": "{count} записей"
++  "entriesCount": "{count} записей",
++  "wordWrap": "Перенос строк",
++  "collapseAll": "Свернуть все",
++  "expandAll": "Развернуть все",
++  "replace": "Заменить",
++  "goToLine": "Перейти к строке",
++  "outline": "Структура",
++  "replaceAll": "Заменить все"
+ }
+diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb fl/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb
+--- orig/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb	2026-10-21 08:27:42.426598207 +0900
+@@ -553,5 +553,12 @@
+   "geoSkipped": "{name} 已是最新版本",
+   "geoUpdated": "{name} 已更新",
+   "secondsCount": "{count} 秒",
+-  "entriesCount": "{count} 个条目"
++  "entriesCount": "{count} 个条目",
++  "wordWrap": "自动换行",
++  "collapseAll": "全部折叠",
++  "expandAll": "全部展开",
++  "replace": "替换",
++  "goToLine": "跳转到行",
++  "outline": "大纲",
++  "replaceAll": "全部替换"
+ }
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart fl/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart	2026-10-21 08:27:56.740163830 +0900
+@@ -0,0 +1,180 @@
++class OutlineItem {
++  final int line;
++  final String title;
++  final int level;
++
++  const OutlineItem({
++    required this.line,
++    required this.title,
++    required this.level,
++  });
++}
++
++final _topKeyReg = RegExp(r'^([^\s#\-][^:]*):(?:\s|$)');
++final _keyReg = RegExp(r'^([^\s,{\[#"' "'" r'][^,:]*|"[^"]*"|' "'[^']*'" r'):(?:\s|$)');
++final _nameReg = RegExp(r'^name:\s*(.*)$');
++final _flowNameReg = RegExp(r'''name:\s*("[^"]*"|'[^']*'|[^,}]+)''');
++final _errorLineReg = RegExp(r'line\s+(\d+)', caseSensitive: false);
++
++int? parseErrorLine(String message) {
++  final match = _errorLineReg.firstMatch(message);
++  if (match == null) {
++    return null;
++  }
++  final line = int.tryParse(match.group(1)!);
++  if (line == null || line < 1) {
++    return null;
++  }
++  return line;
++}
++
++String _cleanValue(String raw) {
++  final value = raw.trim();
++  if (value.isEmpty) {
++    return value;
++  }
++  final first = value[0];
++  if (first == '"' || first == "'") {
++    final end = value.indexOf(first, 1);
++    if (end > 0) {
++      return value.substring(1, end);
++    }
++    return value.substring(1);
++  }
++  final comment = value.indexOf(' #');
++  if (comment >= 0) {
++    return value.substring(0, comment).trim();
++  }
++  return value;
++}
++
++int _indentOf(String line) {
++  int i = 0;
++  while (i < line.length && line[i] == ' ') {
++    i++;
++  }
++  return i;
++}
++
++bool _isSkippable(String line) {
++  final trimmed = line.trim();
++  return trimmed.isEmpty || trimmed.startsWith('#');
++}
++
++bool _isSeqItem(String trimmed) {
++  return trimmed == '-' || trimmed.startsWith('- ');
++}
++
++String _listItemTitle(List<String> lines, int index, int indent, int ordinal) {
++  final trimmed = lines[index].trim();
++  final rest = trimmed == '-' ? '' : trimmed.substring(2).trimLeft();
++  if (rest.startsWith('{')) {
++    final match = _flowNameReg.firstMatch(rest);
++    if (match != null) {
++      final value = _cleanValue(match.group(1)!);
++      if (value.isNotEmpty) {
++        return value;
++      }
++    }
++    return '#$ordinal';
++  }
++  if (rest.isNotEmpty && !_keyReg.hasMatch(rest)) {
++    final value = _cleanValue(rest);
++    return value.isEmpty ? '#$ordinal' : value;
++  }
++  final contentIndent = rest.isEmpty
++      ? indent + 2
++      : indent + (trimmed.length - rest.length);
++  final inline = _nameReg.firstMatch(rest);
++  if (inline != null) {
++    final value = _cleanValue(inline.group(1)!);
++    if (value.isNotEmpty) {
++      return value;
++    }
++  }
++  for (int j = index + 1; j < lines.length && j <= index + 40; j++) {
++    final next = lines[j].trimRight();
++    if (_isSkippable(next)) {
++      continue;
++    }
++    final nextIndent = _indentOf(next);
++    final nextTrimmed = next.trim();
++    if (nextIndent < contentIndent ||
++        (nextIndent == indent && _isSeqItem(nextTrimmed))) {
++      break;
++    }
++    if (nextIndent == contentIndent) {
++      final match = _nameReg.firstMatch(nextTrimmed);
++      if (match != null) {
++        final value = _cleanValue(match.group(1)!);
++        if (value.isNotEmpty) {
++          return value;
++        }
++      }
++    }
++  }
++  return '#$ordinal';
++}
++
++List<OutlineItem> parseYamlOutline(String text) {
++  final lines = text.split('\n').map((line) => line.trimRight()).toList();
++  final items = <OutlineItem>[];
++  bool inSection = false;
++  int? childIndent;
++  int ordinal = 0;
++  for (int i = 0; i < lines.length; i++) {
++    final line = lines[i];
++    if (_isSkippable(line)) {
++      continue;
++    }
++    final indent = _indentOf(line);
++    final trimmed = line.trim();
++    if (indent == 0 && !_isSeqItem(trimmed)) {
++      final match = _topKeyReg.firstMatch(line);
++      if (match != null) {
++        items.add(
++          OutlineItem(
++            line: i,
++            title: _cleanValue(match.group(1)!),
++            level: 0,
++          ),
++        );
++        inSection = true;
++        childIndent = null;
++        ordinal = 0;
++      } else {
++        inSection = false;
++      }
++      continue;
++    }
++    if (!inSection) {
++      continue;
++    }
++    childIndent ??= indent;
++    if (indent != childIndent) {
++      continue;
++    }
++    if (_isSeqItem(trimmed)) {
++      ordinal++;
++      items.add(
++        OutlineItem(
++          line: i,
++          title: _listItemTitle(lines, i, indent, ordinal),
++          level: 1,
++        ),
++      );
++    } else {
++      final match = _keyReg.firstMatch(trimmed);
++      if (match != null) {
++        items.add(
++          OutlineItem(
++            line: i,
++            title: _cleanValue(match.group(1)!),
++            level: 1,
++          ),
++        );
++      }
++    }
++  }
++  return items;
++}
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart	2026-10-21 08:27:42.425483956 +0900
+@@ -1084,6 +1084,9 @@
+     ),
+     "whitelistMode": MessageLookupByLibrary.simpleMessage("Whitelist mode"),
+     "wordWrap": MessageLookupByLibrary.simpleMessage("Word Wrap"),
++    "goToLine": MessageLookupByLibrary.simpleMessage("Go to line"),
++    "outline": MessageLookupByLibrary.simpleMessage("Outline"),
++    "replaceAll": MessageLookupByLibrary.simpleMessage("Replace all"),
+     "yearsAgo": m25,
+     "zh_CN": MessageLookupByLibrary.simpleMessage("Simplified Chinese"),
+   };
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart	2026-10-21 08:27:42.429564455 +0900
+@@ -884,6 +884,9 @@
+     "webDAVConfiguration": MessageLookupByLibrary.simpleMessage("WebDAV設定"),
+     "whitelistMode": MessageLookupByLibrary.simpleMessage("ホワイトリストモード"),
+     "wordWrap": MessageLookupByLibrary.simpleMessage("折り返し"),
++    "goToLine": MessageLookupByLibrary.simpleMessage("行へ移動"),
++    "outline": MessageLookupByLibrary.simpleMessage("アウトライン"),
++    "replaceAll": MessageLookupByLibrary.simpleMessage("すべて置換"),
+     "yearsAgo": m25,
+     "zh_CN": MessageLookupByLibrary.simpleMessage("簡体字中国語"),
+   };
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart	2026-10-21 08:27:42.431921159 +0900
+@@ -1149,6 +1149,9 @@
+       "Режим белого списка",
+     ),
+     "wordWrap": MessageLookupByLibrary.simpleMessage("Перенос строк"),
++    "goToLine": MessageLookupByLibrary.simpleMessage("Перейти к строке"),
++    "outline": MessageLookupByLibrary.simpleMessage("Структура"),
++    "replaceAll": MessageLookupByLibrary.simpleMessage("Заменить все"),
+     "yearsAgo": m25,
+     "zh_CN": MessageLookupByLibrary.simpleMessage("Упрощенный китайский"),
+   };
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart	2026-10-21 08:27:42.427765254 +0900
+@@ -766,6 +766,9 @@
+     "webDAVConfiguration": MessageLookupByLibrary.simpleMessage("WebDAV配置"),
+     "whitelistMode": MessageLookupByLibrary.simpleMessage("白名单模式"),
+     "wordWrap": MessageLookupByLibrary.simpleMessage("自动换行"),
++    "goToLine": MessageLookupByLibrary.simpleMessage("跳转到行"),
++    "outline": MessageLookupByLibrary.simpleMessage("大纲"),
++    "replaceAll": MessageLookupByLibrary.simpleMessage("全部替换"),
+     "yearsAgo": m25,
+     "zh_CN": MessageLookupByLibrary.simpleMessage("中文简体"),
+   };
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart	2026-10-21 08:27:42.433051285 +0900
+@@ -2294,6 +2294,21 @@
+     return Intl.message('Expand All', name: 'expandAll', desc: '', args: []);
+   }
+ 
++  /// `Go to line`
++  String get goToLine {
++    return Intl.message('Go to line', name: 'goToLine', desc: '', args: []);
++  }
++
++  /// `Outline`
++  String get outline {
++    return Intl.message('Outline', name: 'outline', desc: '', args: []);
++  }
++
++  /// `Replace all`
++  String get replaceAll {
++    return Intl.message('Replace all', name: 'replaceAll', desc: '', args: []);
++  }
++
+   /// `none`
+   String get none {
+     return Intl.message('none', name: 'none', desc: '', args: []);
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.1/lib/pages/editor.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/pages/editor.dart	2026-10-21 08:29:01.625390461 +0900
+@@ -1,6 +1,7 @@
+ import 'dart:convert';
+ 
+ import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/common/yaml_outline.dart';
+ import 'package:fl_clash/enum/enum.dart';
+ import 'package:fl_clash/models/common.dart';
+ import 'package:fl_clash/providers/app.dart';
+@@ -19,6 +20,19 @@
+ typedef EditingValueChangeBuilder = Widget Function(CodeLineEditingValue value);
+ typedef TextEditingValueChangeBuilder = Widget Function(TextEditingValue value);
+ 
++final List<_EditorPageState> _activeEditors = [];
++
++Future<void> showEditorError(String message) async {
++  if (_activeEditors.isNotEmpty) {
++    await _activeEditors.last.showValidationError(message);
++    return;
++  }
++  await globalState.showMessage(
++    title: currentAppLocalizations.tip,
++    message: TextSpan(text: message),
++  );
++}
++
+ class EditorPage extends ConsumerStatefulWidget {
+   final String title;
+   final String? content;
+@@ -62,6 +76,7 @@
+   @override
+   void initState() {
+     super.initState();
++    _activeEditors.add(this);
+     readOnly = widget.onSave == null;
+     _toolbarController = ContextMenuControllerImpl(readOnly);
+     _focusNode = FocusNode();
+@@ -72,9 +87,13 @@
+       return;
+     }
+     _focusNode.onKeyEvent = ((_, event) {
+-      final keys = HardwareKeyboard.instance.logicalKeysPressed;
++      final keyboard = HardwareKeyboard.instance;
+       final key = event.logicalKey;
+-      if (!keys.contains(key)) {
++      if (!keyboard.logicalKeysPressed.contains(key) ||
++          keyboard.isShiftPressed ||
++          keyboard.isControlPressed ||
++          keyboard.isAltPressed ||
++          keyboard.isMetaPressed) {
+         return KeyEventResult.ignored;
+       }
+       if (key == LogicalKeyboardKey.arrowUp) {
+@@ -84,7 +103,6 @@
+         _controller.moveCursor(AxisDirection.down);
+         return KeyEventResult.handled;
+       } else if (key == LogicalKeyboardKey.arrowLeft) {
+-        _controller.selection.endIndex;
+         _controller.moveCursor(AxisDirection.left);
+         return KeyEventResult.handled;
+       } else if (key == LogicalKeyboardKey.arrowRight) {
+@@ -109,6 +127,7 @@
+ 
+   @override
+   void dispose() {
++    _activeEditors.remove(this);
+     _toolbarController.hide(context);
+     _findController.dispose();
+     _controller.dispose();
+@@ -135,19 +154,116 @@
+   }
+ 
+   void _handleSearch() {
++    final selected = _controller.selectedText;
+     _findController.findMode();
++    if (selected.isNotEmpty && !selected.contains('\n')) {
++      _findController.findInputController.text = selected;
++    }
++    _findController.findInputFocusNode.requestFocus();
+   }
+ 
+-  void _handleReplace() {
+-    _findController.replaceMode();
++  void _handleFindClose() {
++    _findController.close();
++    if (!readOnly) {
++      _focusNode.requestFocus();
++    }
++  }
++
++  bool _hasCollapsedChunk() {
++    final codeLines = _controller.codeLines;
++    for (int i = 0; i < codeLines.length; i++) {
++      if (codeLines[i].chunkParent) {
++        return true;
++      }
++    }
++    return false;
++  }
++
++  void _jumpToLine(int index) {
++    for (int i = 0; i < 5 && _hasCollapsedChunk(); i++) {
++      _handleExpandAll();
++    }
++    final codeLines = _controller.codeLines;
++    if (codeLines.length == 0) {
++      return;
++    }
++    final last = codeLines.length - 1;
++    final target = index < 0 ? 0 : (index > last ? last : index);
++    _controller.selection = CodeLineSelection(
++      baseIndex: target,
++      baseOffset: 0,
++      extentIndex: target,
++      extentOffset: codeLines[target].text.length,
++    );
++    _focusNode.requestFocus();
++    WidgetsBinding.instance.addPostFrameCallback((_) {
++      if (mounted) {
++        _controller.makeCursorVisible();
++      }
++    });
++  }
++
++  Future<void> showValidationError(String message) async {
++    final appLocalizations = context.appLocalizations;
++    final line = parseErrorLine(message);
++    final res = await globalState.showMessage(
++      title: appLocalizations.tip,
++      message: TextSpan(text: message),
++      confirmText: line == null ? null : appLocalizations.goToLine,
++    );
++    if (res == true && line != null && mounted) {
++      _jumpToLine(line - 1);
++    }
+   }
+ 
+-  void _handleReplaceNext() {
+-    _findController.replaceMatch();
++  Future<void> _handleGoToLine() async {
++    final appLocalizations = context.appLocalizations;
++    final total = _controller.text.split('\n').length;
++    final res = await globalState.showCommonDialog<String>(
++      child: InputDialog(
++        title: appLocalizations.goToLine,
++        value: '',
++        labelText: '1 - $total',
++        keyboardType: TextInputType.number,
++        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
++        validator: (value) {
++          if (value == null || value.isEmpty) {
++            return appLocalizations.emptyTip(appLocalizations.value);
++          }
++          final line = int.tryParse(value);
++          if (line == null || line < 1 || line > total) {
++            return '1 - $total';
++          }
++          return null;
++        },
++      ),
++    );
++    final line = res == null ? null : int.tryParse(res);
++    if (line == null || !mounted) {
++      return;
++    }
++    _jumpToLine(line - 1);
++  }
++
++  Future<void> _handleOutline() async {
++    final items = parseYamlOutline(_controller.text);
++    if (!mounted) {
++      return;
++    }
++    final line = await showModalBottomSheet<int>(
++      context: context,
++      isScrollControlled: true,
++      useSafeArea: true,
++      showDragHandle: true,
++      builder: (_) => _OutlineSheet(items: items),
++    );
++    if (line != null && mounted) {
++      _jumpToLine(line);
++    }
+   }
+ 
+-  void _handleReplaceAll() {
+-    _findController.replaceAllMatches();
++  void _handleReplace() {
++    _findController.replaceMode();
+   }
+ 
+   void _toggleWordWrap() {
+@@ -281,6 +397,22 @@
+                   ),
+                 ),
+               ),
++            if (!readOnly)
++              _wrapController(
++                (value) => IconButton(
++                  tooltip: appLocalizations.undo,
++                  onPressed: _controller.canUndo ? _controller.undo : null,
++                  icon: const Icon(Icons.undo),
++                ),
++              ),
++            if (!readOnly)
++              _wrapController(
++                (value) => IconButton(
++                  tooltip: appLocalizations.redo,
++                  onPressed: _controller.canRedo ? _controller.redo : null,
++                  icon: const Icon(Icons.redo),
++                ),
++              ),
+             _wrapController(
+               (value) => CommonPopupBox(
+                 targetBuilder: (open) {
+@@ -306,15 +438,16 @@
+                         onPressed: _handleReplace,
+                       ),
+                     PopupMenuItemData(
+-                      icon: Icons.undo,
+-                      label: appLocalizations.undo,
+-                      onPressed: _controller.canUndo ? _controller.undo : null,
+-                    ),
+-                    PopupMenuItemData(
+-                      icon: Icons.redo,
+-                      label: appLocalizations.redo,
+-                      onPressed: _controller.canRedo ? _controller.redo : null,
++                      icon: Icons.format_list_numbered,
++                      label: appLocalizations.goToLine,
++                      onPressed: _handleGoToLine,
+                     ),
++                    if (widget.languages.contains(Language.yaml))
++                      PopupMenuItemData(
++                        icon: Icons.account_tree_outlined,
++                        label: appLocalizations.outline,
++                        onPressed: _handleOutline,
++                      ),
+                     PopupMenuItemData(
+                       icon: _wordWrap
+                           ? Icons.wrap_text
+@@ -368,6 +501,7 @@
+                 controller: controller,
+                 readOnly: readOnly,
+                 isMobileView: isMobileView,
++                onClose: _handleFindClose,
+               ),
+               padding: const EdgeInsets.only(right: 16),
+               wordWrap: _wordWrap,
+@@ -450,12 +584,14 @@
+   final CodeFindController controller;
+   final bool readOnly;
+   final bool isMobileView;
++  final VoidCallback onClose;
+ 
+   const FindPanel({
+     super.key,
+     required this.controller,
+     required this.readOnly,
+     required this.isMobileView,
++    required this.onClose,
+   });
+ 
+   @override
+@@ -510,7 +646,7 @@
+             onPressed: value.result == null ? null : controller.nextMatch,
+             icon: Icons.arrow_downward,
+           ),
+-          _buildIconBtn(onPressed: controller.close, icon: Icons.close),
++          _buildIconBtn(onPressed: onClose, icon: Icons.close),
+         ],
+       ),
+     );
+@@ -550,7 +686,7 @@
+         padding: EdgeInsets.zero,
+         iconSize: 16,
+         icon: Icon(isReplaceMode ? Icons.expand_less : Icons.expand_more),
+-        tooltip: isReplaceMode ? 'Hide replace' : 'Show replace',
++        tooltip: context.appLocalizations.replace,
+       ),
+     );
+   }
+@@ -624,12 +760,14 @@
+                   controller.replaceMatch();
+                   controller.replaceInputFocusNode.requestFocus();
+                 },
++                tooltip: context.appLocalizations.replace,
+               ),
+               _buildToggleChip(
+                 context,
+                 '⇄',
+                 false,
+                 controller.replaceAllMatches,
++                tooltip: context.appLocalizations.replaceAll,
+               ),
+             ],
+           ),
+@@ -642,13 +780,16 @@
+     BuildContext context,
+     String text,
+     bool selected,
+-    VoidCallback onPressed,
+-  ) {
+-    return MouseRegion(
++    VoidCallback onPressed, {
++    String? tooltip,
++  }) {
++    final chip = MouseRegion(
+       cursor: SystemMouseCursors.click,
+       child: InkWell(
+         onTap: onPressed,
+         child: Container(
++          constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
++          alignment: Alignment.center,
+           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+           decoration: BoxDecoration(
+             color: selected ? context.colorScheme.primaryContainer : null,
+@@ -663,6 +804,10 @@
+         ),
+       ),
+     );
++    if (tooltip == null) {
++      return chip;
++    }
++    return Tooltip(message: tooltip, child: chip);
+   }
+ 
+   Widget _buildIconBtn({required IconData icon, VoidCallback? onPressed}) {
+@@ -677,6 +822,8 @@
+ class ContextMenuControllerImpl implements SelectionToolbarController {
+   OverlayEntry? _overlayEntry;
+   bool readOnly = false;
++  bool _hadSelection = false;
++  Object? _initialSelection;
+ 
+   ContextMenuControllerImpl(this.readOnly);
+ 
+@@ -700,20 +847,31 @@
+     required ValueNotifier<bool> visibility,
+   }) {
+     _removeOverLayEntry();
++    _hadSelection = controller.selectedText.isNotEmpty;
++    _initialSelection = controller.selection;
+     _overlayEntry ??= OverlayEntry(
+       builder: (context) => CodeEditorTapRegion(
+         child: ValueListenableBuilder(
+           valueListenable: controller,
+           builder: (context, _, child) {
+             final appLocalizations = context.appLocalizations;
+-            final isNotEmpty = controller.selectedText.isNotEmpty;
+-            final isAllSelected = controller.isAllSelected;
+             final hasSelected = controller.selectedText.isNotEmpty;
+-            if (!hasSelected) {
+-              _removeOverLayEntry();
++            final isAllSelected = controller.isAllSelected;
++            if (hasSelected) {
++              _hadSelection = true;
++            }
++            final stale = hasSelected
++                ? false
++                : _hadSelection ||
++                      !identical(_initialSelection, controller.selection);
++            if (stale) {
++              WidgetsBinding.instance.addPostFrameCallback((_) {
++                _removeOverLayEntry();
++              });
++              return const SizedBox();
+             }
+             final List<PopupMenuItemData> menus = [
+-              if (isNotEmpty)
++              if (hasSelected)
+                 PopupMenuItemData(
+                   label: appLocalizations.copy,
+                   onPressed: controller.copy,
+@@ -723,12 +881,12 @@
+                   label: appLocalizations.paste,
+                   onPressed: controller.paste,
+                 ),
+-              if (isNotEmpty && !readOnly)
++              if (hasSelected && !readOnly)
+                 PopupMenuItemData(
+                   label: appLocalizations.cut,
+                   onPressed: controller.cut,
+                 ),
+-              if (hasSelected && !isAllSelected)
++              if (!isAllSelected)
+                 PopupMenuItemData(
+                   label: appLocalizations.selectAll,
+                   onPressed: controller.selectAll,
+@@ -769,39 +927,93 @@
+   }
+ }
+ 
+-class _ImportOptionsDialog extends StatefulWidget {
+-  const _ImportOptionsDialog();
++class _OutlineSheet extends StatefulWidget {
++  final List<OutlineItem> items;
++
++  const _OutlineSheet({required this.items});
+ 
+   @override
+-  State<_ImportOptionsDialog> createState() => _ImportOptionsDialogState();
++  State<_OutlineSheet> createState() => _OutlineSheetState();
+ }
+ 
+-class _ImportOptionsDialogState extends State<_ImportOptionsDialog> {
+-  void _handleOnTab(ImportOption value) {
+-    Navigator.of(context).pop(value);
++class _OutlineSheetState extends State<_OutlineSheet> {
++  final _queryController = TextEditingController();
++  String _query = '';
++
++  @override
++  void dispose() {
++    _queryController.dispose();
++    super.dispose();
+   }
+ 
+   @override
+   Widget build(BuildContext context) {
+     final appLocalizations = context.appLocalizations;
+-    return CommonDialog(
+-      title: appLocalizations.import,
+-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+-      child: Wrap(
+-        children: [
+-          ListItem(
+-            onTap: () {
+-              _handleOnTab(ImportOption.url);
+-            },
+-            title: Text(appLocalizations.importUrl),
+-          ),
+-          ListItem(
+-            onTap: () {
+-              _handleOnTab(ImportOption.file);
+-            },
+-            title: Text(appLocalizations.importFile),
+-          ),
+-        ],
++    final query = _query.trim().toLowerCase();
++    final items = query.isEmpty
++        ? widget.items
++        : widget.items
++              .where((item) => item.title.toLowerCase().contains(query))
++              .toList();
++    return Padding(
++      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
++      child: SizedBox(
++        height: MediaQuery.of(context).size.height * 0.7,
++        child: Column(
++          children: [
++            Padding(
++              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
++              child: TextField(
++                controller: _queryController,
++                maxLines: 1,
++                onChanged: (value) {
++                  setState(() {
++                    _query = value;
++                  });
++                },
++                decoration: InputDecoration(
++                  isDense: true,
++                  border: const OutlineInputBorder(),
++                  prefixIcon: const Icon(Icons.search),
++                  labelText: '${appLocalizations.outline} · ${appLocalizations.search}',
++                ),
++              ),
++            ),
++            Expanded(
++              child: items.isEmpty
++                  ? Center(child: Text(appLocalizations.none))
++                  : ListView.builder(
++                      itemCount: items.length,
++                      itemBuilder: (_, index) {
++                        final item = items[index];
++                        final isTop = item.level == 0;
++                        return ListTile(
++                          dense: true,
++                          contentPadding: EdgeInsets.only(
++                            left: 16 + (query.isEmpty ? item.level * 20.0 : 0),
++                            right: 16,
++                          ),
++                          title: Text(
++                            item.title,
++                            maxLines: 1,
++                            overflow: TextOverflow.ellipsis,
++                            style: isTop
++                                ? context.textTheme.titleSmall
++                                : context.textTheme.bodyMedium,
++                          ),
++                          trailing: Text(
++                            '${item.line + 1}',
++                            style: context.textTheme.bodySmall,
++                          ),
++                          onTap: () {
++                            Navigator.of(context).pop(item.line);
++                          },
++                        );
++                      },
++                    ),
++            ),
++          ],
++        ),
+       ),
+     );
+   }
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart fl/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart	2026-10-20 21:17:26.762943075 +0900
+@@ -152,10 +152,8 @@
+     );
+     if (res == true && mounted) {
+       _handleEditorSave(context, title, content, script: script);
+-    } else {
+-      return true;
+     }
+-    return false;
++    return res == false;
+   }
+ 
+   void _handleToEditor([int? id]) async {
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart fl/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart	2026-10-21 08:28:51.637713686 +0900
+@@ -111,10 +111,7 @@
+       return message;
+     }, silence: false);
+     if (message?.isNotEmpty == true) {
+-      globalState.showMessage(
+-        title: currentAppLocalizations.tip,
+-        message: TextSpan(text: message),
+-      );
++      showEditorError(message!);
+       return;
+     }
+     if (context.mounted) {
+@@ -132,6 +129,7 @@
+         _rawText = await file.readAsString();
+       }
+     }
++    _rawText ??= '';
+     if (!mounted) return;
+     final title = widget.profile.label.takeFirstValid([
+       widget.profile.id.toString(),
+@@ -152,10 +150,8 @@
+         );
+         if (res == true && context.mounted) {
+           _handleSaveEdit(context, content);
+-        } else {
+-          return true;
+         }
+-        return false;
++        return res == false;
+       },
+     );
+     final data = await BaseNavigator.push<String>(context, editorPage);
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart	2026-10-21 08:28:51.638351727 +0900
+@@ -237,10 +237,7 @@
+           return await coreController.validateConfigWithData(content);
+         }, silence: false);
+         if (message?.isNotEmpty == true) {
+-          globalState.showMessage(
+-            title: currentAppLocalizations.tip,
+-            message: TextSpan(text: message),
+-          );
++          showEditorError(message!);
+           return;
+         }
+         if (context.mounted) {
+@@ -260,17 +257,12 @@
+             return await coreController.validateConfigWithData(content);
+           }, silence: false);
+           if (message?.isNotEmpty == true) {
+-            globalState.showMessage(
+-              title: currentAppLocalizations.tip,
+-              message: TextSpan(text: message),
+-            );
++            showEditorError(message!);
+           } else if (context.mounted) {
+             Navigator.of(context).pop(content);
+           }
+-        } else {
+-          return true;
+         }
+-        return false;
++        return res == false;
+       },
+     );
+     final data = await BaseNavigator.push<String>(context, editorPage);
+diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart fl/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart
+--- orig/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart	2026-10-21 08:28:08.387315129 +0900
+@@ -0,0 +1,76 @@
++import 'package:fl_clash/common/yaml_outline.dart';
++import 'package:flutter_test/flutter_test.dart';
++
++void main() {
++  group('parseErrorLine', () {
++    test('reads the line number from yaml errors', () {
++      expect(parseErrorLine('yaml: line 12: did not find expected key'), 12);
++      expect(
++        parseErrorLine('yaml: unmarshal errors:\n  line 7: cannot unmarshal'),
++        7,
++      );
++    });
++
++    test('returns null without a line number', () {
++      expect(parseErrorLine('proxy 0: missing type'), isNull);
++      expect(parseErrorLine('line 0: x'), isNull);
++    });
++  });
++
++  group('parseYamlOutline', () {
++    test('lists sections and named children', () {
++      const text = '''
++mixed-port: 7890
++proxies:
++  - name: "node a"
++    type: ss
++  - type: vmess
++    name: node b
++  - {name: node c, type: trojan}
++proxy-groups:
++  - name: Proxy
++    proxies:
++      - node a
++rules:
++  - DOMAIN,google.com,Proxy
++  - IP-CIDR6,2001:db8::/32,Proxy
++dns:
++  enable: true
++  nameserver:
++    - 1.1.1.1
++''';
++      final items = parseYamlOutline(text);
++      final titles = items.map((e) => '${e.level}:${e.title}').toList();
++      expect(titles, [
++        '0:mixed-port',
++        '0:proxies',
++        '1:node a',
++        '1:node b',
++        '1:node c',
++        '0:proxy-groups',
++        '1:Proxy',
++        '0:rules',
++        '1:DOMAIN,google.com,Proxy',
++        '1:IP-CIDR6,2001:db8::/32,Proxy',
++        '0:dns',
++        '1:enable',
++        '1:nameserver',
++      ]);
++      expect(items[1].line, 1);
++      expect(items[2].line, 2);
++    });
++
++    test('supports sequences without indentation', () {
++      const text = 'proxies:\n- name: a\n  type: ss\n- name: b\n  type: ss\n';
++      final items = parseYamlOutline(text);
++      expect(items.map((e) => e.title).toList(), ['proxies', 'a', 'b']);
++      expect(items.map((e) => e.line).toList(), [0, 1, 3]);
++    });
++
++    test('numbers unnamed items', () {
++      const text = 'proxies:\n  - type: ss\n  - type: ss\n';
++      final items = parseYamlOutline(text);
++      expect(items.map((e) => e.title).toList(), ['proxies', '#1', '#2']);
++    });
++  });
++}

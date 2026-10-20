@@ -2,8 +2,8 @@ name: build-android-apk
 
 # 仅在 Actions 页面手动触发（Run workflow）。
 #
-# 触发时可输入完整版本号（如 0.8.96、0.8.97），直接覆盖默认版本号。
-# 不填则版本号保持 BASE_VERSION（0.8.95），versionCode 用时间戳自动生成。
+# 触发时可输入完整版本号（如 0.9.3、0.9.4），直接覆盖默认版本号。
+# 不填则版本号保持 BASE_VERSION（0.9.2），versionCode 用时间戳自动生成。
 #
 # 产出：
 #   - APK：FlClash-{version}-android-arm64-v8a.apk（固定签名）
@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
     inputs:
       version_override:
-        description: '完整版本号，如 0.8.96（留空则使用默认 0.8.95）'
+        description: '完整版本号，如 0.9.3（留空则使用默认 0.9.2）'
         required: false
         default: ''
       create_release:
@@ -28,11 +28,11 @@ on:
 
 env:
   FLUTTER_VERSION: '3.44.4'
-  # FlClash 0.8.95 锁定的内核提交（= tag flclash/v0.8.95）
+  # FlClash 0.9.2 锁定的内核提交（= tag flclash/v0.8.95）
   CLASH_META_REPO: https://github.com/chen08209/Clash.Meta.git
   CLASH_META_REF: 0f7f05adff5e2c49775a112dcfe05a6aa36fda0c
   # 基础版本号（不含后缀）
-  BASE_VERSION: '0.8.95'
+  BASE_VERSION: '0.9.2'
 
 jobs:
   apk:
@@ -47,8 +47,17 @@ jobs:
           # 完整历史：Release 说明需要用 git log 对比上一个 tag 以来的提交
           fetch-depth: 0
 
+      # 应用编辑器功能补丁（YAML 大纲、跳转到行、搜索预填、上下文菜单修复等）。
+      # patch 由 diff -ruN 生成，路径前缀为 orig/FlClash-0.8.95-0.9.1/，用 -p2 剥离。
+      - name: Apply editor fixes patch
+        run: |
+          set -euo pipefail
+          git apply -p2 -v "$GITHUB_WORKSPACE/editor-fixes.patch"
+          echo "--- editor fixes applied, changed files ---"
+          git --no-pager diff --stat
+
       # 根据 workflow_dispatch 输入计算最终版本号，并更新 pubspec.yaml。
-      # version_override 直接指定完整 3 段版本号（如 0.8.96），不填则用 BASE_VERSION。
+      # version_override 直接指定完整 3 段版本号（如 0.9.3），不填则用 BASE_VERSION。
       # pubspec version 格式必须为 X.Y.Z+buildNumber（3 段语义化版本 + 整数构建号）。
       - name: Set version
         id: version
@@ -69,8 +78,8 @@ jobs:
           echo "::notice::Version: ${version} (code: ${code})"
 
       # core/go.mod 使用 `replace github.com/metacubex/mihomo => ./Clash.Meta`，
-      # 因此必须把完整内核源码填入 core/Clash.Meta，并打上 trojan no-TLS + xhttp 补丁。
-      - name: Clone mihomo core and apply trojan patches
+      # 因此必须把完整内核源码填入 core/Clash.Meta，并打上 trojan no-TLS + xhttp + anytls 修复补丁。
+      - name: Clone mihomo core and apply patches
         run: |
           set -euo pipefail
           rm -rf core/Clash.Meta
@@ -79,6 +88,7 @@ jobs:
           git checkout "$CLASH_META_REF"
           git apply -v "$GITHUB_WORKSPACE/trojan-notls.patch"
           git apply -v "$GITHUB_WORKSPACE/trojan-xhttp.patch"
+          git apply -v "$GITHUB_WORKSPACE/anytls-fix.patch"
           echo "--- patches applied, changed files ---"
           git --no-pager diff --stat
 
