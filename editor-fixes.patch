@@ -1,7 +1,7 @@
 diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_en.arb fl/FlClash-0.8.95-0.9.1/arb/intl_en.arb
 --- orig/FlClash-0.8.95-0.9.1/arb/intl_en.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_en.arb	2026-10-21 08:27:42.309841578 +0900
-@@ -553,5 +553,12 @@
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_en.arb	2026-10-21 19:22:32.657944424 +0900
+@@ -553,5 +553,14 @@
    "geoSkipped": "{name} is already up to date",
    "geoUpdated": "{name} updated",
    "secondsCount": "{count} seconds",
@@ -13,12 +13,14 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_en.arb fl/FlClash-0.8.95-0.9.1/arb/
 +  "replace": "Replace",
 +  "goToLine": "Go to line",
 +  "outline": "Outline",
-+  "replaceAll": "Replace all"
++  "replaceAll": "Replace all",
++  "editInfo": "Edit info",
++  "editFile": "Edit file"
  }
 diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ja.arb fl/FlClash-0.8.95-0.9.1/arb/intl_ja.arb
 --- orig/FlClash-0.8.95-0.9.1/arb/intl_ja.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_ja.arb	2026-10-21 08:27:42.428747664 +0900
-@@ -553,5 +553,12 @@
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_ja.arb	2026-10-21 19:22:32.662679636 +0900
+@@ -553,5 +553,14 @@
    "geoSkipped": "{name} はすでに最新です",
    "geoUpdated": "{name} 更新済み",
    "secondsCount": "{count} 秒",
@@ -30,12 +32,14 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ja.arb fl/FlClash-0.8.95-0.9.1/arb/
 +  "replace": "置換",
 +  "goToLine": "行へ移動",
 +  "outline": "アウトライン",
-+  "replaceAll": "すべて置換"
++  "replaceAll": "すべて置換",
++  "editInfo": "情報を編集",
++  "editFile": "ファイルを編集"
  }
 diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ru.arb fl/FlClash-0.8.95-0.9.1/arb/intl_ru.arb
 --- orig/FlClash-0.8.95-0.9.1/arb/intl_ru.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_ru.arb	2026-10-21 08:27:42.430777428 +0900
-@@ -553,5 +553,12 @@
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_ru.arb	2026-10-21 19:22:32.664234696 +0900
+@@ -553,5 +553,14 @@
    "geoSkipped": "Для {name} уже установлена последняя версия",
    "geoUpdated": "{name} обновлено",
    "secondsCount": "{count} секунд",
@@ -47,12 +51,14 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ru.arb fl/FlClash-0.8.95-0.9.1/arb/
 +  "replace": "Заменить",
 +  "goToLine": "Перейти к строке",
 +  "outline": "Структура",
-+  "replaceAll": "Заменить все"
++  "replaceAll": "Заменить все",
++  "editInfo": "Изменить данные",
++  "editFile": "Изменить файл"
  }
 diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb fl/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb
 --- orig/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb	2026-10-21 08:27:42.426598207 +0900
-@@ -553,5 +553,12 @@
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb	2026-10-21 19:22:32.660652041 +0900
+@@ -553,5 +553,14 @@
    "geoSkipped": "{name} 已是最新版本",
    "geoUpdated": "{name} 已更新",
    "secondsCount": "{count} 秒",
@@ -64,8 +70,275 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb fl/FlClash-0.8.95-0.9.1/a
 +  "replace": "替换",
 +  "goToLine": "跳转到行",
 +  "outline": "大纲",
-+  "replaceAll": "全部替换"
++  "replaceAll": "全部替换",
++  "editInfo": "编辑信息",
++  "editFile": "编辑配置文件"
  }
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart fl/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart	2026-10-21 19:06:27.673532987 +0900
+@@ -0,0 +1,261 @@
++const int _firstHan = 0x4E00;
++const int _lastHan = 0x9FA5;
++
++const String _initials =
++  'ydkqsxhwzssxhbymgcczqpssqbycdscdqldylybsgjgxqzjjfgcclzzawdwzjljpfyynwjjtmyyzwzhflyppqhgccyyymjqy'
++  'xxgjxhsdsjnjjsmhmlzrxyfsngsyczqzggllyjlmyzssecykyyhqwjssggyxyqyjtwkdjhychmyxjtlxjyqbyxdldwrrjjwy'
++  'srldzjpcbzjjbrcfslbczsszfxxthtrqggbdlyccrcymmrfcyqzpwwjjyfcrwfdfzqpyddwyxkyjawjffxjpdftzyhhycysw'
++  'ccyqsclcxxwzzxnbgnnxbxlzsqcbsjpysyzdhmdzbqbzcwdzzyytzhbtsyyfzgntnxqywqskbphhlxgybfmjnbjhhgqtjcys'
++  'xstkzglyckglysmzxyalmeldccxgzyrcxsdltjzcqkcnnjwhjczzcqljststbnxbtyxceqxgkwjyflzqlyhjqspsfxlfpbyq'
++  'xxxydcczylllsjxfhjxpjbcffyabyxbhczbjyclwlczggbtssmdtjcxpthyqtgjjscjfzkjzjqnlzwlslhdzbwjncjzyzsqn'
++  'ycqyrzcjjwybrtwpyftwexcskdzctbxhyzcyyjxzcfbzzmjyxxcdczottbzljwfckszsxfyrlnyjmbdthjxsqjccsbxyytsy'
++  'fbjdztgbcnclcyzzbsacyzzscjcshzqydxlbpjllmqxtydzxsqjtzpxlcglqccwjbhctdjjsfxjejjtlbgxsxjmyjjqpfzas'
++  'yjncydjxkjcdjszcbartcclnjqmwnqnclllkbybzzsyhqcltwlccrshllzntylnewyzyxczxxgdkdmtcedejtsyyszdqdfms'
++  'dzjlhrwnqlybglwhlgtgxbqjdzfyjsjyjcjmrnymgrcjczgjmzmgxmmryxkjnymsgmzjymklfxmbdtgfbhcjhkylpfmdxlqj'
++  'jsmtqgzsjlqdldgjycalcmzcsdjllnxdjffffjczfmzffpfkhkgdpqxktacjdhhzdddrrcfqyjkqccwjdxhwjlyllzgcfcqd'
++  'smlzpbjjplsbcjggdckkdezsqsckjgcgkdjtjllzycxklqscgjcltfpcqczgwbjdqsdjjbyjhsjddwgfsjgdkccctllpspkj'
++  'gqjhzzljplgjgjjthjjyjzcjmlzlyqbgjwmljkxzdznjqsyzmljlljkytxmkjlhskjgbmclyymkxjqlbmclkmdxxkwyxwslm'
++  'lpsjqjcqxyjfjtjdxmxxllcrqbsyjbgwywxggbcyxpjtgpepfgdjgbhbnsfjyzjkjkhxqfgqzkfhygkhdgllsdjjxpqykybn'
++  'qsxqnszswhbsxwhxwbzzxdmndjbsbkbbzklylwgwxjjwaqzmywsjqlcjxxjqwjeqxscwetlzhlyyysdzpyqyzcmtlshtzcfy'
++  'cyxyljsdcjjagyslcllyyysglrqqeldxzsccccadycjysfsgbfrsszqsbxxpsjwsdrckgjlgdkzjzbdktcsyqpyhstcldjlh'
++  'mxmcgxyzhjdctmhltxzxylamohyjcltyfbqqjbfbdfehtksqhzywwcnxwcdwhhwgyjlegmdmcwgfjhcsntfydolbygwqwesj'
++  'pwnllqydzsztxyqpzgcwxhnxpyxshmdqjhztdppbfyhzhhjyfczwkgkzbldntsxhqeegzxylzmmzyjzgszxhhkhtxexxgyly'
++  'apsthxdwhzydpxagkydxbhnhxkdfjnmyhylpmgocslnzhkxxlbzzlbmlsfbhhgsgyyggbhscyajtxwlxtzqcwzydqdqmmhdq'
++  'llszhlsjzwfjhqswscelqazynytlsxthaznkzzsdhlacxtwwcsgqqtddyzbcchyqzflxpslzygpzsznglydqcbdlxjtctajd'
++  'kywnsyzljhhdzcwnyyzynmhychhhxhjkzwsxhdnxlyscqydpclyzwmypbkxyjlkzhtyhsxqsyshxasmchkdscrswjpwqsgzj'
++  'lwwschszhsqnhzsngndaqtbaalzzmsstdqjcjktscjaxplggxhhgoxzcxpdmmhldgtybysjmxhmrzplxjzckzxshflqxccdh'
++  'xezfchzccdytcjyxqhlxdhypjqxnlsyydzozjnhxqezysjyayxkypdghddxsppyzndlthrhxydpcjjhtcxmctlhbynyhmhzl'
++  'lhnxmylllmdcppxhmxdkycyrdltxjchhznxclcclylnzsxzjzzlnnllwhyqsnjhxynttdkyjpychhyegkcttwlgqrlggtgty'
++  'gyhpyhylqyqgcwyqkpyyyttttlhyhlltyttsplkxzwgtwgpydqqzzdqxskcqnmjjzzbxyqmjrtfbbtkhzkbjdjjkdjjtlbwf'
++  'zpbtkqtztgpdgntpjyfalqmkgxbdclzfhzclllladpmxdjhlcclgyhdzfgyddgcyyfgydxkssebdhykdkdkhnaxxybfbyyhx'
++  'cqgabfqyjjdmljcsjzllbchbsxgjyndybyqspqwjlzktddtaccbkzdyzypjzqsjnkktknjdjgyepgtlfyqkasdntcyhblgdz'
++  'hbbydmjregkzyheyybjmcdtyfzjjhgcjplxhldwxjjkytcyksssmtwcttqzlzbszdtwzxgzagyktywxlhlcpbclloqmmzssl'
++  'cmbjcszzkydczxgqjdsmcytzqqlwzqzxssbpkdfqmddzdsddtdmfhtdyzjaqjqkypbdjyyxtljhdrqxxxhaydhrjlklytwhl'
++  'lrllrcxylbwsrszzsymkzzhhkyhxksmzsyzgcjfbzbsqlfcxxxnxkwwymsddyqwggqmmyhcdzttfgyyhgstttybykjdhkyjb'
++  'elhdypjqnfxfdqkzhqkzbyjtzbxhfdxbdaswhawajldyjsfhbldnndnqjsjnchxfjsrfwhzfmdrfjyhwzodjkzyjymfcyzny'
++  'nxfbytfyfwygdbnzzzdnytxzemmqbsqehxfzmbmflzzsrsymjgsxwzjsprydjsjgxhjjgljjynzjjxhgjkymlpeyycsysgqz'
++  'swhwlyrjlpxslcxmfsmwkcctnxnynpnjszhdzeptxmwywayysywlxjqzqxzdclaeelmcpjpclwbxsqhfwrtffjtnqjhjqdxh'
++  'wlbyzcfjlalkyyjldxhhycstdywnrjtxywdrmdrqhwqcmfjdyzmhmayxjwmyzqsxtlmrspwwchajbxtgcypxyyrrclmpamgk'
++  'qjszyjrmyjsnxtplnbappypylxmyzkynldgyjzczhnlmzhhanqmpgwqtzmxxmllhgdzxyhxkrxycjmffxyhjfsbssqlhxndy'
++  'cannmtcjcyprrnytyqnyymbmsxndlylysljnlxyshqmllyzlzjjjkymzcsfbzxxmstbjgnxyzhlsnmcqscyznfzlxbrnnnyl'
++  'mnrsgzqysatswryhyjzmzdhzgzdwybsscskxsyhytsxgcqgxzzbhyxjscrhmkkbsczjyjymkqhzjfnbhmqhysnjnzybknqmc'
++  'jgqhwlsnzswxkhljhyybqcbfcdsxdldspfzfskjjzwzxsddxjseeegjscssmgclxxkwwyllymwwwgydkzjgggtggsycknjwn'
++  'jpcxbjjtqtjwdsspjxzxnzxwmelptfsxtllxcljxjjljsxctnstxlehhlyqrwhsycsqrybyaywjejqfwqcqqcjqgxaldbzzy'
++  'jgkgxpltqyfxjltpadkyqhpmatlcpdhkxmtxybhblefxdleegqdymsawhzmljtwyqxlyjzljeeyxbqqffnlyxrdsctgjgxyw'
++  'lkllxqkcctlhjlqmkkzgcyygllljdzgydhzwxpysjbzkdzgyzzhywyfqytyzszyezklymhjjhtsmqwyzlkyywzcsrkqyqltd'
++  'xwcdrjklwsqzwbdcqyncjsrszjlkcdcdtlzzzacqqczddxyplxcbqjylzllljddzjgyjyjsyxnyyynxjxkxdazwyrdljyyyr'
++  'jlglldrxjcykywnqcclddnyyykyckczhjxcclgzqjgjwppcqqjysbzzxyjxjbxjfybsbdsfnsfpzwhdwztdmpptblzzbzdmy'
++  'ypqjrsdzsqzsqxbdgcpzswdwcsqzgmdhzxmwwfybpdgphtmjthzsmmbgzmbzjcfzhfcbbzmqcfmbcmcjxlgpnjbbxgyhyyjg'
++  'ptzgzmqbqdcgybjxlwzkydpdymgcftpfxyztzxdzxtgkmtybbclbjaskytssqyymscxfjewlsllszbqjjjaklyldlycctsxm'
++  'cwfgkkbqxlllljyxtyltyxytdpjhnhgnkbyqnfjyyzbyyessessgdyhfhwtcjbsdzjtfdmxhcnjzymqwsrxjdzjqpdqbbsdj'
++  'ggfbkjbxdgjhmgwjjjgdllthzhhyyyyyysxwtyyyccbdbpypzyccztjpzywcbdlfwzcwjdxxhyhlhwczxjtczlcdpxdjczcz'
++  'lyxjjsjbhfxwpywxzptdzzbdccjhjhmlxbqxxbylrddgjrrctttgqsczwmwfytmwzcwjwxjywcskybzqccttqnhxnkxxkhkf'
++  'htswoccjybcmpzzyjbnnzpbthhjdlscddytyfjpxyngfxbyqxcbhxcbsxtyzdmzysnxsxlhkmzxlthdhkghxjsshqyhhcjyx'
++  'glhzxcsnhekdtgqxqypkdhextykcnymyyypkqyytjxzlthhqtbyqhxbmyhsqckwwyllhcyylnneqxqwmcfbdccmljggxdqkt'
++  'lxkgnqcdgzjwyjjlyhhqtttnwchhxcxwheszjydjccdbqcdgdnyxzdhcqrxcbmztqcbxwgqwyybxhmbymykdyecmqkyaqyng'
++  'yzslfykkqgyssqyshjgjcnxkzycxsbkyxhyylstycxqthysmgscpmmgcccccmtztasmgqzjhklosqylswtmqsyqkdzljqqyp'
++  'lcycztcqqpbbqjzclpkhqcyyxxdtdddsjcxffllchqxmjlwcjcxtspycxndtjshjwxdqqjckxyamylsjhmlalykxcyydmamd'
++  'qmlmcznnyybzkkyflmchcmlhxrcjjhsylnmtjggzgywjxsrxcwjgjqhqzdqjdzjjzkjkgdzqgjjyjylhzxxcdqhhhestmhlf'
++  'sbdjsyyshfyssczqlpbdrfrztzdkykhsctgkwdqzrkmsynbcrwqbjyfawpzzedzcjykbcjwhyjbqdzywnyszptdkzpfpbazt'
++  'klqyhbbzpnbptyzzybhnydcpjmmcycqmcjfzzdcmnlfpbplmgqjtbttajzpzbbdnjkljqylnbzqhksjznggqsczkyxchpzsn'
++  'bcgzkddzqanzgjkdntlzldwjljzlywtxndjzjhxyatncbgtzcrrkmnjpjytsrwxcfjwjjtkhtzplbhsnjzsyjbwbzyzlstls'
++  'bjhdwwqpslmmfbjdwajyzccjtbnnrzwqxcdslqgdsdpdzhjtqqpsqlyyjzlgyhyzlctcbjtktyczjtqkbpjlgmjzdmcsgpyn'
++  'jzjjyyknhrpwszxmtncszzyxybyhyzaxywkcjtllckjjtjhgcxdxyqyczbywblwqcglzgjgqrqcczssbcrbcskydznljsqgx'
++  'ssjmecnstztpbdlthzwhqwqtzexnqczgweskssbybstscsjccgbfsdqszlccglllzghzcthcnmjgyzaznmckcstjmmzckbjy'
++  'gqljyjppldxrgzyxccsnhshgdznlzhzjjcddcbcjflbfqbczzwpqdnhxljcthqwjgylnlszzpcjdscqqhjqkdxkpbajyemsm'
++  'jtzdxlcjyryynwjbngzzkmjxltbsllrtpylcsznxjhllhyllqqzqlxymrcwcxsljmczltzldwdjjllnzggqxppskygyggbfz'
++  'pdkmwghcxmcgdxjmcjsdycabxjdlnbcddygskydjtxdjjyxmsaqazdzfslqxyjsjzylblxxwxqqzbjzlfbblylwdsljhxjyz'
++  'jwtdjcyfqzqzzdcsxzzqlzcdzfchyspympqzmlpplffxjjnzzylsjyyqzfpfzksywjjjhrdjzzxtxxglghtdxcskyswmmtcw'
++  'ybazbjkshfhgcxmhfqhyxxyzftsjyzbxyxpzlchmzmbxhzzssyfdmncwdabazlxktcshhxkxjjzjsthygxsxyyhhhjwxkzxc'
++  'sbzzwwhhcwtzzzpjxsnxqqjgzyzawllcwxzfxgyxyhxmkyyswsqmnjnaycyspmjkgwcqhylajjmzxhmmcnzhbhxclxtjpltx'
++  'yjhdyylttxfszhyxxsjbjyayrsmxyplckdlyhlxrlnllstyzyyqygyhhsccsmcctzcxhyqfpyyrpfflfqtntszllzmhwtcjq'
++  'yzwtllmlmdwmbzssmzrbpdddlgjjbxccsrzqqygwcsxfwzlxccrbtdzmcyggdlqsgtjmwljmymmsyhfbjdgyxccpshxczcsb'
++  'sjwjgjmpbwaffyfnxhydxzylremzgzcyhsszdlljcsqfzxxkptxzgxjjgbmyyysnbtylbnlhbfzdcyfbmgqrrmsszxysgtzn'
++  'nydzzcdgbjafjbdknzblcsszpsgzycjszlmlrzzbzzldlsllysxsqzqlyxzlsgkbrxbrbzcycxzjzeeyfgklzlyyhgysgzlf'
++  'jhgtgwkraajyzkzqtsshjjxdzyzzyjlzyrzdqqhgjzxsszbtkjpbfrtjxllfqwjgslqtymblpzdxtzagbdhzzrbgjhwnjtjx'
++  'lhscfsmwlldqysjtxkzscfwjlbxftzlljzllqblcqmqqcgcdfpbbhzczjlpyygjdtgwdcfczqyyyqysrclqzfklzzzgffsqn'
++  'wglhjycjjczlqzzyjbjzzbpdccmhjgxdqdgdlzqmfgpsytsdyfwwdjzjysxyycjcyhzwpbyhxrylybhkjksfxtzjmmchhllt'
++  'nyymsxxyzpdjjycdyzwmtjjkqyrhllqxpsgtlwycljscbxjyzfnmlrgjjtyzbsyzmsjyjhgfzqmsyxrszcwtlrtqzsstkxgq'
++  'ggsptgcdnjsgcqcqhmxggztqydjkzdlbzsxjlhyqgggthqscpyhjhhgnygkggcmjdzllcclxqsftgzslllmlcskctbljzzsz'
++  'mmnytpzsxqhjcjyqxyexzqzcpshkzzysxcdfgmwqrllqxrfztlysdctmjcsjjdhjnxtnrztzfqrhqgllgcxszsjdjljcytsj'
++  'tlnyxhszxcgjzyqpylfhdjsbpcczgjjjqzjqdybssllcmyttmqtbhjqnnygkynqyqmzgcjkpdcgmyzhqllsllclmholzgdyl'
++  'fzsljcqzlylzcjeshnylljxgjxlyjyyyxnbcljsswcqqcjyllcldjyllzllbnylgqchxyyqoxccqkyjxxhyklksxaqqxcqkk'
++  'kkcsgyxxyqxygwtjohthxpxxcsshcyeychzzcbwqbbwjqcscszsslzylgdesjzmmymcytsdsxxscjpqqsqylyfzychdjdzyw'
++  'cbtjsydjhcyddjlbdjjsodzyqysqkxxdhhgqjyohdyxwgmmmajdybbbppbcmhcpljzsmtxerxjmhqdstpjdcbssmsssthjts'
++  'lmmtrcplzszmlqdsdmjmqpnqdxcfynbfsdqqyxhyaykqyddlqyyysszbydslntfjtzqbzmchdhczcwfdwtmqqsphqwwxsrgj'
++  'cwtjtzzqmgwjjrjhtqjbbgwzfxjhnqfxxqywyyhyscdydhhqmnmdmmcpbszppzzglmzfollcfwhmmsjzttthlmyffytzzgzy'
++  'skjjxqyjzqphmbzzlyghgfmshpcfzsnclpbqsnjszslxjfpmtyjygbxlldlxpzjypjyhhzcywhjylsjexfsqzywxkzjlladt'
++  'mlymqjpwxxhxsktqjezrpxxzghmhwqpwqlyjjqjjzszcfhjlchhnxjlqwzjhbmzyxbdhhypylhlhlgfwlcfyytlhjjcjmscp'
++  'xstkpnhjxsntyxxtestjctlsslstdlllwwyhdhrjzsfgxssyczykwhtdhwjslhtzdqdjzxxqggyltzphcsqfzlnjtclzpfst'
++  'pdynylgmjllycqhynsbchylhqyqtmzybbywrfqykjsyslzdyjmpxyyssrhzjnyqtqdfzbwwdwwrxcwhgyhxmkmyyyhmsmzhn'
++  'gcepmlqqmtcwctmhmxjpjjhfxyyzsjchtybmstsyjdtjjqytlhynbyqzlcxcnzwsmylkfjxlwgbypjytysylymzcktdwlgsm'
++  'zsylmpwlzwxwqzssaqsyxyrhssntsrapccpwcmgdhhxzdzxfjhgzttsbjhgyglzysmyclllybtyxhbbzjkssdmalhhycfygm'
++  'qypjycqxjllljgclzgqlycjcctotyxmtmshllwcgfxymzmklpszzcxhhjyslctyjcyhxsgyxzkxlzwpyjpdhjwpjpwsqqxlx'
++  'xdhmrslzcyzwstcxkystzshbsccstplwsscjchjlcgchssphylhfhhxjsxyllnylmzdhzxylsxlwzyhcldyahzcmddyspjtq'
++  'jzlngjfsjshctsdszlblmssmnyymjqbjhrcwtyydchqljapzwbgqybkfcmjwlzllyylszydwhxpsbcmljpscgbhxlqhyrljx'
++  'yswxhxzlldfhlslymjljyflyjycdrjlfsyzfsllcqyqfgjyhyszlylmstdjcyhbzllnwlxxygyyhbmgdhxxhhlzzjzxczzzc'
++  'yqzfnjwpylcpkpykpmclqkdgxzggwqbdxzzkzfbxxlzxjtpjpttbytszzdwslchzhsltjxhqlhyxxxywzyswtmzkhlxzxzpy'
++  'hgchkjfsyhztjrlxfjxptztwhplyxfcrhxshxkjxxyhzjdxjwylhyhmjtbflkhtxcwhcfwjcfpqrxqxcyyyjygrpxgscsxng'
++  'wchkzdxhflxxhjjbyzwtsxnncyjjymswzjqrmhxzwfqsylzjzgbhynslbgttcsebhxxwxyhhxyxnsqyxmlywrgyqlxbbcljs'
++  'ylpsytjzyhyzawlhorjmksczjxxxyxchcytryxqjddsjfslyltsffyxlmtyjmjjyyyxltzcsxqzlhzxlwyxzhdnlrxhxjcdy'
++  'hlbrlmbrllaxksllljlyxxlycrylcjcgjcmtlzllcyzzpzpcyawhjjfybdyyzsepckzdqyqpbpcjpdcyzbdbbcyydycnnpjm'
++  'smlrmfmmgwygbsjgygsmdqqqztxmkqwgxllpjgzbqcdjjjfpkjkcxbljmswmdtqjxldlppbxcwkcqqbfqjczagzgmykbhyyh'
++  'zykndkzmbpjyspxthlfpnyygxjdbkxnhhjhzjxstrstldxskzysybmxjlxyslbzyslhxjpfxbqnbylljqkygzmcyzzymccsl'
++  'dlhzgwfwyxzmwcxtynxjhbyymcysbmhysmydyshqyzchmjjmzcaahcbjbbhplxtylsxsdjgjdhkxxtxxnbhnmlngsltxmrhn'
++  'lxqjxmzllyswqgdlbjhdcgjyqyymhwfwjybbbyjmjwjmdpwhxqldyapdfxxbcgjspckrssyzjmslbzzjfljjjlgxzgyxyxls'
++  'zqyxbexyxhgcxbpldyhwecdwwcjmbtxchxyqxllxflyxlljlssfwdpzsmyjclmswtczbchqekcqbwlcgydblqppqzqfjqdjh'
++  'ymmcxtxdrmjwrhxcjzclqxdyynhyyhrslsrsywwzjymtltllgtqcjzyabsckzcjyccqljsqxalmzyyywlwdxzxqdllqshgpj'
++  'fjljhjabcqzdjgthhsstcyjlbswzlxzxrwgldlzrlzqtgsllllzlymxqgdzhgbdbhzpbrlwzxqbpfdwozzwhlypcbjcczdmb'
++  'zpbzzzcyqxldomzblzwpdwyygdstthcsqsccrsssyslfybfntyjszdfndpthtzzmbblxlcmyffgtjjqwftmdpjwdnlbzcmmc'
++  'tgbdzlqlpyfhsymjylsdchdzjwjcctljcldtljjcpddpjdsszynndbjlggjzxsxnlycybjjqxcbylzcfzppgkcxzdzfztjjf'
++  'jsjxzbnzyjqttyjwhtyczhymdjxttmpxsflzcdwslshxybzgtfmlcjtacbbmgdewycyzcdszcyhflyctygwhkjyylsjcxgyw'
++  'jcbhlcsnddbtzbsclyzczzssqdllmqyyhfllqllxfdyhabxggnywyypllsdldllbjcyxjzmlhljdxyyqytdlllbbgbfdfbbb'
++  'jzzmdojhgclgmjjpgaehhbwcqxaxhhhzchxyphjaxhlphjpgpzjqcqzgjjzzgzdmqyybzzphyhybwhazyjhykfgdpfqsdlzm'
++  'ljxjpgalxzdaglmdgxmwzqytxdxxpfdmmssympfmdmmkxksyzyshdzkjsysmmzzzmsydnzzczxbmlstmddnmxckjmztyymzm'
++  'zzmsshhdccjemxxkljstgwlsqlyjzllsjssdbpmhnlyjczyhmxxhgzcjmdhxtkgrmxfwmckmwkdcksxqmmmfzzydkmsclcmp'
++  'cgmwrpxqpzdsslcxkyxtmlgjyahzjgzqmcsnxyhmmpmlkjxmhlmlgmxctkzmjjyszjsyszhsyjzjcdajzybsdqjzgwzkgxfk'
++  'dmsdjlfmehkzqkjbeypzyszcdwyjffmzjykttdzzefmzlbnpplplpbpszalltylkckqzkgenqlhagyxydpxlhsxqqwqykxqc'
++  'lhyxxmlyccwlymqyskychlcjnszkpyzkcqzqljbdhdjhlasqlbydwqlwdnbqcryddztjybkbwszdxdtnpjdtctqdfxqqmgns'
++  'eclstbhpwslctxxlpwydzklzygzcqapllkccylbqmqczqcljslqzdjxldthpzqdljjxzqdjyzhkzljcyqdyjppypeakjyrmp'
++  'cbymcxkllzllfqpylllmbsglcysslrsysqsmxyxqqzbdzrysyztffmzzsmzqhzssccmlyxwtpzgxzjgzgsjsgkddhtqggzll'
++  'bjdzlcbzhyxyzhzfywxyzymsdbzzyjgtsmtfxqyxjscdgslnmdlrytzlryylxqhtxsrtzcgyxbnqqzfhykmzjbzymkbpnlyz'
++  'pblmcnqyzzzsjzhjctzhhyzzjrdyzhnfxglfxslkgjtctssyllgzrzbbjzzklpkbczyslxyxbjfpnjzzxcdwxzyjxzzdjjgg'
++  'grsrjkmcmzjlsjywqshyhqjsxpjztzlsnshrnypjtwchklbsrzlcxtjqxqkysjycztlqzybbybwzjqdwgyzcytjcjxckcwdk'
++  'kzxsgkdzywwyyjqyytcytdjlxwkczkklcclzcqqdzlqlcsfqchqhsfsmqzzllbjjzbsjhtsjdysjqjpdlzcdcwjkjzzlpycg'
++  'mzwdjjbsjqzsyzyhhxcbbjydssddzncglqmbtsfcbfdzdlznfgfjgfsmptjqlmblgqcyyxbqkdxjqsrfkztjdhczklbsdzcf'
++  'ytplljgjhtxzcsszzxstcygkgckgyoqxjplzbbbgtgyjdgczqszlbjlsjfzgkqqjcgyczbzqtldxrjxbsxxpzxhyzyclwdsj'
++  'jhxmfczpfzhqhqmqgkslyhtycgfrzgnqxclpdlbzcsczqlljblhbdcypczppdymtzsgyhckcpzjgslclnscdsldzxbmsdldd'
++  'fjmkdjdhslzxlszqpqpgjllybdszgqlbzlslkyyhzttncjyqtzzfszqztlljtyyllqllqyzqlbdzlslyyzymdfszsnhlxznc'
++  'zqzbbwskrfbcyzmthblgjpmczzcstlxshtzcyzlzblfeqhlxflcjlyljqcbzlzjghsstbrmhxzhjzclxfnbgxgtqjcztmsfz'
++  'kjmssnxljkbhszxntnlzdntlmsjxgzjyjczxyhyhwrwwqnztnfjscpzshzjfyrdjsfscjzbjfzqzchzlxfxsbzqlzsgyftzd'
++  'cszxzjbqmszkjrhxjzcgbjkhchgtjkjqglxbxfgdrtylxjxgdtsjxhjzjjcmzlcqsbtxhqgxttxhxftsdkfjhzyjfjxrzcdl'
++  'llcqsqqzqwqxswqtwgwbzcgcllqzbclmqqtzgzxzxljfrmyzflxysqxxjkxrmjdcdmmyxbsqbhgcmwfwtgmxlzbyytgzyccd'
++  'xyzxswgxyjyznbgpzjcqsyxcxrtfycgrhztxszzthcbfclsyxzljqmzlmplmxzjssflbysmyqhxjsxrxsqzzzsslyflczjrc'
++  'rxhhzxqydshxsjjhzcxjbdynsysxjbqlpxzqpymlxzkyxlxcjlcycrxzzlldlllsjyhzxhyjwkjrwyhcpsgnrzlfzwfzznsx'
++  'gxflzsxzzzbfcsyjdbrjkrdhhgxjljjtgxjxxstjtjxlyxqfcsgswmsbctlqzzwlzzkxjmltmjyhsddbxgzhdlbmyjfrzfcg'
++  'clyjbpmlysmsxlszjqqhjzfxgfqfqbpxzgyyqxgztcqwyltlgwwgwhllfsfgzjmgmgbgtjfsyzzgzyzaflsspmlbflcwbjzc'
++  'ljjmzlpjjlymqdmyyyfbgygqzglyzdxqyxrqqqhsxyyqqygjtyxfsfsllgnqcygycwfhcccfxbylypllzqxxxxxkqhhxshjd'
++  'cfdsczjxcpzwhhhhhapylhalpqafyhxdyllkmzqgggddesrnndltzgchybpysqjjhclljtolnjpzljlhymheydydsqycddhg'
++  'zpndzclzywllznteytgxlhslpjjbdgwxpcdntjcklkclwkllcasstknzdnqnttlyyzssysszzryljqkcgbhhcrxrzydgrgcw'
++  'cgzhfffppjfzynakqgywyqpqxxfkjtszzxswzddfbbqtbgtzfznpzfpzxzpjszbmqhkcyxyldkljnypkyghgdcjxxeahpnzg'
++  'ctzcmxcxmmjxnkszqnmnlwbwwxjjyhclstmcsqdjcxxtpcnpdtnnpglllzcjlspblplkcdtnjnlyyrscffjfqwdpgzdwmnzc'
++  'clodaxnssnyzrestyjwjyjdbcfxnmwttbqlwstszgybljpxglboclgpcbjftmxzljylzxcltpnclcgxtfzjshcrxsfyszdkn'
++  'tlbyjcyjllstgqcbxnwzxbxklylhzlqzlnzcqwgzlgzjncjgcmnzzgjdzxtzjxycyycxxjyyxjjxsssjstssttppghtcsxwz'
++  'dcsyfotfbchfbblzjclzzdbxgcxlqpxkfzflsyltywbmnjhskbmddbcysccldxycddqlyjjhmqllcsgljjsyfpyyccyltjan'
++  'tjjpwycmmgqyysxdhqmzhszxbftwwzqswqrfkjlxjqqyfbrxjhhfwjgzyqacmyfrhcyybyqwlpexcczstyrltsdmqlykmbbg'
++  'myyjprknnbbsxyxbhyzdjdnghpmfsgbwfzmfjmmbcmzdcjjlcnyxyqgmlrygqccyhzlwjgcjcggmcjjfyzzjhycfrrcmtzqz'
++  'xhfqgdjxccjeaqcrjthpljlszdjrbcqhjdzrhxlyxjsymhzydwldfryhbbydtssccwbxglpzmlzztqsscpjmmxjcsjytycgh'
++  'ycjwsnsxlfemwjnmkllswtxhyyygcmmcwjdqdjzglljwjnkhpzggflccsczmcbltbhbqjxqdjpdjqtghglfqawbzyzjltstd'
++  'hqhctcbchflqmpwdshyytqwcnztjtlbypbpdyyyxsqkxwyyflxxncwcxybmaelykkjmzzzbrxyaqjfljpfhhhytzzxrgqqmh'
++  'spgdzjwbwpjhzjdyjcqwzkthxsqlzyymysdzgrxckkhjlwpysyscsyzlrmlqsyljxbcxtlhdqzpcycykpppnsxfyzjjrcemh'
++  'szmsxlxglrwgcstlrsxbygbzgztcpldjlslylymdtmtcpalcxpqjcjwtcyyzlblxbzlqmyljpghdslssdmxmbdczsxwhamlc'
++  'zcpjmcnhjyjnsygchskqmzzqdllkablwjqsbmocdxjrrlyqchjmybyqlrhetfjzfrfksryxfjdwdsxxlwsqjyslyxwjhsnlx'
++  'yaxhbhawhhjcxwmyljcsqlkydttxbzsxfdxgxsjhhsxxybssxdpwncmrptjzczenygcxqfjxkjbdmljcmqqxloxslyxxlyll'
++  'jdzbtymhbfsttqqwlhogyblscalzxqlhtwrrqhlstmypyxjjxmqsjpnbryxyjllyqylthylqyfmhkljdmllhfzwkzhljmlhl'
++  'jkljstlqxylmbhhlnlsxqchxcfxxlhyhjjgbyzzkbxscqdjqdsxjzsyhzhhmgsxcsymxfebcqwwrbpyyjqtyqcyjhqqzyhmw'
++  'ffhgzfqjfcdbxndqyzpcyhhjlfqzgppxzdbbgzqstlgdgylcqmgchhmfywlzyxkjlypqhsywmqqgqzmlzjnsqxjqsyjtcbeh'
++  'sxfssfxzwfllbcyyjdytdthwzsfjmqqyjlmqsxlldttkhhybfpwdyysqqrnqwlgwdebdwcyygcdlkjxtmxmyjsxhybrwfymw'
++  'frxyqmxysctzztfykmldhqdlwyqnlcryjblpsxcxywlsbrrjwxhqybhtydnhhgmmywytzcsqmtssccdalwztcpqpyjllqzyj'
++  'swxwzzmmglmxclmxczmxmzsqtzppjqblpgxjzhfljjhycjsnxwcxsccdlxsyjdcqcxslqyclzxlzzxmxqrjmhrhzjphmfljl'
++  'mlclqnldxzlllfypngjysxcqqdcmqjzzxhnpnxzmekmxxykyqlxsxtxjxyhwdcwdzhqyybgybcyscfgfsjnzdyzzjzxqzrqj'
++  'jymcanhqjtldbpyzbstjhxxzypbdwfgzzqpymtngxzqbyxmbbfcckrjqjbjegrzgyclkxzdxkknsjkcljspgyyzlqqjybzss'
++  'qlllkjfcbktylcccdblsppfylgydtzjyqggkqttfcxbdkdxxhybbfytyhbclpdytgdhryrnjsbtcsnyjqhklllzslydxxwbc'
++  'jqsbxbfjzjcjdzfbxxbrmlazgcsnclbjdstblfrzdswsbxbcllxxlzdjzsjpylywwyftfffbhjjjgbygjpmmmmsscljmtlyz'
++  'jxswxtyledqpjmygqzjgdjlqjwjqllsdgjgygmscljjxdtygjqjqjcjzcjgdzdshqgsjggcjhqxsnjlzzbxhsgzxcxyljxyx'
++  'yydfqqjhjfxdhctxjyrxysqtjxyefyyssyxjxncyzxfxcsyszxyyschshxzzzgzzzgfjdldylnpzgyjyzyyqzpbxqbdztzcz'
++  'yxxyhhscxshcggqhjhgxwsztmzmehyxgebtylzkkwytjzrclekestdbcykqqsayxcjxwwgsbhjszsdhcsjkqcxswxfctynyd'
++  'pzcczjqtzwjqdzzzqzljchlsbhpydxpsxshhezdxfptjqyzzxhyaxncfzyyhxgnqmywxtzsjpkhhgymxmxqcxtsbcqsjyxht'
++  'yylybcqlmmszmjzjllcogxzaajzyhjmchhcxzsxzdznleyjjzjbhzwzzsqtzpsxztdsxjjjznyazphhyysrnqdthzhayjyjh'
++  'dzxzlswclybzyecwcycrylcxnhzydzydyjdfrjjhtrsqtxyxjrjhojynxelxsfsfjzghpzsxzszdzcqzbyyklsgsjhczshdg'
++  'qgxyzgxchxzjwyqwgyhksseqzzndzfkwyssdclzstsymcdhjxxyweyxczaydmpxmdsxybsqmjmzjmtzqlpjyqzcgqhxjhhhx'
++  'xhlhdldjqcldwbsxfzzyyschtytyjbhecxhjkgjfxbhyzjfxbwhbdzfyzbcapnpgnydmsxhkhhmamlnbyjtmpxyjmcthjbzy'
++  'fcgtyhwphftgzzezsbzegpbmdskftycmhbllhgpzjxzjgzjyxzsbbqsczzlzccstpgxmjsftcczjzdjxcybzlfcjsyzfgszl'
++  'ybcwzzbyzdzypswyjgxzbdsysxlgzbzfygczxbzhzftpbgzgejbstgkdmfhyzzjhzllzzgjqzlsfdjsscbzgpdlfzfzszyzy'
++  'zsygcxsntxchczxtzzljfzgqsqyxzjqccccdjcdxzjyqjccgxztdlgscxzsyjjqtcclqdqztqchqqjztezzzobkkdjfcjfzs'
++  'ybqyqttynlmbdktjcpqzjdzfpjsbnjlgyjdxjdzqkzgqkxclpzjtcjdqbxdjjjstcjnxbxcmslyjcqmtjqwwcjjnjnlllhjc'
++  'wqtbzqyczczpzzdzyddcyzdzccjgtjfzdprntctjdcqtqndtjnplzbcllctdsxkjzqdpzlbznbtjdcxfczdbccjjltqjpldc'
++  'gzdbbzjcqdcjwynllzlzccdwllxwzlxrsntqjccxkjlsgdfqtddglrlajjtklymkqlldzytdyycygjwyxdxfrskstcdenqmr'
++  'kqzhhqkdldazfkypbggpzrebzzykyzspegjjglkqzzzslysywyzwfqznlzzlzhwcgkypqgnpgblplrrjyxcccgyhsfzfwbzy'
++  'wtgzxyljczwhxzjzblfflgskhyjzeyjhlpllllcygxdrzelrhgklzzyhzlyqszzjzqljzflnbhgwlczcfjwspyxzlzlxgccp'
++  'zbllcxbbbbxbbcbbcrnncccyrbbsyldcgqyyqxygmqzwtzydyjhyfwdehzdjywlccntzyjjcdedpzdztstqjhdymbjnyjzlx'
++  'tsstphndjxxbyxqtzqddtjtdyztgwscszqflshlglbcjbhdlyzjyckwtydylbnydsdsycctyszyyebgexhqddwnygyclxtdc'
++  'ystqmygzasccszzddlcclzrqxyyeljsbymxshztembbllyyllytdqyshymrqwkfkbfxnxsbychxbwjyhtqbpbsbwdzylkgzs'
++  'kyghqzjhhxjxgnljkzlyycdxlfwfghljgjybxblybxqpqgztzplncybxdjyqydymrbesjyyhkxxstmxrczzywxyhybmcflyz'
++  'hqyzmqxdbxbzwzmslpdmyckfmzklzcyjyczlhxfzlydqzpzygyjyzmzxdzfyfyttqtzhgspczmlccytzxjcytjmkslpzhysn'
++  'wllytpzctzzcktxdhxxtqcypksmqccyyazhtjpcylzlyjbjxtfnyljyynrxcylmmnxjsmybcsysslzylxjjgyldzdpqbfzzb'
++  'lfndsqkczfhhhgqmrdsxycstxnqqjpyjbfcxdyqfbnxejdgyqbsrcnfyyqpghyjdyzxgrhtkyleqdzntsmgklbsgbpyszbyt'
++  'jzsszjcssxzbhbscsbzczptqfzmqflypybbjgszmxxdjmthyskkbjtxhjcegbsmjyjzcxtmljyxrzzqscxxqptzxmkyxxxjc'
++  'ljprmyygadyskqlsadhrskqxzxztcghztlmlwxybwsycdbhjhcfcwzsxhytkzlxqshlyczjxemplprcgltbzztlzjcyjgdtc'
++  'lglpllqpjmzpapxyzlaktkdnczzbnzctdqqzjyjgmctxltgcszlmlhbglkfwnwzhdxphlfmkydlgxdtwzfrjejctzhydxyks'
++  'hwfzcqshktmqqhtchymjdjskhxzjzbzzxympajqmsdbxlsklyynwrtsqlscbpdbsgzwyhtlkssswhzzlyytnxjgmjszsxfwn'
++  'lsoztxgxlsammlbwldszylakqcqctmycfjbslxclzjclxxksbzqclhjphqplsxsckslnhpsfqqytxjjzlqldxzjjzdyydjnz'
++  'ptfcdskjfsljhylzqjzlbthydgdjfdbyazxdzhzjnhhqbyknxjjqczmlljzkspldsclbblxklelxjlbjycxjxgcnlcqplzlz'
++  'njtzljgyzdzpltqcssfdmnycxgbtjdcznbgbqyqjwgkfhdnbyqzqgbkpbbyzmtjdytblsqmbsxsbnpdxklemyycjynzdtldy'
++  'kzzxtdxhqshdgmzsjycctayrzlpwltlkxslzcggexclfxlkjrtlqjaqzncmbqdkkcxglczjzxjhptdjjmzqykqsecqzdshha'
++  'dmlzfmmzbgntjnnlgbyjbrbtmlbyjdzxlcjlpldlpcqdhlhzlycblcxzcjadqlmzmmsshmybhbskkbhrsxxjmxsdznzpxlbb'
++  'ragggfchgmsklltsjyycqlcskywyehywhbhqywbawykqldqftntkhqcgdqktgpkxhcpdhtwtmssyhbwcrwxhjmkmzngwtmlk'
++  'fghkjyldyycxwhyyclqhkqhttqkhffldxqwgzyydesbpkyrzpjfyyzjceqdzzdlattpbfjllcxdlmjsdxegygsjqxcfbxssz'
++  'pdyzcxdnyxpfzydlyjccpltxlsxyzyrxcyysdylwwndsahjsygyhgywwaxtjzdaxysrltdjssaxfnejdxyzhlxlllzhzsjny'
++  'qyqqxyjghzgjcyjchzlycdshwsgczyjxcllnxzjjyyxnfsmwfpylcyllabwddhwdxjmcxztzpmlqzhsfhzynztlldywlslxh'
++  'ymmylmbwwkyxyadtxylldjpybpwfxjmmmllhafdllaflbhhhbqqjtzjcqjjdjtffkmmmbythygdcqrddwrqjxnbysnmzdbyy'
++  'tbjhpybygtjxaahgqdqtmystqxkbtsbkjlxrbeqqhqmjjbdjwtgtbxpgbktlgqxjjjcdhxqdwjlwrfmqgwqhckryswgbtgyg'
++  'bwsdwdwrfhwytjjxxxjyzyslphyypayxhydqkxshxyxeskqhywbdddpplcjlhqeewxksyyhdyplfjthkjltcyyhhjttpltzz'
++  'cdlthqkcxqysteeywkyzyxxyysddjkllpwmcyhqgxyhcrmbxpllnqydqhxsxxwgdqbshyllpjjjthyjkyphthyyktyezyenm'
++  'dshlcrpqfbgfxzbsbtlgxsjbswyysksflxlpplbbblbsfxfyzbsjssylpbbffffsscjdstzsxtryjcyffsytyzbjtbctsbsd'
++  'hrtjjbytcxyjeylxcbnebjdsysyhgsjzbxbytfzwgenyhhthjhatfwgcstbgxklstywmtmbyxjskzscdyjrcytwxzfhmymcx'
++  'lznsdjtxtxrycfyjsbsdyerxhljxbbdeynjghxgckgscymblxjmsznskgxfbnbbthfjaafxyxfpxmyfhdtzcxzzpxrsywzdl'
++  'ybbjtyqwqjpzypzjznjpzjlztfysbttslmptzrtdxqsjehbzylzdhljsqmlhtxtjecxalzzspktlzkqqyfsygywpcpqfhqhy'
++  'tqxzkrsgtgsqczlptxcdyyzssqzslxlzmacbcqbzyxhbsxlzdltcdjtylzjyytpzylltxjsjxhlbmytxcqrblzssfjzztnjy'
++  'dxmyjhlhpblcyxqjqqkzzscpzkswalqsblcczjsxgwwwygyatjbbctdkhqhkgtgpbkqyslbxbbckbmllxdzstbklggqkqlsb'
++  'kkdfxrmdkbftpzfrtbbmferqgxkjpzsstlbzdpszqzsjthljqlzbpmsmmsxlqqnhknblrddnhxdhddjcyygyfqgzlgsygmjq'
++  'gkhbpmxyxlytqwlwgcpbmjxcyzydrjbhtdjxeeshtmjsbyplwhlzffnypmhxqhpltbqpfbcwjdbygpnxtbfzjgsddtjshxea'
++  'wzzyllttybwjkgxghlfkxdjtmszsqynzggswqsphtlsskmclzxyszqzxncjdqgzdlfnykljcjllzlmzznhydsshthxzlzzbb'
++  'hqzwwycrdhlyqqjbeyfsgxthsrxwqhwfslmssgzttyeyqqwrslalhmjtqjsmxqbjjzjxzyzkxbyqxbjxshzssfglxmxzxfgh'
++  'kzszggylclsarjxhslllmzxelglxydjytlfbhbpnlyzfbbhptgjkwetzhkjjxzxxglljlstgshjjyqlqzfkcgnndjsszfdbc'
++  'twwseqfhqjbsaqtgypjlbxbmmywxgslzhglzgnyfljbyfdjfrgsfmbyzhqfbwjsyfyjjphzbyyzffwodgrlmftmlbzgycqxc'
++  'djygzyyyytytydwegazyhxjlzythlrmgrjxzclhneljjthtbwjybjjbxjjtjteekhwsljplpsfazpqqbdlqjjtyyqlyzkdks'
++  'qjyyjzldqcgjjyzjsycmraqthtejmfctyhypkmhycwjdcfhyyxwshctxrljgjshccyyyjltkttytmxgtcjtzayyoczlylbsz'
++  'ywjytsjyhbyshfjlygjxxtmzyyltxxypslxyjzyzyypnhmymdyylblhlsyygqllnjjymsoycbzgdlyxylcqyxtszegxhzglh'
++  'wbljgeyxtwqmakbpqcgyshhegqcmwyywljyjhyyzlljjylhzyhmgsljljxcjjyclycjpcpzjzjmmylcjlnqljjjlxxjmlszl'
++  'jqlycmmhcfmmfpqqmfxlqmcffqmmmmhmznfhhjgtthhkhslnchhyqdxtmmqdcydyxyqmyqylddcyyydazdcymzydlzfffmmy'
++  'cqcwzzmabtbyctdmndzggdftypcgqyttssffwbdtzqssystwjjhjytsxxylbyqhwwhxezxwznnqzjzjjqjccchyyxbzxccyj'
++  'tllcqxknjycyycynzzqyyoewyczdcjycchyjlbtzyycqwlpgpyllgkdldlgkgqbgychjxy';
++
++String pinyinInitials(String text) {
++  final buffer = StringBuffer();
++  for (final rune in text.runes) {
++    if (rune >= _firstHan && rune <= _lastHan) {
++      buffer.writeCharCode(_initials.codeUnitAt(rune - _firstHan));
++    } else {
++      buffer.writeCharCode(rune);
++    }
++  }
++  return buffer.toString();
++}
++
++final Map<String, String> _keyCache = {};
++
++String pinyinSortKey(String text) {
++  return _keyCache.putIfAbsent(text, () {
++    final lower = pinyinInitials(text).toLowerCase();
++    return lower.replaceAll(RegExp(r'\s+'), '');
++  });
++}
++
++bool matchesWithPinyin(String text, String query) {
++  if (query.isEmpty) {
++    return true;
++  }
++  if (text.toLowerCase().contains(query)) {
++    return true;
++  }
++  return pinyinSortKey(text).contains(query);
++}
++
++int compareWithPinyin(String a, String b) {
++  final result = pinyinSortKey(a).compareTo(pinyinSortKey(b));
++  if (result != 0) {
++    return result;
++  }
++  return a.compareTo(b);
++}
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart fl/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart	1970-01-01 09:00:00.000000000 +0900
 +++ fl/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart	2026-10-21 08:27:56.740163830 +0900
@@ -252,60 +525,68 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart fl/FlClash-0.8.
 +}
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart	2026-10-21 08:27:42.425483956 +0900
-@@ -1084,6 +1084,9 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart	2026-10-21 19:22:32.659619183 +0900
+@@ -1084,6 +1084,11 @@
      ),
      "whitelistMode": MessageLookupByLibrary.simpleMessage("Whitelist mode"),
      "wordWrap": MessageLookupByLibrary.simpleMessage("Word Wrap"),
 +    "goToLine": MessageLookupByLibrary.simpleMessage("Go to line"),
 +    "outline": MessageLookupByLibrary.simpleMessage("Outline"),
++    "editInfo": MessageLookupByLibrary.simpleMessage("Edit info"),
++    "editFile": MessageLookupByLibrary.simpleMessage("Edit file"),
 +    "replaceAll": MessageLookupByLibrary.simpleMessage("Replace all"),
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("Simplified Chinese"),
    };
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart	2026-10-21 08:27:42.429564455 +0900
-@@ -884,6 +884,9 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart	2026-10-21 19:22:32.663397251 +0900
+@@ -884,6 +884,11 @@
      "webDAVConfiguration": MessageLookupByLibrary.simpleMessage("WebDAV設定"),
      "whitelistMode": MessageLookupByLibrary.simpleMessage("ホワイトリストモード"),
      "wordWrap": MessageLookupByLibrary.simpleMessage("折り返し"),
 +    "goToLine": MessageLookupByLibrary.simpleMessage("行へ移動"),
 +    "outline": MessageLookupByLibrary.simpleMessage("アウトライン"),
++    "editInfo": MessageLookupByLibrary.simpleMessage("情報を編集"),
++    "editFile": MessageLookupByLibrary.simpleMessage("ファイルを編集"),
 +    "replaceAll": MessageLookupByLibrary.simpleMessage("すべて置換"),
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("簡体字中国語"),
    };
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart	2026-10-21 08:27:42.431921159 +0900
-@@ -1149,6 +1149,9 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart	2026-10-21 19:22:32.665262285 +0900
+@@ -1149,6 +1149,11 @@
        "Режим белого списка",
      ),
      "wordWrap": MessageLookupByLibrary.simpleMessage("Перенос строк"),
 +    "goToLine": MessageLookupByLibrary.simpleMessage("Перейти к строке"),
 +    "outline": MessageLookupByLibrary.simpleMessage("Структура"),
++    "editInfo": MessageLookupByLibrary.simpleMessage("Изменить данные"),
++    "editFile": MessageLookupByLibrary.simpleMessage("Изменить файл"),
 +    "replaceAll": MessageLookupByLibrary.simpleMessage("Заменить все"),
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("Упрощенный китайский"),
    };
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart	2026-10-21 08:27:42.427765254 +0900
-@@ -766,6 +766,9 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart	2026-10-21 19:22:32.661382180 +0900
+@@ -766,6 +766,11 @@
      "webDAVConfiguration": MessageLookupByLibrary.simpleMessage("WebDAV配置"),
      "whitelistMode": MessageLookupByLibrary.simpleMessage("白名单模式"),
      "wordWrap": MessageLookupByLibrary.simpleMessage("自动换行"),
 +    "goToLine": MessageLookupByLibrary.simpleMessage("跳转到行"),
 +    "outline": MessageLookupByLibrary.simpleMessage("大纲"),
++    "editInfo": MessageLookupByLibrary.simpleMessage("编辑信息"),
++    "editFile": MessageLookupByLibrary.simpleMessage("编辑配置文件"),
 +    "replaceAll": MessageLookupByLibrary.simpleMessage("全部替换"),
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("中文简体"),
    };
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart	2026-10-21 08:27:42.433051285 +0900
-@@ -2294,6 +2294,21 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart	2026-10-21 19:22:32.666477399 +0900
+@@ -2294,6 +2294,31 @@
      return Intl.message('Expand All', name: 'expandAll', desc: '', args: []);
    }
  
@@ -324,9 +605,39 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart fl/FlClash-0.8.95-0.9.1/l
 +    return Intl.message('Replace all', name: 'replaceAll', desc: '', args: []);
 +  }
 +
++  /// `Edit info`
++  String get editInfo {
++    return Intl.message('Edit info', name: 'editInfo', desc: '', args: []);
++  }
++
++  /// `Edit file`
++  String get editFile {
++    return Intl.message('Edit file', name: 'editFile', desc: '', args: []);
++  }
++
    /// `none`
    String get none {
      return Intl.message('none', name: 'none', desc: '', args: []);
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/models/common.dart fl/FlClash-0.8.95-0.9.1/lib/models/common.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/models/common.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/models/common.dart	2026-10-21 19:06:53.432349849 +0900
+@@ -4,6 +4,7 @@
+ 
+ import 'package:collection/collection.dart';
+ import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/common/pinyin.dart';
+ import 'package:fl_clash/enum/enum.dart';
+ import 'package:flutter/material.dart';
+ import 'package:freezed_annotation/freezed_annotation.dart';
+@@ -62,7 +63,7 @@
+       }
+       return switch (sortType) {
+         AccessSortType.none => 0,
+-        AccessSortType.name => a.label.compareTo(b.label),
++        AccessSortType.name => compareWithPinyin(a.label, b.label),
+         AccessSortType.time => b.lastUpdateTime.compareTo(a.lastUpdateTime),
+       };
+     });
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.1/lib/pages/editor.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart	2026-10-18 16:26:14.000000000 +0900
 +++ fl/FlClash-0.8.95-0.9.1/lib/pages/editor.dart	2026-10-21 08:29:01.625390461 +0900
@@ -835,6 +1146,101 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
        ),
      );
    }
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/state.dart fl/FlClash-0.8.95-0.9.1/lib/providers/state.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/providers/state.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/providers/state.dart	2026-10-21 19:10:14.249857360 +0900
+@@ -1,5 +1,6 @@
+ import 'package:dynamic_color/dynamic_color.dart';
+ import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/common/pinyin.dart';
+ import 'package:fl_clash/core/controller.dart';
+ import 'package:fl_clash/database/database.dart';
+ import 'package:fl_clash/enum/enum.dart';
+@@ -229,15 +230,18 @@
+ @riverpod
+ GroupsState filterGroupsState(Ref ref, String query) {
+   final currentGroups = ref.watch(currentGroupsStateProvider);
+-  if (query.isEmpty) {
++  final lowQuery = query.trim().toLowerCase();
++  if (lowQuery.isEmpty) {
+     return currentGroups;
+   }
+-  final lowQuery = query.toLowerCase();
+   final groups = currentGroups.value
+       .map((group) {
++        if (matchesWithPinyin(group.name, lowQuery)) {
++          return group;
++        }
+         return group.copyWith(
+           all: group.all
+-              .where((proxy) => proxy.name.toLowerCase().contains(lowQuery))
++              .where((proxy) => matchesWithPinyin(proxy.name, lowQuery))
+               .toList(),
+         );
+       })
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/access.dart fl/FlClash-0.8.95-0.9.1/lib/views/access.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/access.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/access.dart	2026-10-21 19:06:45.265693671 +0900
+@@ -1,6 +1,7 @@
+ import 'dart:async';
+ 
+ import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/common/pinyin.dart';
+ import 'package:fl_clash/enum/enum.dart';
+ import 'package:fl_clash/models/models.dart';
+ import 'package:fl_clash/plugins/app.dart';
+@@ -138,10 +139,6 @@
+     });
+   }
+ 
+-  void _handleSearch() {
+-    _scaffoldKey.currentState?.handleToSearch();
+-  }
+-
+   Future<void> _handleBack() async {
+     final appLocalizations = context.appLocalizations;
+     final res = await globalState.showMessage(
+@@ -268,11 +265,6 @@
+               onPressed: _handleToggle,
+             ),
+             PopupMenuItemData(
+-              icon: Icons.search,
+-              label: appLocalizations.search,
+-              onPressed: _handleSearch,
+-            ),
+-            PopupMenuItemData(
+               icon: Icons.tune,
+               label: appLocalizations.settings,
+               onPressed: _handleToSetting,
+@@ -381,7 +373,7 @@
+   @override
+   Widget build(BuildContext context) {
+     final isLoading = ref.watch(loadingProvider(LoadingTag.access));
+-    final query = ref.watch(queryProvider(QueryTag.access));
++    final query = ref.watch(queryProvider(QueryTag.access)).trim().toLowerCase();
+     final packages = ref.watch(packagesProvider);
+     final accessControl = ref.watch(accessControlStateProvider);
+     if (_isInit) {
+@@ -401,8 +393,8 @@
+         )
+         .where(
+           (package) =>
+-              package.label.toLowerCase().contains(query) ||
+-              package.packageName.contains(query),
++              matchesWithPinyin(package.label, query) ||
++              package.packageName.toLowerCase().contains(query),
+         )
+         .toList();
+     final mode = accessControl.mode;
+@@ -412,7 +404,7 @@
+     return CommonScaffold(
+       key: _scaffoldKey,
+       isLoading: isLoading,
+-      searchState: AppBarSearchState(onSearch: _onSearch, autoAddSearch: false),
++      searchState: AppBarSearchState(onSearch: _onSearch),
+       title: context.appLocalizations.appAccessControl,
+       actions: _buildActions(context, enable: accessControl.enable),
+       body: DisabledMask(
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart fl/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart	2026-10-18 16:26:14.000000000 +0900
 +++ fl/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart	2026-10-20 21:17:26.762943075 +0900
@@ -887,8 +1293,71 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart fl/FlClash-0.8.
      final data = await BaseNavigator.push<String>(context, editorPage);
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart	2026-10-21 08:28:51.638351727 +0900
-@@ -237,10 +237,7 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart	2026-10-21 19:22:32.667003619 +0900
+@@ -29,23 +29,25 @@
+ class _ProfilesViewState extends State<ProfilesView> {
+   Function? applyConfigDebounce;
+   bool _isUpdating = false;
++  final GlobalKey _currentProfileKey = GlobalKey();
++  bool _located = false;
+ 
+-  // final GlobalKey _targetKey = GlobalKey();
+-
+-  @override
+-  void initState() {
+-    super.initState();
+-    // WidgetsBinding.instance.addPostFrameCallback((_) {
+-    //   final context = _targetKey.currentContext;
+-    //   if (context == null) {
+-    //     return;
+-    //   }
+-    //   Scrollable.ensureVisible(
+-    //     context,
+-    //     duration: commonDuration,
+-    //     alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtEnd,
+-    //   );
+-    // });
++  void _locateCurrentProfile() {
++    if (_located) {
++      return;
++    }
++    _located = true;
++    WidgetsBinding.instance.addPostFrameCallback((_) {
++      final targetContext = _currentProfileKey.currentContext;
++      if (!mounted || targetContext == null) {
++        return;
++      }
++      Scrollable.ensureVisible(
++        targetContext,
++        duration: commonDuration,
++        alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtEnd,
++      );
++    });
+   }
+ 
+   void _handleShowAddExtendPage() {
+@@ -128,6 +130,9 @@
+         final isLoading = ref.watch(loadingProvider(LoadingTag.profiles));
+         final state = ref.watch(profilesStateProvider);
+         final spacing = 14.mAp;
++        if (state.profiles.isNotEmpty) {
++          _locateCurrentProfile();
++        }
+         return CommonScaffold(
+           isLoading: isLoading,
+           title: appLocalizations.profiles,
+@@ -162,6 +167,10 @@
+                             for (int i = 0; i < state.profiles.length; i++)
+                               GridItem(
+                                 child: ProfileItem(
++                                  key: state.profiles[i].id ==
++                                          state.currentProfileId
++                                      ? _currentProfileKey
++                                      : null,
+                                   profile: state.profiles[i],
+                                   groupValue: state.currentProfileId,
+                                   onChanged: (profileId) {
+@@ -237,10 +246,7 @@
            return await coreController.validateConfigWithData(content);
          }, silence: false);
          if (message?.isNotEmpty == true) {
@@ -900,7 +1369,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-
            return;
          }
          if (context.mounted) {
-@@ -260,17 +257,12 @@
+@@ -260,17 +266,12 @@
              return await coreController.validateConfigWithData(content);
            }, silence: false);
            if (message?.isNotEmpty == true) {
@@ -920,6 +1389,348 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-
        },
      );
      final data = await BaseNavigator.push<String>(context, editorPage);
+@@ -357,6 +358,121 @@
+     BaseNavigator.push(context, OverwriteView(profileId: id));
+   }
+ 
++  List<PopupMenuItemData> _buildPrimaryItems(BuildContext context) {
++    final appLocalizations = context.appLocalizations;
++    return [
++      PopupMenuItemData(
++        icon: Icons.edit_outlined,
++        label: appLocalizations.editInfo,
++        onPressed: () {
++          _handleShowEditExtendPage(context);
++        },
++      ),
++      PopupMenuItemData(
++        icon: Icons.description_outlined,
++        label: appLocalizations.editFile,
++        onPressed: () {
++          _handleEditFile(context);
++        },
++      ),
++      PopupMenuItemData(
++        icon: Icons.extension_outlined,
++        label: appLocalizations.override,
++        onPressed: () {
++          _handlePushGenProfilePage(context, profile.id);
++        },
++      ),
++      PopupMenuItemData(
++        icon: Icons.visibility_outlined,
++        label: appLocalizations.preview,
++        onPressed: () {
++          _handlePreview(context);
++        },
++      ),
++      if (profile.type == ProfileType.url)
++        PopupMenuItemData(
++          icon: Icons.sync_alt_sharp,
++          label: appLocalizations.sync,
++          onPressed: () {
++            updateProfile();
++          },
++        ),
++    ];
++  }
++
++  List<PopupMenuItemData> _buildMoreItems(BuildContext context) {
++    final appLocalizations = context.appLocalizations;
++    return [
++      if (profile.type == ProfileType.url)
++        PopupMenuItemData(
++          icon: Icons.copy,
++          label: appLocalizations.copyLink,
++          onPressed: () {
++            _handleCopyLink(context);
++          },
++        ),
++      PopupMenuItemData(
++        icon: Icons.file_copy_outlined,
++        label: appLocalizations.exportFile,
++        onPressed: () {
++          _handleExportFile(context);
++        },
++      ),
++    ];
++  }
++
++  PopupMenuItemData _buildDeleteItem(BuildContext context) {
++    return PopupMenuItemData(
++      danger: true,
++      icon: Icons.delete_outlined,
++      label: context.appLocalizations.delete,
++      onPressed: () {
++        _handleDeleteProfile(context);
++      },
++    );
++  }
++
++  void _handleShowActions(BuildContext context) {
++    final items = [
++      ..._buildPrimaryItems(context),
++      ..._buildMoreItems(context),
++      _buildDeleteItem(context),
++    ];
++    showSheet(
++      context: context,
++      builder: (_) {
++        return AdaptiveSheetScaffold(
++          title: profile.realLabel,
++          body: Builder(
++            builder: (sheetContext) {
++              final errorColor = sheetContext.colorScheme.error;
++              return ListView(
++                padding: const EdgeInsets.only(bottom: 16),
++                children: [
++                  for (final item in items)
++                    ListItem(
++                      leading: Icon(
++                        item.icon,
++                        color: item.danger ? errorColor : null,
++                      ),
++                      title: Text(
++                        item.label,
++                        style: item.danger ? TextStyle(color: errorColor) : null,
++                      ),
++                      onTap: () {
++                        Navigator.of(sheetContext).pop();
++                        item.onPressed?.call();
++                      },
++                    ),
++                ],
++              );
++            },
++          ),
++        );
++      },
++    );
++  }
++
+   @override
+   Widget build(BuildContext context) {
+     final appLocalizations = context.appLocalizations;
+@@ -366,6 +482,9 @@
+       onPressed: () {
+         onChanged(profile.id);
+       },
++      onLongPress: () {
++        _handleShowActions(context);
++      },
+       child: ListItem(
+         key: Key(profile.id.toString()),
+         horizontalTitleGap: 16,
+@@ -389,76 +508,13 @@
+                         key: const ValueKey('menu'),
+                         popup: CommonPopupMenu(
+                           items: [
+-                            PopupMenuItemData(
+-                              icon: Icons.edit_outlined,
+-                              label: appLocalizations.edit,
+-                              onPressed: () {
+-                                _handleShowEditExtendPage(context);
+-                              },
+-                            ),
+-                            PopupMenuItemData(
+-                              icon: Icons.description_outlined,
+-                              label: '编辑文件',
+-                              onPressed: () {
+-                                _handleEditFile(context);
+-                              },
+-                            ),
+-                            PopupMenuItemData(
+-                              icon: Icons.visibility_outlined,
+-                              label: appLocalizations.preview,
+-                              onPressed: () {
+-                                _handlePreview(context);
+-                              },
+-                            ),
+-                            if (profile.type == ProfileType.url) ...[
+-                              PopupMenuItemData(
+-                                icon: Icons.sync_alt_sharp,
+-                                label: appLocalizations.sync,
+-                                onPressed: () {
+-                                  updateProfile();
+-                                },
+-                              ),
+-                            ],
++                            ..._buildPrimaryItems(context),
+                             PopupMenuItemData(
+                               icon: Icons.emergency_outlined,
+                               label: appLocalizations.more,
+-                              subItems: [
+-                                PopupMenuItemData(
+-                                  icon: Icons.extension_outlined,
+-                                  label: appLocalizations.override,
+-                                  onPressed: () {
+-                                    _handlePushGenProfilePage(
+-                                      context,
+-                                      profile.id,
+-                                    );
+-                                  },
+-                                ),
+-                                if (profile.type == ProfileType.url) ...[
+-                                  PopupMenuItemData(
+-                                    icon: Icons.copy,
+-                                    label: appLocalizations.copyLink,
+-                                    onPressed: () {
+-                                      _handleCopyLink(context);
+-                                    },
+-                                  ),
+-                                ],
+-                                PopupMenuItemData(
+-                                  icon: Icons.file_copy_outlined,
+-                                  label: appLocalizations.exportFile,
+-                                  onPressed: () {
+-                                    _handleExportFile(context);
+-                                  },
+-                                ),
+-                              ],
+-                            ),
+-                            PopupMenuItemData(
+-                              danger: true,
+-                              icon: Icons.delete_outlined,
+-                              label: appLocalizations.delete,
+-                              onPressed: () {
+-                                _handleDeleteProfile(context);
+-                              },
++                              subItems: _buildMoreItems(context),
+                             ),
++                            _buildDeleteItem(context),
+                           ],
+                         ),
+                         targetBuilder: (open) {
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/proxies/list.dart fl/FlClash-0.8.95-0.9.1/lib/views/proxies/list.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/proxies/list.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/proxies/list.dart	2026-10-21 19:10:14.253492322 +0900
+@@ -3,6 +3,7 @@
+ import 'package:fl_clash/common/common.dart';
+ import 'package:fl_clash/enum/enum.dart';
+ import 'package:fl_clash/models/models.dart';
++import 'package:fl_clash/providers/app.dart';
+ import 'package:fl_clash/providers/config.dart';
+ import 'package:fl_clash/providers/state.dart';
+ import 'package:fl_clash/widgets/widgets.dart';
+@@ -24,6 +25,10 @@
+ class _ProxiesListViewState extends State<ProxiesListView> {
+   final _controller = ScrollController();
+   List<double> _groupOffsets = [];
++  List<Group> _groups = [];
++  final Set<String> _searchCollapsed = {};
++  String _lastQuery = '';
++  bool _searching = false;
+   double containerHeight = 0;
+ 
+   @override
+@@ -34,6 +39,14 @@
+ 
+   void _handleChange(Set<String> currentUnfoldSet, String groupName) {
+     _autoScrollToGroup(groupName);
++    if (_searching) {
++      setState(() {
++        if (!_searchCollapsed.remove(groupName)) {
++          _searchCollapsed.add(groupName);
++        }
++      });
++      return;
++    }
+     final tempUnfoldSet = Set<String>.from(currentUnfoldSet);
+     if (tempUnfoldSet.contains(groupName)) {
+       tempUnfoldSet.remove(groupName);
+@@ -154,11 +167,13 @@
+         _groupOffsets.isEmpty) {
+       return 0;
+     }
+-    final currentGroups = getCurrentGroups();
+-    final findIndex = currentGroups.indexWhere(
++    final findIndex = _groups.indexWhere(
+       (item) => item.name == groupName,
+     );
+     final index = findIndex != -1 ? findIndex : 0;
++    if (index >= _groupOffsets.length) {
++      return 0;
++    }
+     return _groupOffsets[index];
+   }
+ 
+@@ -214,8 +229,7 @@
+ 
+   void _scrollToGroupSelected(String groupName, int columns) {
+     final currentInitOffset = _getGroupOffset(groupName);
+-    final currentGroups = getCurrentGroups();
+-    final proxies = currentGroups.getGroup(groupName)?.all;
++    final proxies = _groups.getGroup(groupName)?.all;
+     _jumpTo(
+       currentInitOffset +
+           8 +
+@@ -246,6 +260,19 @@
+     return Consumer(
+       builder: (_, ref, _) {
+         final state = ref.watch(proxiesListStateProvider);
++        final query = ref.watch(queryProvider(QueryTag.proxies)).trim();
++        if (query != _lastQuery) {
++          _lastQuery = query;
++          _searchCollapsed.clear();
++        }
++        _searching = query.isNotEmpty;
++        _groups = state.groups;
++        final unfoldSet = _searching
++            ? state.groups
++                  .map((group) => group.name)
++                  .where((name) => !_searchCollapsed.contains(name))
++                  .toSet()
++            : state.currentUnfoldSet;
+         ref.watch(themeSettingProvider.select((state) => state.textScale));
+         final proxiesLayout = ref.watch(
+           proxiesStyleSettingProvider.select((state) => state.layout),
+@@ -264,7 +291,7 @@
+             );
+             _groupOffsets = _getGroupOffsets(
+               groups: state.groups,
+-              currentUnfoldSet: state.currentUnfoldSet,
++              currentUnfoldSet: unfoldSet,
+               columns: columns,
+               cardType: state.proxyCardType,
+             );
+@@ -285,7 +312,7 @@
+                         _buildGroup(
+                           context,
+                           group: group,
+-                          currentUnfoldSet: state.currentUnfoldSet,
++                          currentUnfoldSet: unfoldSet,
+                           columns: columns,
+                           cardType: state.proxyCardType,
+                         ),
+diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart fl/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart
+--- orig/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart	2026-10-21 19:06:36.926442923 +0900
+@@ -0,0 +1,25 @@
++import 'package:fl_clash/common/pinyin.dart';
++import 'package:flutter_test/flutter_test.dart';
++
++void main() {
++  test('pinyinInitials converts han characters and keeps others', () {
++    expect(pinyinInitials('微信'), 'wx');
++    expect(pinyinInitials('支付宝'), 'zfb');
++    expect(pinyinInitials('淘宝 App'), 'tb App');
++    expect(pinyinInitials('Chrome'), 'Chrome');
++  });
++
++  test('matchesWithPinyin matches initials and original text', () {
++    expect(matchesWithPinyin('微信', 'wx'), isTrue);
++    expect(matchesWithPinyin('微信 WeChat', 'wechat'), isTrue);
++    expect(matchesWithPinyin('微信', '微'), isTrue);
++    expect(matchesWithPinyin('微信', 'zf'), isFalse);
++    expect(matchesWithPinyin('anything', ''), isTrue);
++  });
++
++  test('compareWithPinyin interleaves han and latin labels', () {
++    final labels = ['微信', 'Chrome', '支付宝', 'Alipay', '淘宝', 'WeChat'];
++    labels.sort(compareWithPinyin);
++    expect(labels, ['Alipay', 'Chrome', '淘宝', 'WeChat', '微信', '支付宝']);
++  });
++}
 diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart fl/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart
 --- orig/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart	1970-01-01 09:00:00.000000000 +0900
 +++ fl/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart	2026-10-21 08:28:08.387315129 +0900
@@ -998,5 +1809,77 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart fl/FlClas
 +      final items = parseYamlOutline(text);
 +      expect(items.map((e) => e.title).toList(), ['proxies', '#1', '#2']);
 +    });
++  });
++}
+diff -ruN orig/FlClash-0.8.95-0.9.1/test/providers/filter_groups_test.dart fl/FlClash-0.8.95-0.9.1/test/providers/filter_groups_test.dart
+--- orig/FlClash-0.8.95-0.9.1/test/providers/filter_groups_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/test/providers/filter_groups_test.dart	2026-10-21 19:10:32.251006617 +0900
+@@ -0,0 +1,68 @@
++import 'package:fl_clash/enum/enum.dart';
++import 'package:fl_clash/models/models.dart';
++import 'package:fl_clash/providers/state.dart';
++import 'package:flutter_riverpod/flutter_riverpod.dart';
++import 'package:flutter_test/flutter_test.dart';
++
++Group _group(String name, List<String> proxies) {
++  return Group(
++    type: GroupType.Selector,
++    name: name,
++    all: proxies.map((item) => Proxy(name: item, type: 'ss')).toList(),
++  );
++}
++
++void main() {
++  late ProviderContainer container;
++
++  setUp(() {
++    container = ProviderContainer(
++      overrides: [
++        currentGroupsStateProvider.overrideWithValue(
++          GroupsState(
++            value: [
++              _group('Proxy', ['香港 01', 'US West', '日本 02']),
++              _group('Netflix', ['香港 01', 'US East']),
++              _group('Direct', ['DIRECT']),
++            ],
++          ),
++        ),
++      ],
++    );
++  });
++
++  tearDown(() {
++    container.dispose();
++  });
++
++  List<Group> filter(String query) {
++    return container.read(filterGroupsStateProvider(query)).value;
++  }
++
++  test('empty or blank query keeps every group', () {
++    expect(filter(''), hasLength(3));
++    expect(filter('  '), hasLength(3));
++  });
++
++  test('matches node names ignoring case', () {
++    final groups = filter('US');
++    expect(groups.map((group) => group.name), ['Proxy', 'Netflix']);
++    expect(groups.first.all.map((proxy) => proxy.name), ['US West']);
++  });
++
++  test('matches node names by pinyin initials', () {
++    final groups = filter('xg');
++    expect(groups.map((group) => group.name), ['Proxy', 'Netflix']);
++    expect(groups.first.all.single.name, '香港 01');
++  });
++
++  test('a group name match keeps the whole group', () {
++    final groups = filter('netflix');
++    expect(groups.single.name, 'Netflix');
++    expect(groups.single.all, hasLength(2));
++  });
++
++  test('groups without matches are dropped', () {
++    expect(filter('zzz'), isEmpty);
 +  });
 +}
