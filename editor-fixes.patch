@@ -1,7 +1,7 @@
 diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_en.arb fl/FlClash-0.8.95-0.9.1/arb/intl_en.arb
 --- orig/FlClash-0.8.95-0.9.1/arb/intl_en.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_en.arb	2026-10-21 19:22:32.657944424 +0900
-@@ -553,5 +553,14 @@
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_en.arb	2026-10-22 18:55:26.780190779 +0900
+@@ -553,5 +553,24 @@
    "geoSkipped": "{name} is already up to date",
    "geoUpdated": "{name} updated",
    "secondsCount": "{count} seconds",
@@ -15,12 +15,22 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_en.arb fl/FlClash-0.8.95-0.9.1/arb/
 +  "outline": "Outline",
 +  "replaceAll": "Replace all",
 +  "editInfo": "Edit info",
-+  "editFile": "Edit file"
++  "editFile": "Edit file",
++  "updateAll": "Update all",
++  "mirrorPreset": "Mirror preset",
++  "mirrorPresetDesc": "Switch all Geo download URLs at once",
++  "invalidFormat": "Invalid format",
++  "dnsNotApplied": "DNS override is off, so these settings are not applied. Turn on \"Override DNS\" for them to take effect.",
++  "currentProfile": "Current profile",
++  "undoLastRestore": "Undo last restore",
++  "undoLastRestoreDesc": "Roll back to the snapshot taken automatically before the last restore",
++  "undoLastRestoreTip": "Replace the current data with the snapshot taken before the last restore?",
++  "restoreDraftTip": "An unsaved draft of this file was found. Restore it?"
  }
 diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ja.arb fl/FlClash-0.8.95-0.9.1/arb/intl_ja.arb
 --- orig/FlClash-0.8.95-0.9.1/arb/intl_ja.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_ja.arb	2026-10-21 19:22:32.662679636 +0900
-@@ -553,5 +553,14 @@
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_ja.arb	2026-10-22 18:55:26.786733946 +0900
+@@ -553,5 +553,24 @@
    "geoSkipped": "{name} はすでに最新です",
    "geoUpdated": "{name} 更新済み",
    "secondsCount": "{count} 秒",
@@ -34,12 +44,22 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ja.arb fl/FlClash-0.8.95-0.9.1/arb/
 +  "outline": "アウトライン",
 +  "replaceAll": "すべて置換",
 +  "editInfo": "情報を編集",
-+  "editFile": "ファイルを編集"
++  "editFile": "ファイルを編集",
++  "updateAll": "すべて更新",
++  "mirrorPreset": "ミラープリセット",
++  "mirrorPresetDesc": "すべての Geo ダウンロード URL を一括で切り替えます",
++  "invalidFormat": "形式が正しくありません",
++  "dnsNotApplied": "「DNS を上書き」がオフのため、以下の設定は適用されません。オンにすると反映されます。",
++  "currentProfile": "現在のプロファイル",
++  "undoLastRestore": "前回の復元を取り消す",
++  "undoLastRestoreDesc": "前回の復元前に自動保存されたスナップショットに戻します",
++  "undoLastRestoreTip": "現在のデータを前回の復元前のスナップショットで置き換えますか?",
++  "restoreDraftTip": "このファイルの未保存の下書きが見つかりました。復元しますか?"
  }
 diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ru.arb fl/FlClash-0.8.95-0.9.1/arb/intl_ru.arb
 --- orig/FlClash-0.8.95-0.9.1/arb/intl_ru.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_ru.arb	2026-10-21 19:22:32.664234696 +0900
-@@ -553,5 +553,14 @@
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_ru.arb	2026-10-22 18:55:26.788747066 +0900
+@@ -553,5 +553,24 @@
    "geoSkipped": "Для {name} уже установлена последняя версия",
    "geoUpdated": "{name} обновлено",
    "secondsCount": "{count} секунд",
@@ -53,12 +73,22 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ru.arb fl/FlClash-0.8.95-0.9.1/arb/
 +  "outline": "Структура",
 +  "replaceAll": "Заменить все",
 +  "editInfo": "Изменить данные",
-+  "editFile": "Изменить файл"
++  "editFile": "Изменить файл",
++  "updateAll": "Обновить все",
++  "mirrorPreset": "Пресет зеркала",
++  "mirrorPresetDesc": "Переключить все URL загрузки Geo сразу",
++  "invalidFormat": "Неверный формат",
++  "dnsNotApplied": "Переопределение DNS выключено, поэтому эти настройки не применяются. Включите «Переопределить DNS», чтобы они вступили в силу.",
++  "currentProfile": "Текущий профиль",
++  "undoLastRestore": "Отменить последнее восстановление",
++  "undoLastRestoreDesc": "Откатиться к снимку, автоматически сделанному перед последним восстановлением",
++  "undoLastRestoreTip": "Заменить текущие данные снимком, сделанным перед последним восстановлением?",
++  "restoreDraftTip": "Найден несохранённый черновик этого файла. Восстановить?"
  }
 diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb fl/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb
 --- orig/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb	2026-10-21 19:22:32.660652041 +0900
-@@ -553,5 +553,14 @@
++++ fl/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb	2026-10-22 18:55:26.784738146 +0900
+@@ -553,5 +553,24 @@
    "geoSkipped": "{name} 已是最新版本",
    "geoUpdated": "{name} 已更新",
    "secondsCount": "{count} 秒",
@@ -72,8 +102,242 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb fl/FlClash-0.8.95-0.9.1/a
 +  "outline": "大纲",
 +  "replaceAll": "全部替换",
 +  "editInfo": "编辑信息",
-+  "editFile": "编辑配置文件"
++  "editFile": "编辑配置文件",
++  "updateAll": "全部更新",
++  "mirrorPreset": "镜像预设",
++  "mirrorPresetDesc": "一键切换全部 Geo 下载地址",
++  "invalidFormat": "格式不正确",
++  "dnsNotApplied": "当前未开启「覆盖 DNS」,以下设置不会生效。开启后才会应用。",
++  "currentProfile": "当前订阅",
++  "undoLastRestore": "撤销上次恢复",
++  "undoLastRestoreDesc": "回滚到上次恢复前自动保存的快照",
++  "undoLastRestoreTip": "确定用上次恢复前的快照替换当前数据吗?",
++  "restoreDraftTip": "发现这个文件有未保存的草稿,要恢复吗?"
  }
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart fl/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart	2026-10-22 13:27:06.073923324 +0900
+@@ -0,0 +1,102 @@
++/// Lightweight format checks for DNS settings. They only reject input that is
++/// obviously wrong; anything mihomo may accept is allowed through.
++const _dnsSchemes = {
++  'udp', 'tcp', 'tls', 'https', 'quic', 'h3', 'dhcp', 'system', 'rcode',
++};
++
++final _hostLabel = RegExp(r'^[A-Za-z0-9_]([A-Za-z0-9_-]*[A-Za-z0-9_])?$');
++
++bool _isIpv4(String s) {
++  final parts = s.split('.');
++  if (parts.length != 4) return false;
++  return parts.every((p) {
++    final n = int.tryParse(p);
++    return n != null && n >= 0 && n <= 255 && p == n.toString();
++  });
++}
++
++bool _isIpv6(String s) {
++  if (!s.contains(':')) return false;
++  try {
++    Uri.parseIPv6Address(s);
++    return true;
++  } catch (_) {
++    return false;
++  }
++}
++
++bool _isHostname(String s) {
++  if (s.isEmpty || s.length > 253) return false;
++  return s.split('.').every(_hostLabel.hasMatch);
++}
++
++bool _isPort(String s) {
++  final n = int.tryParse(s);
++  return n != null && n > 0 && n <= 65535 && s == n.toString();
++}
++
++/// Validates `host`, `host:port`, `[v6]:port`, bare IPv6.
++bool _isHostPort(String s) {
++  if (s.isEmpty) return false;
++  if (s.startsWith('[')) {
++    final end = s.indexOf(']');
++    if (end < 0) return false;
++    final host = s.substring(1, end);
++    final rest = s.substring(end + 1);
++    if (!_isIpv6(host)) return false;
++    return rest.isEmpty || (rest.startsWith(':') && _isPort(rest.substring(1)));
++  }
++  if (_isIpv6(s)) return true;
++  final idx = s.lastIndexOf(':');
++  if (idx >= 0) {
++    if (s.indexOf(':') != idx) return false;
++    if (!_isPort(s.substring(idx + 1))) return false;
++    s = s.substring(0, idx);
++  }
++  return _isIpv4(s) || _isHostname(s);
++}
++
++/// One nameserver entry, e.g. `223.5.5.5`, `tls://dns.google:853`,
++/// `https://dns.alidns.com/dns-query#proxy`, `system`, `dhcp://en0`.
++bool isValidDnsServer(String input) {
++  var value = input.trim();
++  if (value.isEmpty || value.contains(RegExp(r'\s'))) return false;
++  final hash = value.indexOf('#');
++  if (hash >= 0) {
++    value = value.substring(0, hash);
++    if (value.isEmpty) return false;
++  }
++  if (value == 'system') return true;
++  final sep = value.indexOf('://');
++  if (sep < 0) return _isHostPort(value);
++  final scheme = value.substring(0, sep).toLowerCase();
++  if (!_dnsSchemes.contains(scheme)) return false;
++  var rest = value.substring(sep + 3);
++  if (rest.isEmpty) return false;
++  if (scheme == 'dhcp' || scheme == 'rcode') return true;
++  final slash = rest.indexOf('/');
++  if (slash >= 0) {
++    if (scheme != 'https' && scheme != 'h3') return false;
++    rest = rest.substring(0, slash);
++  }
++  return _isHostPort(rest);
++}
++
++/// Value of a nameserver-policy entry: one server or a comma separated list.
++bool isValidDnsServerList(String input) {
++  final parts = input.split(',').map((e) => e.trim()).toList();
++  return parts.isNotEmpty && parts.every(isValidDnsServer);
++}
++
++/// `198.18.0.1/16` or `fc00::/7`.
++bool isValidCidr(String input) {
++  final value = input.trim();
++  final slash = value.indexOf('/');
++  if (slash <= 0) return false;
++  final ip = value.substring(0, slash);
++  final bits = int.tryParse(value.substring(slash + 1));
++  if (bits == null || bits < 0) return false;
++  if (_isIpv4(ip)) return bits <= 32;
++  if (_isIpv6(ip)) return bits <= 128;
++  return false;
++}
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/editor_draft.dart fl/FlClash-0.8.95-0.9.1/lib/common/editor_draft.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/common/editor_draft.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/common/editor_draft.dart	2026-10-22 18:55:26.799828060 +0900
+@@ -0,0 +1,62 @@
++import 'dart:convert';
++import 'dart:io';
++
++/// FNV-1a 32-bit hash. Unlike [String.hashCode] it is stable across runs, so
++/// it can be persisted next to a draft.
++int stableHash(String text) {
++  var hash = 0x811c9dc5;
++  for (final unit in text.codeUnits) {
++    hash ^= unit;
++    hash = (hash * 0x01000193) & 0xffffffff;
++  }
++  return hash;
++}
++
++/// Crash-safe drafts for the editor. A draft remembers the hash of the
++/// content it was based on; once the real file changes (for example after a
++/// save) the draft no longer matches and is discarded instead of offered.
++class EditorDraft {
++  final Directory dir;
++
++  const EditorDraft(this.dir);
++
++  File _file(String key) {
++    final safe = key.replaceAll(RegExp(r'[^A-Za-z0-9_.-]'), '_');
++    return File('${dir.path}${Platform.pathSeparator}$safe.json');
++  }
++
++  Future<void> save(String key, String base, String text) async {
++    final file = _file(key);
++    await file.create(recursive: true);
++    await file.writeAsString(
++      json.encode({'base': stableHash(base), 'text': text}),
++    );
++  }
++
++  /// The draft text, or null when there is none, it is stale, or it equals
++  /// [base]. Stale and unreadable drafts are deleted.
++  Future<String?> load(String key, String base) async {
++    final file = _file(key);
++    if (!await file.exists()) {
++      return null;
++    }
++    try {
++      final data = json.decode(await file.readAsString());
++      final text = data['text'];
++      if (data['base'] == stableHash(base) &&
++          text is String &&
++          text != base) {
++        return text;
++      }
++    } catch (_) {}
++    await clear(key);
++    return null;
++  }
++
++  Future<void> clear(String key) async {
++    final file = _file(key);
++    if (await file.exists()) {
++      await file.delete();
++    }
++  }
++}
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/geo_mirror.dart fl/FlClash-0.8.95-0.9.1/lib/common/geo_mirror.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/common/geo_mirror.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/common/geo_mirror.dart	2026-10-22 08:22:15.093493521 +0900
+@@ -0,0 +1,33 @@
++import 'package:fl_clash/enum/enum.dart';
++import 'package:fl_clash/models/clash_config.dart';
++
++class GeoMirrorPreset {
++  final String name;
++  final Map<GeoResource, String> urls;
++
++  const GeoMirrorPreset(this.name, this.urls);
++}
++
++const _jsdelivrBase =
++    'https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release';
++
++const geoMirrorPresets = <GeoMirrorPreset>[
++  GeoMirrorPreset('GitHub', defaultGeoXUrl),
++  GeoMirrorPreset('jsDelivr', {
++    GeoResource.MMDB: '$_jsdelivrBase/geoip.metadb',
++    GeoResource.ASN: '$_jsdelivrBase/GeoLite2-ASN.mmdb',
++    GeoResource.GEOIP: '$_jsdelivrBase/geoip.dat',
++    GeoResource.GEOSITE: '$_jsdelivrBase/geosite.dat',
++  }),
++];
++
++/// The preset whose URLs exactly equal [current], or null for custom URLs.
++GeoMirrorPreset? detectGeoMirrorPreset(Map<GeoResource, String> current) {
++  for (final preset in geoMirrorPresets) {
++    final same = preset.urls.entries.every((e) => current[e.key] == e.value);
++    if (same) {
++      return preset;
++    }
++  }
++  return null;
++}
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/path.dart fl/FlClash-0.8.95-0.9.1/lib/common/path.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/common/path.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/common/path.dart	2026-10-22 13:28:51.951937000 +0900
+@@ -68,6 +68,11 @@
+     return join(mHomeDirPath, 'backup.zip');
+   }
+ 
++  Future<String> get preRestoreSnapshotPath async {
++    final mHomeDirPath = await homeDirPath;
++    return join(mHomeDirPath, 'pre_restore_snapshot.zip');
++  }
++
+   Future<String> get restoreDirPath async {
+     final mHomeDirPath = await homeDirPath;
+     return join(mHomeDirPath, 'restore');
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart fl/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart	1970-01-01 09:00:00.000000000 +0900
 +++ fl/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart	2026-10-21 19:06:27.673532987 +0900
@@ -339,6 +603,97 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart fl/FlClash-0.8.95-0.9
 +  }
 +  return a.compareTo(b);
 +}
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart fl/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart	2026-10-22 18:58:39.095340886 +0900
+@@ -0,0 +1,87 @@
++class FoldRange {
++  final int start;
++  final int end;
++
++  const FoldRange(this.start, this.end);
++
++  @override
++  bool operator ==(Object other) =>
++      other is FoldRange && other.start == start && other.end == end;
++
++  @override
++  int get hashCode => Object.hash(start, end);
++
++  @override
++  String toString() => 'FoldRange($start, $end)';
++}
++
++class _Entry {
++  final int index;
++  // Doubled indent; a sequence item sitting at the same column as its parent
++  // key gets +1 so that it nests under that key.
++  final int level;
++  final bool opensBlock;
++
++  const _Entry(this.index, this.level, this.opensBlock);
++}
++
++/// Indent of [text] in spaces, or -1 for blank and comment-only lines.
++int _indentOf(String text) {
++  var i = 0;
++  while (i < text.length && text.codeUnitAt(i) == 0x20) {
++    i++;
++  }
++  if (i >= text.length) return -1;
++  final rest = text.substring(i).trimRight();
++  if (rest.isEmpty || rest.startsWith('#')) return -1;
++  return i;
++}
++
++bool _isSequenceItem(String trimmed) =>
++    trimmed == '-' || trimmed.startsWith('- ');
++
++/// True for `key:` / `key: |` / `key: >-` style lines whose value continues
++/// on the following, more indented lines.
++bool _opensBlock(String trimmed) {
++  var line = trimmed;
++  final comment = line.indexOf(' #');
++  if (comment >= 0) line = line.substring(0, comment).trimRight();
++  if (line.endsWith(':')) return true;
++  return RegExp(r':\s+[|>][+\-0-9]*$').hasMatch(line);
++}
++
++/// Foldable regions of a YAML document, one per line that has more indented
++/// content below it. A region ends on its last content line, so trailing
++/// blank and comment lines stay visible after folding.
++List<FoldRange> computeYamlFoldRanges(List<String> lines) {
++  final ranges = <FoldRange>[];
++  final stack = <_Entry>[];
++  var lastContent = -1;
++
++  void closeUntil(int level) {
++    while (stack.isNotEmpty && stack.last.level >= level) {
++      final entry = stack.removeLast();
++      if (lastContent > entry.index) {
++        ranges.add(FoldRange(entry.index, lastContent));
++      }
++    }
++  }
++
++  for (var i = 0; i < lines.length; i++) {
++    final text = lines[i];
++    final indent = _indentOf(text);
++    if (indent < 0) continue;
++    final trimmed = text.substring(indent).trimRight();
++    var level = indent * 2;
++    if (_isSequenceItem(trimmed) &&
++        stack.any((e) => e.level == level && e.opensBlock)) {
++      level += 1;
++    }
++    closeUntil(level);
++    stack.add(_Entry(i, level, _opensBlock(trimmed)));
++    lastContent = i;
++  }
++  closeUntil(0);
++  ranges.sort((a, b) => a.start - b.start);
++  return ranges;
++}
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart fl/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart	1970-01-01 09:00:00.000000000 +0900
 +++ fl/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart	2026-10-21 08:27:56.740163830 +0900
@@ -523,10 +878,23 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart fl/FlClash-0.8.
 +  }
 +  return items;
 +}
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/enum/enum.dart fl/FlClash-0.8.95-0.9.1/lib/enum/enum.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/enum/enum.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/enum/enum.dart	2026-10-22 13:28:14.331990945 +0900
+@@ -268,7 +268,8 @@
+     platforms: desktopPlatforms,
+   ),
+   intranetIp(GridItem(crossAxisCellCount: 4, child: IntranetIP())),
+-  memoryInfo(GridItem(crossAxisCellCount: 4, child: MemoryInfo()));
++  memoryInfo(GridItem(crossAxisCellCount: 4, child: MemoryInfo())),
++  currentProfile(GridItem(crossAxisCellCount: 8, child: CurrentProfileCard()));
+ 
+   final GridItem widget;
+   final List<SupportPlatform> platforms;
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart	2026-10-21 19:22:32.659619183 +0900
-@@ -1084,6 +1084,11 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart	2026-10-22 18:55:26.783797175 +0900
+@@ -1084,6 +1084,21 @@
      ),
      "whitelistMode": MessageLookupByLibrary.simpleMessage("Whitelist mode"),
      "wordWrap": MessageLookupByLibrary.simpleMessage("Word Wrap"),
@@ -534,14 +902,24 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart fl/FlClash-0.
 +    "outline": MessageLookupByLibrary.simpleMessage("Outline"),
 +    "editInfo": MessageLookupByLibrary.simpleMessage("Edit info"),
 +    "editFile": MessageLookupByLibrary.simpleMessage("Edit file"),
++    "restoreDraftTip": MessageLookupByLibrary.simpleMessage("An unsaved draft of this file was found. Restore it?"),
++    "undoLastRestore": MessageLookupByLibrary.simpleMessage("Undo last restore"),
++    "undoLastRestoreDesc": MessageLookupByLibrary.simpleMessage("Roll back to the snapshot taken automatically before the last restore"),
++    "undoLastRestoreTip": MessageLookupByLibrary.simpleMessage("Replace the current data with the snapshot taken before the last restore?"),
++    "currentProfile": MessageLookupByLibrary.simpleMessage("Current profile"),
++    "invalidFormat": MessageLookupByLibrary.simpleMessage("Invalid format"),
++    "dnsNotApplied": MessageLookupByLibrary.simpleMessage("DNS override is off, so these settings are not applied. Turn on \"Override DNS\" for them to take effect."),
++    "updateAll": MessageLookupByLibrary.simpleMessage("Update all"),
++    "mirrorPreset": MessageLookupByLibrary.simpleMessage("Mirror preset"),
++    "mirrorPresetDesc": MessageLookupByLibrary.simpleMessage("Switch all Geo download URLs at once"),
 +    "replaceAll": MessageLookupByLibrary.simpleMessage("Replace all"),
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("Simplified Chinese"),
    };
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart	2026-10-21 19:22:32.663397251 +0900
-@@ -884,6 +884,11 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart	2026-10-22 18:55:26.788034699 +0900
+@@ -884,6 +884,21 @@
      "webDAVConfiguration": MessageLookupByLibrary.simpleMessage("WebDAV設定"),
      "whitelistMode": MessageLookupByLibrary.simpleMessage("ホワイトリストモード"),
      "wordWrap": MessageLookupByLibrary.simpleMessage("折り返し"),
@@ -549,14 +927,24 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart fl/FlClash-0.
 +    "outline": MessageLookupByLibrary.simpleMessage("アウトライン"),
 +    "editInfo": MessageLookupByLibrary.simpleMessage("情報を編集"),
 +    "editFile": MessageLookupByLibrary.simpleMessage("ファイルを編集"),
++    "restoreDraftTip": MessageLookupByLibrary.simpleMessage("このファイルの未保存の下書きが見つかりました。復元しますか?"),
++    "undoLastRestore": MessageLookupByLibrary.simpleMessage("前回の復元を取り消す"),
++    "undoLastRestoreDesc": MessageLookupByLibrary.simpleMessage("前回の復元前に自動保存されたスナップショットに戻します"),
++    "undoLastRestoreTip": MessageLookupByLibrary.simpleMessage("現在のデータを前回の復元前のスナップショットで置き換えますか?"),
++    "currentProfile": MessageLookupByLibrary.simpleMessage("現在のプロファイル"),
++    "invalidFormat": MessageLookupByLibrary.simpleMessage("形式が正しくありません"),
++    "dnsNotApplied": MessageLookupByLibrary.simpleMessage("「DNS を上書き」がオフのため、以下の設定は適用されません。オンにすると反映されます。"),
++    "updateAll": MessageLookupByLibrary.simpleMessage("すべて更新"),
++    "mirrorPreset": MessageLookupByLibrary.simpleMessage("ミラープリセット"),
++    "mirrorPresetDesc": MessageLookupByLibrary.simpleMessage("すべての Geo ダウンロード URL を一括で切り替えます"),
 +    "replaceAll": MessageLookupByLibrary.simpleMessage("すべて置換"),
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("簡体字中国語"),
    };
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart	2026-10-21 19:22:32.665262285 +0900
-@@ -1149,6 +1149,11 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart	2026-10-22 18:55:26.790211611 +0900
+@@ -1149,6 +1149,21 @@
        "Режим белого списка",
      ),
      "wordWrap": MessageLookupByLibrary.simpleMessage("Перенос строк"),
@@ -564,14 +952,24 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart fl/FlClash-0.
 +    "outline": MessageLookupByLibrary.simpleMessage("Структура"),
 +    "editInfo": MessageLookupByLibrary.simpleMessage("Изменить данные"),
 +    "editFile": MessageLookupByLibrary.simpleMessage("Изменить файл"),
++    "restoreDraftTip": MessageLookupByLibrary.simpleMessage("Найден несохранённый черновик этого файла. Восстановить?"),
++    "undoLastRestore": MessageLookupByLibrary.simpleMessage("Отменить последнее восстановление"),
++    "undoLastRestoreDesc": MessageLookupByLibrary.simpleMessage("Откатиться к снимку, автоматически сделанному перед последним восстановлением"),
++    "undoLastRestoreTip": MessageLookupByLibrary.simpleMessage("Заменить текущие данные снимком, сделанным перед последним восстановлением?"),
++    "currentProfile": MessageLookupByLibrary.simpleMessage("Текущий профиль"),
++    "invalidFormat": MessageLookupByLibrary.simpleMessage("Неверный формат"),
++    "dnsNotApplied": MessageLookupByLibrary.simpleMessage("Переопределение DNS выключено, поэтому эти настройки не применяются. Включите «Переопределить DNS», чтобы они вступили в силу."),
++    "updateAll": MessageLookupByLibrary.simpleMessage("Обновить все"),
++    "mirrorPreset": MessageLookupByLibrary.simpleMessage("Пресет зеркала"),
++    "mirrorPresetDesc": MessageLookupByLibrary.simpleMessage("Переключить все URL загрузки Geo сразу"),
 +    "replaceAll": MessageLookupByLibrary.simpleMessage("Заменить все"),
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("Упрощенный китайский"),
    };
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart	2026-10-21 19:22:32.661382180 +0900
-@@ -766,6 +766,11 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart	2026-10-22 18:55:26.786094229 +0900
+@@ -766,6 +766,21 @@
      "webDAVConfiguration": MessageLookupByLibrary.simpleMessage("WebDAV配置"),
      "whitelistMode": MessageLookupByLibrary.simpleMessage("白名单模式"),
      "wordWrap": MessageLookupByLibrary.simpleMessage("自动换行"),
@@ -579,14 +977,24 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart fl/FlClash
 +    "outline": MessageLookupByLibrary.simpleMessage("大纲"),
 +    "editInfo": MessageLookupByLibrary.simpleMessage("编辑信息"),
 +    "editFile": MessageLookupByLibrary.simpleMessage("编辑配置文件"),
++    "restoreDraftTip": MessageLookupByLibrary.simpleMessage("发现这个文件有未保存的草稿,要恢复吗?"),
++    "undoLastRestore": MessageLookupByLibrary.simpleMessage("撤销上次恢复"),
++    "undoLastRestoreDesc": MessageLookupByLibrary.simpleMessage("回滚到上次恢复前自动保存的快照"),
++    "undoLastRestoreTip": MessageLookupByLibrary.simpleMessage("确定用上次恢复前的快照替换当前数据吗?"),
++    "currentProfile": MessageLookupByLibrary.simpleMessage("当前订阅"),
++    "invalidFormat": MessageLookupByLibrary.simpleMessage("格式不正确"),
++    "dnsNotApplied": MessageLookupByLibrary.simpleMessage("当前未开启「覆盖 DNS」,以下设置不会生效。开启后才会应用。"),
++    "updateAll": MessageLookupByLibrary.simpleMessage("全部更新"),
++    "mirrorPreset": MessageLookupByLibrary.simpleMessage("镜像预设"),
++    "mirrorPresetDesc": MessageLookupByLibrary.simpleMessage("一键切换全部 Geo 下载地址"),
 +    "replaceAll": MessageLookupByLibrary.simpleMessage("全部替换"),
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("中文简体"),
    };
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart	2026-10-21 19:22:32.666477399 +0900
-@@ -2294,6 +2294,31 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart	2026-10-22 18:55:26.791990198 +0900
+@@ -2294,6 +2294,81 @@
      return Intl.message('Expand All', name: 'expandAll', desc: '', args: []);
    }
  
@@ -615,9 +1023,66 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart fl/FlClash-0.8.95-0.9.1/l
 +    return Intl.message('Edit file', name: 'editFile', desc: '', args: []);
 +  }
 +
++  /// `An unsaved draft of this file was found. Restore it?`
++  String get restoreDraftTip {
++    return Intl.message('An unsaved draft of this file was found. Restore it?', name: 'restoreDraftTip', desc: '', args: []);
++  }
++
++  /// `Undo last restore`
++  String get undoLastRestore {
++    return Intl.message('Undo last restore', name: 'undoLastRestore', desc: '', args: []);
++  }
++
++  /// `Roll back to the snapshot taken automatically before the last restore`
++  String get undoLastRestoreDesc {
++    return Intl.message('Roll back to the snapshot taken automatically before the last restore', name: 'undoLastRestoreDesc', desc: '', args: []);
++  }
++
++  /// `Replace the current data with the snapshot taken before the last restore?`
++  String get undoLastRestoreTip {
++    return Intl.message('Replace the current data with the snapshot taken before the last restore?', name: 'undoLastRestoreTip', desc: '', args: []);
++  }
++
++  /// `Current profile`
++  String get currentProfile {
++    return Intl.message('Current profile', name: 'currentProfile', desc: '', args: []);
++  }
++
++  /// `Invalid format`
++  String get invalidFormat {
++    return Intl.message('Invalid format', name: 'invalidFormat', desc: '', args: []);
++  }
++
++  /// `DNS override is off, so these settings are not applied. Turn on "Override DNS" for them to take effect.`
++  String get dnsNotApplied {
++    return Intl.message('DNS override is off, so these settings are not applied. Turn on \'Override DNS\' for them to take effect.', name: 'dnsNotApplied', desc: '', args: []);
++  }
++
++  /// `Update all`
++  String get updateAll {
++    return Intl.message('Update all', name: 'updateAll', desc: '', args: []);
++  }
++
++  /// `Mirror preset`
++  String get mirrorPreset {
++    return Intl.message('Mirror preset', name: 'mirrorPreset', desc: '', args: []);
++  }
++
++  /// `Switch all Geo download URLs at once`
++  String get mirrorPresetDesc {
++    return Intl.message('Switch all Geo download URLs at once', name: 'mirrorPresetDesc', desc: '', args: []);
++  }
++
    /// `none`
    String get none {
      return Intl.message('none', name: 'none', desc: '', args: []);
+@@ -4667,4 +4742,4 @@
+     }
+     return false;
+   }
+-}
++}
+\ No newline at end of file
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/models/common.dart fl/FlClash-0.8.95-0.9.1/lib/models/common.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/models/common.dart	2026-10-18 16:26:14.000000000 +0900
 +++ fl/FlClash-0.8.95-0.9.1/lib/models/common.dart	2026-10-21 19:06:53.432349849 +0900
@@ -638,18 +1103,44 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/models/common.dart fl/FlClash-0.8.95-0.9
          AccessSortType.time => b.lastUpdateTime.compareTo(a.lastUpdateTime),
        };
      });
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/models/config.dart fl/FlClash-0.8.95-0.9.1/lib/models/config.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/models/config.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/models/config.dart	2026-10-22 13:28:14.332755216 +0900
+@@ -37,6 +37,7 @@
+ const defaultThemeProps = ThemeProps(primaryColor: defaultPrimaryColor);
+ 
+ const List<DashboardWidget> defaultDashboardWidgets = [
++  DashboardWidget.currentProfile,
+   DashboardWidget.networkSpeed,
+   DashboardWidget.systemProxyButton,
+   DashboardWidget.tunButton,
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/models/generated/config.g.dart fl/FlClash-0.8.95-0.9.1/lib/models/generated/config.g.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/models/generated/config.g.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/models/generated/config.g.dart	2026-10-22 13:28:14.332388110 +0900
+@@ -81,6 +81,7 @@
+   DashboardWidget.systemProxyButton: 'systemProxyButton',
+   DashboardWidget.intranetIp: 'intranetIp',
+   DashboardWidget.memoryInfo: 'memoryInfo',
++  DashboardWidget.currentProfile: 'currentProfile',
+ };
+ 
+ _AccessControlProps _$AccessControlPropsFromJson(Map<String, dynamic> json) =>
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.1/lib/pages/editor.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/pages/editor.dart	2026-10-21 08:29:01.625390461 +0900
-@@ -1,6 +1,7 @@
++++ fl/FlClash-0.8.95-0.9.1/lib/pages/editor.dart	2026-10-22 19:09:10.400299071 +0900
+@@ -1,6 +1,11 @@
++import 'dart:async';
  import 'dart:convert';
++import 'dart:io';
  
  import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/common/editor_draft.dart';
++import 'package:fl_clash/common/yaml_folding.dart';
 +import 'package:fl_clash/common/yaml_outline.dart';
  import 'package:fl_clash/enum/enum.dart';
  import 'package:fl_clash/models/common.dart';
  import 'package:fl_clash/providers/app.dart';
-@@ -19,6 +20,19 @@
+@@ -19,12 +24,29 @@
  typedef EditingValueChangeBuilder = Widget Function(CodeLineEditingValue value);
  typedef TextEditingValueChangeBuilder = Widget Function(TextEditingValue value);
  
@@ -669,7 +1160,31 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
  class EditorPage extends ConsumerStatefulWidget {
    final String title;
    final String? content;
-@@ -62,6 +76,7 @@
+   final List<Language> languages;
+   final bool supportRemoteDownload;
+   final bool titleEditable;
++
++  /// When set, unsaved edits are kept as a draft under this key and offered
++  /// for restoring the next time the same content is opened.
++  final String? draftKey;
+   final Function(BuildContext context, String title, String content)? onSave;
+   final Future<bool> Function(
+     BuildContext context,
+@@ -38,6 +60,7 @@
+     required this.title,
+     required this.content,
+     this.titleEditable = false,
++    this.draftKey,
+     this.onSave,
+     this.onPop,
+     this.supportRemoteDownload = false,
+@@ -58,23 +81,34 @@
+   late bool _wordWrap = system.isAndroid;
+   CodeChunkController? _chunkController;
+   late final SelectionToolbarController _toolbarController;
++  Timer? _draftTimer;
++  String? _lastDraftText;
+ 
    @override
    void initState() {
      super.initState();
@@ -677,7 +1192,14 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
      readOnly = widget.onSave == null;
      _toolbarController = ContextMenuControllerImpl(readOnly);
      _focusNode = FocusNode();
-@@ -72,9 +87,13 @@
+     _controller = CodeLineEditingController.fromText(widget.content);
+     _findController = CodeFindController(_controller);
+     _titleController = TextEditingController(text: widget.title);
++    if (widget.draftKey != null && !readOnly) {
++      _controller.addListener(_scheduleDraftSave);
++      WidgetsBinding.instance.addPostFrameCallback((_) => _offerDraft());
++    }
+     if (system.isDesktop) {
        return;
      }
      _focusNode.onKeyEvent = ((_, event) {
@@ -693,7 +1215,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
          return KeyEventResult.ignored;
        }
        if (key == LogicalKeyboardKey.arrowUp) {
-@@ -84,7 +103,6 @@
+@@ -84,7 +118,6 @@
          _controller.moveCursor(AxisDirection.down);
          return KeyEventResult.handled;
        } else if (key == LogicalKeyboardKey.arrowLeft) {
@@ -701,15 +1223,167 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
          _controller.moveCursor(AxisDirection.left);
          return KeyEventResult.handled;
        } else if (key == LogicalKeyboardKey.arrowRight) {
-@@ -109,6 +127,7 @@
+@@ -107,8 +140,84 @@
+     });
+   }
  
++  void _insertSymbol(String text) {
++    _controller.replaceSelection(text);
++    _focusNode.requestFocus();
++  }
++
++  Future<EditorDraft> _draftStore() async {
++    final home = await appPath.homeDirPath;
++    return EditorDraft(Directory('$home${Platform.pathSeparator}drafts'));
++  }
++
++  void _scheduleDraftSave() {
++    _draftTimer?.cancel();
++    _draftTimer = Timer(const Duration(milliseconds: 1500), _saveDraft);
++  }
++
++  Future<void> _saveDraft() async {
++    final key = widget.draftKey;
++    final base = widget.content;
++    if (key == null || base == null) {
++      return;
++    }
++    final text = _controller.text;
++    if (text == _lastDraftText) {
++      return;
++    }
++    _lastDraftText = text;
++    try {
++      final store = await _draftStore();
++      if (text == base) {
++        await store.clear(key);
++      } else {
++        await store.save(key, base, text);
++      }
++    } catch (_) {}
++  }
++
++  Future<void> _clearDraft() async {
++    final key = widget.draftKey;
++    if (key == null) {
++      return;
++    }
++    _draftTimer?.cancel();
++    try {
++      await (await _draftStore()).clear(key);
++    } catch (_) {}
++  }
++
++  Future<void> _offerDraft() async {
++    final key = widget.draftKey;
++    final base = widget.content;
++    if (!mounted || key == null || base == null) {
++      return;
++    }
++    String? draft;
++    try {
++      draft = await (await _draftStore()).load(key, base);
++    } catch (_) {}
++    if (draft == null || !mounted) {
++      return;
++    }
++    final res = await globalState.showMessage(
++      title: widget.title,
++      message: TextSpan(text: context.appLocalizations.restoreDraftTip),
++    );
++    if (!mounted) {
++      return;
++    }
++    if (res == true) {
++      _controller.text = draft;
++    } else if (res == false) {
++      await _clearDraft();
++    }
++  }
++
    @override
    void dispose() {
++    _draftTimer?.cancel();
 +    _activeEditors.remove(this);
      _toolbarController.hide(context);
      _findController.dispose();
      _controller.dispose();
-@@ -135,19 +154,116 @@
+@@ -125,6 +234,74 @@
+     );
+   }
+ 
++  bool get _isDirty =>
++      _controller.text != widget.content ||
++      _titleController.text != widget.title;
++
++  Widget _buildActionButton({
++    required IconData icon,
++    required String tooltip,
++    required VoidCallback? onPressed,
++    bool highlighted = false,
++  }) {
++    final button = highlighted
++        ? IconButton.filledTonal(
++            tooltip: tooltip,
++            onPressed: onPressed,
++            icon: Icon(icon),
++            visualDensity: VisualDensity.compact,
++          )
++        : IconButton(
++            tooltip: tooltip,
++            onPressed: onPressed,
++            icon: Icon(icon),
++            visualDensity: VisualDensity.compact,
++          );
++    return button;
++  }
++
++  /// Slim row under the app bar: history on the left, quick editing tools on
++  /// the right. Only shown while the editor is writable.
++  Widget _buildEditToolbar() {
++    final appLocalizations = context.appLocalizations;
++    return SizedBox(
++      height: _kEditToolbarHeight,
++      child: Padding(
++        padding: const EdgeInsets.symmetric(horizontal: 8),
++        child: Row(
++          children: [
++            _buildActionButton(
++              icon: Icons.undo,
++              tooltip: appLocalizations.undo,
++              onPressed: _controller.canUndo ? _controller.undo : null,
++            ),
++            _buildActionButton(
++              icon: Icons.redo,
++              tooltip: appLocalizations.redo,
++              onPressed: _controller.canRedo ? _controller.redo : null,
++            ),
++            const Spacer(),
++            _buildActionButton(
++              icon: Icons.find_replace,
++              tooltip: appLocalizations.replace,
++              onPressed: _handleReplace,
++            ),
++            _buildActionButton(
++              icon: Icons.format_list_numbered,
++              tooltip: appLocalizations.goToLine,
++              onPressed: _handleGoToLine,
++            ),
++            _buildActionButton(
++              icon: _wordWrap ? Icons.wrap_text : Icons.notes,
++              tooltip: appLocalizations.wordWrap,
++              onPressed: _toggleWordWrap,
++            ),
++          ],
++        ),
++      ),
++    );
++  }
++
+   Widget _wrapTitleController(TextEditingValueChangeBuilder builder) {
+     return ValueListenableBuilder(
+       valueListenable: _titleController,
+@@ -135,19 +312,116 @@
    }
  
    void _handleSearch() {
@@ -775,10 +1449,8 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
 +    if (res == true && line != null && mounted) {
 +      _jumpToLine(line - 1);
 +    }
-   }
- 
--  void _handleReplaceNext() {
--    _findController.replaceMatch();
++  }
++
 +  Future<void> _handleGoToLine() async {
 +    final appLocalizations = context.appLocalizations;
 +    final total = _controller.text.split('\n').length;
@@ -806,8 +1478,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
 +      return;
 +    }
 +    _jumpToLine(line - 1);
-+  }
-+
+   }
+ 
+-  void _handleReplaceNext() {
+-    _findController.replaceMatch();
 +  Future<void> _handleOutline() async {
 +    final items = parseYamlOutline(_controller.text);
 +    if (!mounted) {
@@ -832,30 +1506,70 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
    }
  
    void _toggleWordWrap() {
-@@ -281,6 +397,22 @@
+@@ -235,6 +509,7 @@
+     return CommonPopScope(
+       onPop: (context) async {
+         if (widget.onPop == null) {
++          _clearDraft();
+           return true;
+         }
+         final res = await widget.onPop!(
+@@ -243,6 +518,8 @@
+           _controller.text,
+         );
+         if (res && context.mounted) {
++          // Leaving without saving is a deliberate discard.
++          _clearDraft();
+           return true;
+         }
+         return false;
+@@ -261,14 +538,32 @@
+             style: context.textTheme.titleLarge,
+             autofocus: false,
+           ),
+-          actions: genActions([
++          bottom: readOnly
++              ? null
++              : PreferredSize(
++                  preferredSize: const Size.fromHeight(_kEditToolbarHeight),
++                  child: _wrapController((value) => _buildEditToolbar()),
++                ),
++          actions: genActions(space: 0, [
++            _buildActionButton(
++              icon: Icons.search,
++              tooltip: appLocalizations.search,
++              onPressed: _handleSearch,
++            ),
++            if (widget.languages.contains(Language.yaml))
++              _buildActionButton(
++                icon: Icons.account_tree_outlined,
++                tooltip: appLocalizations.outline,
++                onPressed: _handleOutline,
++              ),
+             if (!readOnly)
+               _wrapController(
+                 (value) => _wrapTitleController(
+-                  (value) => IconButton(
+-                    onPressed:
+-                        _controller.text != widget.content ||
+-                            _titleController.text != widget.title
++                  (value) => _buildActionButton(
++                    icon: Icons.save,
++                    tooltip: appLocalizations.save,
++                    highlighted: _isDirty,
++                    onPressed: _isDirty
+                         ? () {
+                             widget.onSave!(
+                               context,
+@@ -277,7 +572,6 @@
+                             );
+                           }
+                         : null,
+-                    icon: const Icon(Icons.save),
                    ),
                  ),
                ),
-+            if (!readOnly)
-+              _wrapController(
-+                (value) => IconButton(
-+                  tooltip: appLocalizations.undo,
-+                  onPressed: _controller.canUndo ? _controller.undo : null,
-+                  icon: const Icon(Icons.undo),
-+                ),
-+              ),
-+            if (!readOnly)
-+              _wrapController(
-+                (value) => IconButton(
-+                  tooltip: appLocalizations.redo,
-+                  onPressed: _controller.canRedo ? _controller.redo : null,
-+                  icon: const Icon(Icons.redo),
-+                ),
-+              ),
-             _wrapController(
-               (value) => CommonPopupBox(
-                 targetBuilder: (open) {
-@@ -306,15 +438,16 @@
+@@ -306,15 +600,16 @@
                          onPressed: _handleReplace,
                        ),
                      PopupMenuItemData(
@@ -880,7 +1594,19 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                      PopupMenuItemData(
                        icon: _wordWrap
                            ? Icons.wrap_text
-@@ -368,6 +501,7 @@
+@@ -353,7 +648,10 @@
+             ),
+           ]),
+         ),
+-        body: Stack(
++        body: Column(
++          children: [
++            Expanded(
++              child: Stack(
+           children: [
+             // re_editor 的 _CodeEditorState.build 内部已经会读取
+             // FindPanel.preferredSize.height 并将其加入 editable 的
+@@ -368,6 +666,7 @@
                  controller: controller,
                  readOnly: readOnly,
                  isMobileView: isMobileView,
@@ -888,7 +1614,36 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                ),
                padding: const EdgeInsets.only(right: 16),
                wordWrap: _wordWrap,
-@@ -450,12 +584,14 @@
+@@ -437,11 +736,28 @@
+             ),
+           ],
+         ),
++            ),
++            if (!readOnly && !system.isDesktop)
++              ListenableBuilder(
++                listenable: _focusNode,
++                builder: (_, _) {
++                  if (!_focusNode.hasFocus) {
++                    return const SizedBox.shrink();
++                  }
++                  return _SymbolBar(
++                    onInsert: _insertSymbol,
++                    onMove: _controller.moveCursor,
++                  );
++                },
++              ),
++          ],
++        ),
+       ),
+     );
+   }
+ }
+ 
++const double _kEditToolbarHeight = 40;
+ const double _kInputHeight = 40;
+ const double _kActionHeight = 32;
+ const double _kGap = 6;
+@@ -450,12 +766,14 @@
    final CodeFindController controller;
    final bool readOnly;
    final bool isMobileView;
@@ -903,7 +1658,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
    });
  
    @override
-@@ -510,7 +646,7 @@
+@@ -510,7 +828,7 @@
              onPressed: value.result == null ? null : controller.nextMatch,
              icon: Icons.arrow_downward,
            ),
@@ -912,7 +1667,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
          ],
        ),
      );
-@@ -550,7 +686,7 @@
+@@ -550,7 +868,7 @@
          padding: EdgeInsets.zero,
          iconSize: 16,
          icon: Icon(isReplaceMode ? Icons.expand_less : Icons.expand_more),
@@ -921,7 +1676,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
        ),
      );
    }
-@@ -624,12 +760,14 @@
+@@ -624,12 +942,14 @@
                    controller.replaceMatch();
                    controller.replaceInputFocusNode.requestFocus();
                  },
@@ -936,7 +1691,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                ),
              ],
            ),
-@@ -642,13 +780,16 @@
+@@ -642,13 +962,16 @@
      BuildContext context,
      String text,
      bool selected,
@@ -956,7 +1711,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
            decoration: BoxDecoration(
              color: selected ? context.colorScheme.primaryContainer : null,
-@@ -663,6 +804,10 @@
+@@ -663,6 +986,10 @@
          ),
        ),
      );
@@ -967,7 +1722,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
    }
  
    Widget _buildIconBtn({required IconData icon, VoidCallback? onPressed}) {
-@@ -677,6 +822,8 @@
+@@ -677,6 +1004,8 @@
  class ContextMenuControllerImpl implements SelectionToolbarController {
    OverlayEntry? _overlayEntry;
    bool readOnly = false;
@@ -976,7 +1731,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
  
    ContextMenuControllerImpl(this.readOnly);
  
-@@ -700,20 +847,31 @@
+@@ -700,20 +1029,31 @@
      required ValueNotifier<bool> visibility,
    }) {
      _removeOverLayEntry();
@@ -1013,7 +1768,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                  PopupMenuItemData(
                    label: appLocalizations.copy,
                    onPressed: controller.copy,
-@@ -723,12 +881,12 @@
+@@ -723,12 +1063,12 @@
                    label: appLocalizations.paste,
                    onPressed: controller.paste,
                  ),
@@ -1028,7 +1783,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                  PopupMenuItemData(
                    label: appLocalizations.selectAll,
                    onPressed: controller.selectAll,
-@@ -769,39 +927,93 @@
+@@ -769,39 +1109,93 @@
    }
  }
  
@@ -1146,6 +1901,191 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
        ),
      );
    }
+@@ -812,55 +1206,86 @@
+ 
+   @override
+   List<CodeChunk> run(CodeLines codeLines) {
+-    final List<CodeChunk> chunks = [];
+-    final List<_IndentEntry> stack = [];
+-
+-    for (int i = 0; i < codeLines.length; i++) {
+-      final String text = codeLines[i].text;
+-      final int indent = _getIndent(text);
+-      if (indent < 0) continue;
+-
+-      while (stack.isNotEmpty && stack.last.indent >= indent) {
+-        final entry = stack.removeLast();
+-        final int end = i - 1;
+-        if (end > entry.index) {
+-          chunks.add(CodeChunk(entry.index, end));
+-        }
+-      }
+-      stack.add(_IndentEntry(index: i, indent: indent));
+-    }
+-
+-    int lastContentIndex = codeLines.length - 1;
+-    while (lastContentIndex >= 0 &&
+-        _getIndent(codeLines[lastContentIndex].text) < 0) {
+-      lastContentIndex--;
+-    }
+-    while (stack.isNotEmpty) {
+-      final entry = stack.removeLast();
+-      if (lastContentIndex > entry.index) {
+-        chunks.add(CodeChunk(entry.index, lastContentIndex));
+-      }
+-    }
+-
+-    chunks.sort((a, b) => a.index - b.index);
+-    return chunks;
++    final lines = [for (var i = 0; i < codeLines.length; i++) codeLines[i].text];
++    return [
++      for (final range in computeYamlFoldRanges(lines))
++        CodeChunk(range.start, range.end),
++    ];
+   }
++}
+ 
+-  static int _getIndent(String text) {
+-    final line = text.trimRight();
+-    int i = 0;
+-    while (i < line.length && line[i] == ' ') {
+-      i++;
+-    }
+-    if (i >= line.length || line[i] == '#') {
+-      return -1;
+-    }
+-    return i;
++const _kSymbols = <String>[
++  '  ',
++  ':',
++  '-',
++  '[',
++  ']',
++  '{',
++  '}',
++  '"',
++  "'",
++  '#',
++  ',',
++  '&',
++  '*',
++  '!',
++  '|',
++  '>',
++];
++
++/// Row of symbols that are awkward to reach on a phone keyboard but common
++/// in YAML. Taps never take focus away from the editor.
++class _SymbolBar extends StatelessWidget {
++  final ValueChanged<String> onInsert;
++  final ValueChanged<AxisDirection> onMove;
++
++  const _SymbolBar({required this.onInsert, required this.onMove});
++
++  Widget _key(BuildContext context, Widget child, VoidCallback onTap) {
++    return InkWell(
++      canRequestFocus: false,
++      onTap: onTap,
++      borderRadius: BorderRadius.circular(8),
++      child: Container(
++        constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
++        alignment: Alignment.center,
++        padding: const EdgeInsets.symmetric(horizontal: 8),
++        child: child,
++      ),
++    );
+   }
+-}
+ 
+-class _IndentEntry {
+-  final int index;
+-  final int indent;
+-  const _IndentEntry({required this.index, required this.indent});
++  @override
++  Widget build(BuildContext context) {
++    final style = context.textTheme.titleMedium?.copyWith(
++      fontFamily: FontFamily.jetBrainsMono.value,
++    );
++    return Material(
++      color: context.colorScheme.surfaceContainerHigh,
++      child: SafeArea(
++        top: false,
++        child: SizedBox(
++          height: 44,
++          child: ListView(
++            scrollDirection: Axis.horizontal,
++            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
++            children: [
++              _key(context, const Icon(Icons.arrow_back), () {
++                onMove(AxisDirection.left);
++              }),
++              _key(context, const Icon(Icons.arrow_forward), () {
++                onMove(AxisDirection.right);
++              }),
++              for (final symbol in _kSymbols)
++                _key(
++                  context,
++                  Text(symbol.trim().isEmpty ? 'Tab' : symbol, style: style),
++                  () => onInsert(symbol),
++                ),
++            ],
++          ),
++        ),
++      ),
++    );
++  }
+ }
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/actions/backup.dart fl/FlClash-0.8.95-0.9.1/lib/providers/actions/backup.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/providers/actions/backup.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/providers/actions/backup.dart	2026-10-22 13:28:51.952251849 +0900
+@@ -17,13 +17,45 @@
+     return backupTask(configMap, [...profileFileNames, ...scriptFileNames]);
+   }
+ 
+-  Future<void> restore(RestoreOption option) async {
++  Future<bool> hasPreRestoreSnapshot() async {
++    return File(await appPath.preRestoreSnapshotPath).exists();
++  }
++
++  /// Saves the current data before it is replaced by a restore. Best effort:
++  /// a failure here must not block the restore itself.
++  Future<void> _saveSnapshot() async {
++    try {
++      final tempPath = await backup();
++      final tempFile = File(tempPath);
++      await tempFile.safeCopy(await appPath.preRestoreSnapshotPath);
++      await tempFile.safeDelete();
++    } catch (_) {}
++  }
++
++  Future<void> undoLastRestore() async {
++    final snapshot = File(await appPath.preRestoreSnapshotPath);
++    if (!await snapshot.exists()) {
++      throw currentAppLocalizations.noData;
++    }
++    await snapshot.safeCopy(await appPath.backupFilePath);
++    await restore(RestoreOption.all, snapshot: false, forceOverride: true);
++  }
++
++  Future<void> restore(
++    RestoreOption option, {
++    bool snapshot = true,
++    bool forceOverride = false,
++  }) async {
++    if (snapshot) {
++      await _saveSnapshot();
++    }
+     final restoreDirPath = await appPath.restoreDirPath;
+     final restoreDir = Directory(restoreDirPath);
+     final restoreStrategy = ref.read(
+       appSettingProvider.select((state) => state.restoreStrategy),
+     );
+-    final isOverride = restoreStrategy == RestoreStrategy.override;
++    final isOverride =
++        forceOverride || restoreStrategy == RestoreStrategy.override;
+     try {
+       final migrationData = await restoreTask();
+       if (!await restoreDir.exists()) {
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/state.dart fl/FlClash-0.8.95-0.9.1/lib/providers/state.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/providers/state.dart	2026-10-18 16:26:14.000000000 +0900
 +++ fl/FlClash-0.8.95-0.9.1/lib/providers/state.dart	2026-10-21 19:10:14.249857360 +0900
@@ -1241,9 +2181,298 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/access.dart fl/FlClash-0.8.95-0.9.
        title: context.appLocalizations.appAccessControl,
        actions: _buildActions(context, enable: accessControl.enable),
        body: DisabledMask(
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/backup_and_restore.dart fl/FlClash-0.8.95-0.9.1/lib/views/backup_and_restore.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/backup_and_restore.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/backup_and_restore.dart	2026-10-22 13:28:51.952863578 +0900
+@@ -164,6 +164,37 @@
+     );
+   }
+ 
++  Future<void> _handleUndoLastRestore() async {
++    final appLocalizations = context.appLocalizations;
++    final action = globalState.container.read(backupActionProvider.notifier);
++    if (!await action.hasPreRestoreSnapshot()) {
++      globalState.showMessage(
++        title: appLocalizations.undoLastRestore,
++        message: TextSpan(text: appLocalizations.noData),
++        cancelable: false,
++      );
++      return;
++    }
++    final confirmed = await globalState.showMessage(
++      title: appLocalizations.undoLastRestore,
++      message: TextSpan(text: appLocalizations.undoLastRestoreTip),
++    );
++    if (confirmed != true) return;
++    final res = await globalState.loadingRun<bool>(
++      () async {
++        await action.undoLastRestore();
++        return true;
++      },
++      tag: LoadingTag.backup_restore,
++      title: appLocalizations.undoLastRestore,
++    );
++    if (res != true) return;
++    globalState.showMessage(
++      title: appLocalizations.undoLastRestore,
++      message: TextSpan(text: appLocalizations.restoreSuccess),
++    );
++  }
++
+   Future<void> _handleRestoreOnLocal() async {
+     final option = await globalState.showCommonDialog<RestoreOption>(
+       child: const RestoreOptionsDialog(),
+@@ -319,6 +350,13 @@
+             title: Text(appLocalizations.restore),
+             subtitle: Text(appLocalizations.restoreFromFileDesc),
+           ),
++          ListItem(
++            onTap: () {
++              _handleUndoLastRestore();
++            },
++            title: Text(appLocalizations.undoLastRestore),
++            subtitle: Text(appLocalizations.undoLastRestoreDesc),
++          ),
+           ListHeader(title: appLocalizations.options),
+           Consumer(
+             builder: (_, ref, _) {
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/advanced.dart fl/FlClash-0.8.95-0.9.1/lib/views/config/advanced.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/config/advanced.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/config/advanced.dart	2026-10-22 08:16:53.528820697 +0900
+@@ -13,6 +13,53 @@
+ 
+ import 'rules.dart';
+ 
++class NetworkSettingView extends StatelessWidget {
++  const NetworkSettingView({super.key});
++
++  @override
++  Widget build(BuildContext context) {
++    return BaseScaffold(
++      title: context.appLocalizations.network,
++      body: const NetworkListView(),
++    );
++  }
++}
++
++class DnsSettingView extends StatelessWidget {
++  const DnsSettingView({super.key});
++
++  @override
++  Widget build(BuildContext context) {
++    final appLocalizations = context.appLocalizations;
++    return BaseScaffold(
++      title: 'DNS',
++      actions: [
++        Consumer(
++          builder: (_, ref, _) {
++            return IconButton(
++              onPressed: () async {
++                final res = await globalState.showMessage(
++                  title: appLocalizations.reset,
++                  message: TextSpan(text: appLocalizations.resetTip),
++                );
++                if (res != true) {
++                  return;
++                }
++                ref
++                    .read(patchClashConfigProvider.notifier)
++                    .update((state) => state.copyWith(dns: defaultDns));
++              },
++              tooltip: appLocalizations.reset,
++              icon: const Icon(Icons.replay),
++            );
++          },
++        ),
++      ],
++      body: const DnsListView(),
++    );
++  }
++}
++
+ class AdvancedConfigView extends StatelessWidget {
+   const AdvancedConfigView({super.key});
+ 
+@@ -24,11 +71,8 @@
+         title: Text(appLocalizations.network),
+         subtitle: Text(appLocalizations.networkDesc),
+         leading: const Icon(Icons.vpn_key),
++        widget: const NetworkSettingView(),
+         blur: false,
+-        widget: BaseScaffold(
+-          title: appLocalizations.network,
+-          body: const NetworkListView(),
+-        ),
+       ),
+       ListItem.open(
+         title: Text(appLocalizations.onDemand),
+@@ -41,32 +85,7 @@
+         title: const Text('DNS'),
+         subtitle: Text(appLocalizations.dnsDesc),
+         leading: const Icon(Icons.dns),
+-        widget: BaseScaffold(
+-          title: 'DNS',
+-          actions: [
+-            Consumer(
+-              builder: (_, ref, _) {
+-                return IconButton(
+-                  onPressed: () async {
+-                    final res = await globalState.showMessage(
+-                      title: appLocalizations.reset,
+-                      message: TextSpan(text: appLocalizations.resetTip),
+-                    );
+-                    if (res != true) {
+-                      return;
+-                    }
+-                    ref
+-                        .read(patchClashConfigProvider.notifier)
+-                        .update((state) => state.copyWith(dns: defaultDns));
+-                  },
+-                  tooltip: appLocalizations.reset,
+-                  icon: const Icon(Icons.replay),
+-                );
+-              },
+-            ),
+-          ],
+-          body: const DnsListView(),
+-        ),
++        widget: const DnsSettingView(),
+         blur: false,
+       ),
+       ListItem.open(
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/dns.dart fl/FlClash-0.8.95-0.9.1/lib/views/config/dns.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/config/dns.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/config/dns.dart	2026-10-22 13:27:24.001605710 +0900
+@@ -1,4 +1,5 @@
+ import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/common/dns_validator.dart';
+ import 'package:fl_clash/enum/enum.dart';
+ import 'package:fl_clash/providers/config.dart';
+ import 'package:fl_clash/widgets/widgets.dart';
+@@ -23,6 +24,48 @@
+   }
+ }
+ 
++class DnsNotAppliedBanner extends ConsumerWidget {
++  const DnsNotAppliedBanner({super.key});
++
++  @override
++  Widget build(BuildContext context, ref) {
++    final override = ref.watch(overrideDnsProvider);
++    if (override) {
++      return const SizedBox.shrink();
++    }
++    final colorScheme = Theme.of(context).colorScheme;
++    return Padding(
++      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
++      child: DecoratedBox(
++        decoration: BoxDecoration(
++          color: colorScheme.secondaryContainer,
++          borderRadius: BorderRadius.circular(12),
++        ),
++        child: Padding(
++          padding: const EdgeInsets.all(12),
++          child: Row(
++            crossAxisAlignment: CrossAxisAlignment.start,
++            children: [
++              Icon(
++                Icons.info_outline,
++                size: 20,
++                color: colorScheme.onSecondaryContainer,
++              ),
++              const SizedBox(width: 8),
++              Expanded(
++                child: Text(
++                  context.appLocalizations.dnsNotApplied,
++                  style: TextStyle(color: colorScheme.onSecondaryContainer),
++                ),
++              ),
++            ],
++          ),
++        ),
++      ),
++    );
++  }
++}
++
+ class StatusItem extends ConsumerWidget {
+   const StatusItem({super.key});
+ 
+@@ -189,6 +232,9 @@
+         if (value == null || value.isEmpty) {
+           return appLocalizations.emptyTip(appLocalizations.fakeipRange);
+         }
++        if (!isValidCidr(value)) {
++          return appLocalizations.invalidFormat;
++        }
+         return null;
+       },
+       onChanged: (String? value) {
+@@ -249,6 +295,8 @@
+         title: appLocalizations.defaultNameserver,
+         items: defaultNameserver,
+         itemMaxLength: TextInputLimits.dnsServer,
++        itemValidator: (v) =>
++            isValidDnsServer(v) ? null : appLocalizations.invalidFormat,
+         titleBuilder: (item) => Text(item),
+       ),
+       onChanged: (items) {
+@@ -280,6 +328,8 @@
+         title: appLocalizations.nameserver,
+         items: nameserver,
+         itemMaxLength: TextInputLimits.dnsServer,
++        itemValidator: (v) =>
++            isValidDnsServer(v) ? null : appLocalizations.invalidFormat,
+         titleBuilder: (item) => Text(item),
+       ),
+       onChanged: (items) {
+@@ -353,6 +403,8 @@
+         map: nameserverPolicy,
+         keyMaxLength: TextInputLimits.domain,
+         valueMaxLength: TextInputLimits.dnsServer,
++        valueValidator: (v) =>
++            isValidDnsServerList(v) ? null : appLocalizations.invalidFormat,
+         titleBuilder: (item) => Text(item.key),
+         subtitleBuilder: (item) => Text(item.value),
+       ),
+@@ -384,6 +436,8 @@
+         title: appLocalizations.proxyNameserver,
+         items: proxyServerNameserver,
+         itemMaxLength: TextInputLimits.dnsServer,
++        itemValidator: (v) =>
++            isValidDnsServer(v) ? null : appLocalizations.invalidFormat,
+         titleBuilder: (item) => Text(item),
+       ),
+       onChanged: (items) {
+@@ -415,6 +469,8 @@
+         title: appLocalizations.fallback,
+         items: fallback,
+         itemMaxLength: TextInputLimits.dnsServer,
++        itemValidator: (v) =>
++            isValidDnsServer(v) ? null : appLocalizations.invalidFormat,
+         titleBuilder: (item) => Text(item),
+       ),
+       onChanged: (items) {
+@@ -534,6 +590,8 @@
+         title: appLocalizations.ipcidr,
+         items: ipcidr,
+         itemMaxLength: TextInputLimits.cidr,
++        itemValidator: (v) =>
++            isValidCidr(v) ? null : appLocalizations.invalidFormat,
+         titleBuilder: (item) => Text(item),
+       ),
+       onChanged: (items) {
+@@ -634,6 +692,7 @@
+ 
+ const dnsItems = <Widget>[
+   OverrideItem(),
++  DnsNotAppliedBanner(),
+   DnsOptions(),
+   FallbackFilterOptions(),
+ ];
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart fl/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart	2026-10-20 21:17:26.762943075 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart	2026-10-22 18:55:41.799180255 +0900
 @@ -152,10 +152,8 @@
      );
      if (res == true && mounted) {
@@ -1256,9 +2485,109 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart fl/FlClash-0.8
    }
  
    void _handleToEditor([int? id]) async {
+@@ -169,6 +167,7 @@
+       context,
+       EditorPage(
+         titleEditable: true,
++        draftKey: 'script_${id ?? 'new'}',
+         title: title,
+         supportRemoteDownload: true,
+         onSave: (context, title, content) {
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/current_profile.dart fl/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/current_profile.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/current_profile.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/current_profile.dart	2026-10-22 13:28:14.316546870 +0900
+@@ -0,0 +1,80 @@
++import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/enum/enum.dart';
++import 'package:fl_clash/providers/providers.dart';
++import 'package:fl_clash/state.dart';
++import 'package:fl_clash/widgets/widgets.dart';
++import 'package:flutter/material.dart';
++import 'package:flutter_riverpod/flutter_riverpod.dart';
++
++/// Shows the active profile and the node currently selected in its main
++/// group. Tapping it opens the proxies page (or the profiles page when there
++/// are no proxies yet).
++class CurrentProfileCard extends ConsumerWidget {
++  const CurrentProfileCard({super.key});
++
++  @override
++  Widget build(BuildContext context, WidgetRef ref) {
++    final appLocalizations = context.appLocalizations;
++    final profile = ref.watch(currentProfileProvider);
++    final groups = ref.watch(currentGroupsStateProvider).value;
++    final currentGroupName = profile?.currentGroupName;
++    final group = groups.isEmpty
++        ? null
++        : groups.firstWhere(
++            (item) => item.name == currentGroupName,
++            orElse: () => groups.first,
++          );
++    final nodeName = group == null
++        ? null
++        : ref.watch(selectedProxyNameProvider(group.name));
++    final title = profile == null
++        ? appLocalizations.none
++        : profile.label.takeFirstValid([profile.id.toString()]);
++    final subtitle = group == null
++        ? null
++        : nodeName == null || nodeName.isEmpty
++        ? group.name
++        : '${group.name} › $nodeName';
++    return SizedBox(
++      height: getWidgetHeight(1),
++      child: CommonCard(
++        info: Info(
++          label: appLocalizations.currentProfile,
++          iconData: Icons.article_outlined,
++        ),
++        onPressed: () {
++          globalState.container
++              .read(currentPageLabelProvider.notifier)
++              .toPage(group == null ? PageLabel.profiles : PageLabel.proxies);
++        },
++        child: Container(
++          padding: baseInfoEdgeInsets.copyWith(top: 0),
++          child: Column(
++            mainAxisSize: MainAxisSize.max,
++            mainAxisAlignment: MainAxisAlignment.end,
++            crossAxisAlignment: CrossAxisAlignment.start,
++            children: [
++              TooltipText(
++                text: Text(
++                  title,
++                  style: context.textTheme.titleMedium,
++                  maxLines: 1,
++                  overflow: TextOverflow.ellipsis,
++                ),
++              ),
++              if (subtitle != null)
++                TooltipText(
++                  text: Text(
++                    subtitle,
++                    style: context.textTheme.bodyMedium?.toLight,
++                    maxLines: 1,
++                    overflow: TextOverflow.ellipsis,
++                  ),
++                ),
++            ],
++          ),
++        ),
++      ),
++    );
++  }
++}
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/widgets.dart fl/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/widgets.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/widgets.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/widgets.dart	2026-10-22 13:28:14.331304185 +0900
+@@ -1,3 +1,4 @@
++export 'current_profile.dart';
+ export 'intranet_ip.dart';
+ export 'network_detection.dart';
+ export 'network_speed.dart';
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart fl/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart	2026-10-21 08:28:51.637713686 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart	2026-10-22 18:55:41.800227980 +0900
 @@ -111,10 +111,7 @@
        return message;
      }, silence: false);
@@ -1271,7 +2600,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart fl/FlClash-0.8.
        return;
      }
      if (context.mounted) {
-@@ -132,6 +129,7 @@
+@@ -132,12 +129,14 @@
          _rawText = await file.readAsString();
        }
      }
@@ -1279,7 +2608,14 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart fl/FlClash-0.8.
      if (!mounted) return;
      final title = widget.profile.label.takeFirstValid([
        widget.profile.id.toString(),
-@@ -152,10 +150,8 @@
+     ]);
+     final editorPage = EditorPage(
+       title: title,
++      draftKey: 'profile_${widget.profile.id}',
+       content: _rawText!,
+       onSave: (context, _, content) {
+         _handleSaveEdit(context, content);
+@@ -152,10 +151,8 @@
          );
          if (res == true && context.mounted) {
            _handleSaveEdit(context, content);
@@ -1293,7 +2629,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart fl/FlClash-0.8.
      final data = await BaseNavigator.push<String>(context, editorPage);
 diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart
 --- orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart	2026-10-21 19:22:32.667003619 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart	2026-10-22 18:55:41.799752990 +0900
 @@ -29,23 +29,25 @@
  class _ProfilesViewState extends State<ProfilesView> {
    Function? applyConfigDebounce;
@@ -1357,7 +2693,14 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-
                                    profile: state.profiles[i],
                                    groupValue: state.currentProfileId,
                                    onChanged: (profileId) {
-@@ -237,10 +246,7 @@
+@@ -231,16 +240,14 @@
+     final title = profile.label.takeFirstValid([profile.id.toString()]);
+     final editorPage = EditorPage(
+       title: title,
++      draftKey: 'profile_${profile.id}',
+       content: rawText,
+       onSave: (context, _, content) async {
+         final message = await globalState.safeRun<String>(() async {
            return await coreController.validateConfigWithData(content);
          }, silence: false);
          if (message?.isNotEmpty == true) {
@@ -1369,7 +2712,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-
            return;
          }
          if (context.mounted) {
-@@ -260,17 +266,12 @@
+@@ -260,17 +267,12 @@
              return await coreController.validateConfigWithData(content);
            }, silence: false);
            if (message?.isNotEmpty == true) {
@@ -1389,7 +2732,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-
        },
      );
      final data = await BaseNavigator.push<String>(context, editorPage);
-@@ -357,6 +358,121 @@
+@@ -357,6 +359,121 @@
      BaseNavigator.push(context, OverwriteView(profileId: id));
    }
  
@@ -1410,6 +2753,28 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-
 +          _handleEditFile(context);
 +        },
 +      ),
++      if (profile.type == ProfileType.url) ...[
++        PopupMenuItemData(
++          icon: Icons.sync_alt_sharp,
++          label: appLocalizations.sync,
++          onPressed: () {
++            updateProfile();
++          },
++        ),
++        PopupMenuItemData(
++          icon: Icons.copy,
++          label: appLocalizations.copyLink,
++          onPressed: () {
++            _handleCopyLink(context);
++          },
++        ),
++      ],
++    ];
++  }
++
++  List<PopupMenuItemData> _buildMoreItems(BuildContext context) {
++    final appLocalizations = context.appLocalizations;
++    return [
 +      PopupMenuItemData(
 +        icon: Icons.extension_outlined,
 +        label: appLocalizations.override,
@@ -1424,28 +2789,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-
 +          _handlePreview(context);
 +        },
 +      ),
-+      if (profile.type == ProfileType.url)
-+        PopupMenuItemData(
-+          icon: Icons.sync_alt_sharp,
-+          label: appLocalizations.sync,
-+          onPressed: () {
-+            updateProfile();
-+          },
-+        ),
-+    ];
-+  }
-+
-+  List<PopupMenuItemData> _buildMoreItems(BuildContext context) {
-+    final appLocalizations = context.appLocalizations;
-+    return [
-+      if (profile.type == ProfileType.url)
-+        PopupMenuItemData(
-+          icon: Icons.copy,
-+          label: appLocalizations.copyLink,
-+          onPressed: () {
-+            _handleCopyLink(context);
-+          },
-+        ),
 +      PopupMenuItemData(
 +        icon: Icons.file_copy_outlined,
 +        label: appLocalizations.exportFile,
@@ -1511,7 +2854,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-
    @override
    Widget build(BuildContext context) {
      final appLocalizations = context.appLocalizations;
-@@ -366,6 +482,9 @@
+@@ -366,6 +483,9 @@
        onPressed: () {
          onChanged(profile.id);
        },
@@ -1521,7 +2864,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-
        child: ListItem(
          key: Key(profile.id.toString()),
          horizontalTitleGap: 16,
-@@ -389,76 +508,13 @@
+@@ -389,76 +509,13 @@
                          key: const ValueKey('menu'),
                          popup: CommonPopupMenu(
                            items: [
@@ -1702,6 +3045,658 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/proxies/list.dart fl/FlClash-0.8.9
                            columns: columns,
                            cardType: state.proxyCardType,
                          ),
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/resources.dart fl/FlClash-0.8.95-0.9.1/lib/views/resources.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/resources.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/resources.dart	2026-10-22 08:22:15.110383617 +0900
+@@ -1,6 +1,7 @@
+ import 'dart:io';
+ 
+ import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/common/geo_mirror.dart';
+ import 'package:fl_clash/enum/enum.dart';
+ import 'package:fl_clash/models/models.dart';
+ import 'package:fl_clash/providers/action.dart';
+@@ -43,6 +44,7 @@
+                         );
+                   },
+                 ),
++                const _MirrorPresetItem(),
+                 ListItem.input(
+                   title: Text(appLocalizations.geoAutoUpdateInterval),
+                   trailing: Text(
+@@ -88,6 +90,7 @@
+             ...generateSection(
+               title: appLocalizations.geoResources,
+               items: [
++                const _UpdateAllItem(),
+                 for (final geoResource in geoResources)
+                   _GeoResourceListItem(geoResource),
+               ],
+@@ -98,6 +101,89 @@
+     );
+   }
+ }
++
++class _MirrorPresetItem extends ConsumerWidget {
++  const _MirrorPresetItem();
++
++  @override
++  Widget build(BuildContext context, WidgetRef ref) {
++    final appLocalizations = context.appLocalizations;
++    final current = detectGeoMirrorPreset(
++      ref.watch(patchClashConfigProvider.select((state) => state.geoXUrl)),
++    );
++    return ListItem<GeoMirrorPreset?>.options(
++      leading: const Icon(Icons.public),
++      title: Text(appLocalizations.mirrorPreset),
++      subtitle: Text(appLocalizations.mirrorPresetDesc),
++      dialogTitle: appLocalizations.mirrorPreset,
++      options: [...geoMirrorPresets, null],
++      value: current,
++      textBuilder: (preset) => preset?.name ?? appLocalizations.custom,
++      onChanged: (preset) {
++        if (preset == null) {
++          return;
++        }
++        ref
++            .read(patchClashConfigProvider.notifier)
++            .update((state) => state.copyWith(geoXUrl: {...preset.urls}));
++      },
++    );
++  }
++}
++
++class _UpdateAllItem extends ConsumerStatefulWidget {
++  const _UpdateAllItem();
++
++  @override
++  ConsumerState<_UpdateAllItem> createState() => _UpdateAllItemState();
++}
++
++class _UpdateAllItemState extends ConsumerState<_UpdateAllItem> {
++  bool _updating = false;
++
++  Future<void> _handleUpdateAll() async {
++    if (_updating) {
++      return;
++    }
++    setState(() {
++      _updating = true;
++    });
++    try {
++      for (final geoResource in GeoResource.values) {
++        // One failure should not stop the remaining resources.
++        await globalState.safeRun<void>(() async {
++          await ref
++              .read(geoResourceActionProvider.notifier)
++              .updateGeoResource(geoResource);
++        }, silence: false);
++      }
++    } finally {
++      if (mounted) {
++        setState(() {
++          _updating = false;
++        });
++      }
++    }
++  }
++
++  @override
++  Widget build(BuildContext context) {
++    return ListItem(
++      leading: _updating
++          ? const SizedBox(
++              height: 24,
++              width: 24,
++              child: Padding(
++                padding: EdgeInsets.all(2),
++                child: CommonCircleLoading(),
++              ),
++            )
++          : const Icon(Icons.sync),
++      title: Text(context.appLocalizations.updateAll),
++      onTap: _updating ? null : _handleUpdateAll,
++    );
++  }
++}
+ 
+ class _GeoResourceListItem extends ConsumerStatefulWidget {
+   final GeoResource type;
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/settings_search.dart fl/FlClash-0.8.95-0.9.1/lib/views/settings_search.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/settings_search.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/settings_search.dart	2026-10-22 08:15:50.266783347 +0900
+@@ -0,0 +1,198 @@
++import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/common/pinyin.dart';
++import 'package:fl_clash/l10n/l10n.dart';
++import 'package:fl_clash/views/access.dart';
++import 'package:fl_clash/views/application_setting.dart';
++import 'package:fl_clash/views/backup_and_restore.dart';
++import 'package:fl_clash/views/config/advanced.dart';
++import 'package:fl_clash/views/config/config.dart';
++import 'package:fl_clash/views/config/on_demand.dart';
++import 'package:fl_clash/views/config/rules.dart';
++import 'package:fl_clash/views/config/scripts.dart';
++import 'package:fl_clash/views/hotkey.dart';
++import 'package:fl_clash/views/theme.dart';
++import 'package:flutter/widgets.dart';
++
++class SettingsSearchEntry {
++  final String title;
++  final String? description;
++  final String path;
++  final Widget Function(BuildContext context) pageBuilder;
++
++  const SettingsSearchEntry({
++    required this.title,
++    this.description,
++    required this.path,
++    required this.pageBuilder,
++  });
++}
++
++List<SettingsSearchEntry> filterSettingsEntries(
++  List<SettingsSearchEntry> entries,
++  String query,
++) {
++  final lowQuery = query.trim().toLowerCase();
++  if (lowQuery.isEmpty) {
++    return const [];
++  }
++  final titleMatches = <SettingsSearchEntry>[];
++  final otherMatches = <SettingsSearchEntry>[];
++  final seen = <String>{};
++  for (final entry in entries) {
++    final id = '${entry.path}\n${entry.title}';
++    if (!seen.add(id)) {
++      continue;
++    }
++    if (matchesWithPinyin(entry.title, lowQuery)) {
++      titleMatches.add(entry);
++    } else if ((entry.description?.toLowerCase().contains(lowQuery) ??
++            false) ||
++        entry.path.toLowerCase().contains(lowQuery)) {
++      otherMatches.add(entry);
++    }
++  }
++  return [...titleMatches, ...otherMatches];
++}
++
++List<SettingsSearchEntry> buildSettingsSearchEntries(AppLocalizations l) {
++  final tools = l.tools;
++  final basic = l.basicConfig;
++  final advanced = l.advancedConfig;
++  final networkPath = '$advanced › ${l.network}';
++  final dnsPath = '$advanced › DNS';
++  final application = l.application;
++
++  SettingsSearchEntry page(
++    String title,
++    String? description,
++    String path,
++    Widget Function(BuildContext context) builder,
++  ) {
++    return SettingsSearchEntry(
++      title: title,
++      description: description,
++      path: path,
++      pageBuilder: builder,
++    );
++  }
++
++  Widget basicPage(BuildContext _) => const ConfigView();
++  Widget networkPage(BuildContext _) => const NetworkSettingView();
++  Widget dnsPage(BuildContext _) => const DnsSettingView();
++  Widget applicationPage(BuildContext _) => const ApplicationSettingView();
++
++  SettingsSearchEntry basicItem(String title, [String? description]) =>
++      page(title, description, basic, basicPage);
++  SettingsSearchEntry networkItem(String title, [String? description]) =>
++      page(title, description, networkPath, networkPage);
++  SettingsSearchEntry dnsItem(String title, [String? description]) =>
++      page(title, description, dnsPath, dnsPage);
++  SettingsSearchEntry applicationItem(String title, [String? description]) =>
++      page(title, description, application, applicationPage);
++
++  return [
++    page(l.theme, l.themeDesc, tools, (_) => const ThemeView()),
++    page(
++      l.backupAndRestore,
++      l.backupAndRestoreDesc,
++      tools,
++      (_) => const BackupAndRestore(),
++    ),
++    if (system.isDesktop)
++      page(
++        l.hotkeyManagement,
++        l.hotkeyManagementDesc,
++        tools,
++        (_) => const HotKeyView(),
++      ),
++    if (system.isAndroid)
++      page(
++        l.accessControl,
++        l.accessControlDesc,
++        tools,
++        (_) => const AccessView(),
++      ),
++    page(basic, l.basicConfigDesc, tools, basicPage),
++    page(advanced, l.advancedConfigDesc, tools, (_) {
++      return const AdvancedConfigView();
++    }),
++    page(application, l.applicationDesc, tools, applicationPage),
++    page(l.network, l.networkDesc, advanced, networkPage),
++    page(l.onDemand, l.onDemandDesc, advanced, (_) => const OnDemandView()),
++    page('DNS', l.dnsDesc, advanced, dnsPage),
++    page(
++      l.addedRules,
++      l.controlGlobalAddedRules,
++      advanced,
++      (_) => const AddedRulesView(),
++    ),
++    page(l.script, l.overrideScript, advanced, (_) => const ScriptsView()),
++    basicItem(l.logLevel),
++    basicItem(l.userAgent),
++    if (system.isDesktop) basicItem(l.keepAliveIntervalDesc),
++    basicItem(l.testUrl),
++    basicItem(l.port),
++    basicItem('Hosts', l.hostsDesc),
++    basicItem('IPv6', l.ipv6Desc),
++    basicItem(l.allowLan, l.allowLanDesc),
++    basicItem(l.unifiedDelay, l.unifiedDelayDesc),
++    basicItem(l.appendSystemDns, l.appendSystemDnsTip),
++    basicItem(l.findProcessMode, l.findProcessModeDesc),
++    basicItem(l.tcpConcurrent, l.tcpConcurrentDesc),
++    basicItem(l.geodataLoader, l.geodataLoaderDesc),
++    basicItem(l.externalController, l.externalControllerDesc),
++    if (system.isAndroid) ...[
++      networkItem('VPN', l.vpnEnableDesc),
++      networkItem(l.systemProxy, l.systemProxyDesc),
++      networkItem(l.bypassDomain, l.bypassDomainDesc),
++      networkItem(l.allowBypass, l.allowBypassDesc),
++      networkItem('IPv6', l.ipv6InboundDesc),
++      networkItem(l.dnsHijacking),
++    ],
++    if (system.isDesktop) ...[
++      networkItem(l.systemProxy, l.systemProxyDesc),
++      networkItem(l.bypassDomain, l.bypassDomainDesc),
++      networkItem(l.tun, l.tunDesc),
++    ],
++    if (system.isMacOS) networkItem(l.autoSetSystemDns),
++    networkItem(l.stackMode),
++    if (!system.isDesktop) ...[
++      networkItem(l.routeMode),
++      networkItem(l.routeAddress, l.routeAddressDesc),
++    ],
++    dnsItem(l.overrideDns, l.overrideDnsDesc),
++    dnsItem(l.status, l.statusDesc),
++    dnsItem(l.listen),
++    dnsItem(l.useHosts),
++    dnsItem(l.useSystemHosts),
++    dnsItem('IPv6'),
++    dnsItem(l.respectRules, l.respectRulesDesc),
++    dnsItem('PreferH3', l.preferH3Desc),
++    dnsItem(l.dnsMode),
++    dnsItem(l.fakeipRange),
++    dnsItem(l.fakeipFilter),
++    dnsItem(l.defaultNameserver, l.defaultNameserverDesc),
++    dnsItem(l.nameserverPolicy, l.nameserverPolicyDesc),
++    dnsItem(l.nameserver, l.nameserverDesc),
++    dnsItem(l.fallback, l.fallbackDesc),
++    dnsItem(l.proxyNameserver, l.proxyNameserverDesc),
++    dnsItem('Geoip', l.fallbackFilter),
++    dnsItem(l.geoipCode, l.fallbackFilter),
++    dnsItem('Geosite', l.fallbackFilter),
++    dnsItem(l.ipcidr, l.fallbackFilter),
++    dnsItem(l.domain, l.fallbackFilter),
++    applicationItem(l.minimizeOnExit, l.minimizeOnExitDesc),
++    if (system.isDesktop) ...[
++      applicationItem(l.autoLaunch, l.autoLaunchDesc),
++      applicationItem(l.silentLaunch, l.silentLaunchDesc),
++    ],
++    applicationItem(l.autoRun, l.autoRunDesc),
++    if (system.isAndroid) applicationItem(l.exclude, l.excludeDesc),
++    applicationItem(l.tabAnimation, l.tabAnimationDesc),
++    applicationItem(l.logcat, l.logcatDesc),
++    applicationItem(l.autoCloseConnections, l.autoCloseConnectionsDesc),
++    applicationItem(l.onlyStatisticsProxy, l.onlyStatisticsProxyDesc),
++    if (system.isAndroid) applicationItem(l.crashlytics, l.crashlyticsTip),
++    applicationItem(l.autoCheckUpdate, l.autoCheckUpdateDesc),
++  ];
++}
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/tools.dart fl/FlClash-0.8.95-0.9.1/lib/views/tools.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/views/tools.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/views/tools.dart	2026-10-22 08:17:14.769871485 +0900
+@@ -11,6 +11,7 @@
+ import 'package:fl_clash/views/backup_and_restore.dart';
+ import 'package:fl_clash/views/config/config.dart';
+ import 'package:fl_clash/views/hotkey.dart';
++import 'package:fl_clash/views/settings_search.dart';
+ import 'package:fl_clash/widgets/widgets.dart';
+ import 'package:flutter/material.dart';
+ import 'package:flutter_riverpod/flutter_riverpod.dart';
+@@ -29,6 +30,94 @@
+ }
+ 
+ class _ToolViewState extends ConsumerState<ToolsView> {
++  final TextEditingController _searchController = TextEditingController();
++  String _query = '';
++
++  @override
++  void dispose() {
++    _searchController.dispose();
++    super.dispose();
++  }
++
++  Widget _buildSearchField() {
++    final appLocalizations = context.appLocalizations;
++    return Padding(
++      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
++      child: TextField(
++        controller: _searchController,
++        inputFormatters: TextInputLimits.limit(TextInputLimits.search),
++        textInputAction: TextInputAction.search,
++        decoration: InputDecoration(
++          prefixIcon: const Icon(Icons.search),
++          hintText: appLocalizations.search,
++          border: const OutlineInputBorder(),
++          isDense: true,
++          suffixIcon: _query.isEmpty
++              ? null
++              : IconButton(
++                  icon: const Icon(Icons.clear),
++                  onPressed: () {
++                    _searchController.clear();
++                    setState(() {
++                      _query = '';
++                    });
++                  },
++                ),
++        ),
++        onChanged: (value) {
++          setState(() {
++            _query = value;
++          });
++        },
++      ),
++    );
++  }
++
++  Widget _buildSearchResults() {
++    final appLocalizations = context.appLocalizations;
++    final navigationItems = ref
++        .watch(moreToolsSelectorStateProvider)
++        .navigationItems;
++    final entries = [
++      ...buildSettingsSearchEntries(appLocalizations),
++      for (final item in navigationItems)
++        SettingsSearchEntry(
++          title: Intl.message(item.label.name),
++          description: item.description != null
++              ? Intl.message(item.description!)
++              : null,
++          path: appLocalizations.more,
++          pageBuilder: item.builder,
++        ),
++    ];
++    final results = filterSettingsEntries(entries, _query);
++    if (results.isEmpty) {
++      return Center(child: Text(appLocalizations.none));
++    }
++    return ListView.separated(
++      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
++      padding: const EdgeInsets.only(bottom: 20),
++      itemCount: results.length,
++      separatorBuilder: (_, _) => const Divider(height: 0),
++      itemBuilder: (_, index) {
++        final entry = results[index];
++        final description = entry.description;
++        return ListItem(
++          title: Text(entry.title),
++          subtitle: Text(
++            description == null ? entry.path : '${entry.path} · $description',
++            maxLines: 2,
++            overflow: TextOverflow.ellipsis,
++          ),
++          trailing: const Icon(Icons.chevron_right),
++          onTap: () {
++            BaseNavigator.push(context, entry.pageBuilder(context));
++          },
++        );
++      },
++    );
++  }
++
+   Widget _buildNavigationMenuItem(NavigationItem navigationItem) {
+     return ListItem.open(
+       leading: navigationItem.icon,
+@@ -110,11 +199,20 @@
+     ];
+     return CommonScaffold(
+       title: context.appLocalizations.tools,
+-      body: ListView.builder(
+-        key: toolsStoreKey,
+-        itemCount: items.length,
+-        itemBuilder: (_, index) => items[index],
+-        padding: const EdgeInsets.only(bottom: 20),
++      body: Column(
++        children: [
++          _buildSearchField(),
++          Expanded(
++            child: _query.trim().isNotEmpty
++                ? _buildSearchResults()
++                : ListView.builder(
++                    key: toolsStoreKey,
++                    itemCount: items.length,
++                    itemBuilder: (_, index) => items[index],
++                    padding: const EdgeInsets.only(bottom: 20),
++                  ),
++          ),
++        ],
+       ),
+     );
+   }
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/widgets/input.dart fl/FlClash-0.8.95-0.9.1/lib/widgets/input.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/widgets/input.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/widgets/input.dart	2026-10-22 13:27:06.090590403 +0900
+@@ -224,6 +224,7 @@
+   final Widget Function(String item)? leadingBuilder;
+   final String? valueLabel;
+   final int? itemMaxLength;
++  final String? Function(String value)? itemValidator;
+ 
+   const ListInputPage({
+     super.key,
+@@ -234,6 +235,7 @@
+     this.valueLabel,
+     this.subtitleBuilder,
+     this.itemMaxLength,
++    this.itemValidator,
+   });
+ 
+   @override
+@@ -281,6 +283,9 @@
+       if (index != -1 && !current) {
+         return appLocalizations.existsTip(appLocalizations.value);
+       }
++      if (value != null && widget.itemValidator != null) {
++        return widget.itemValidator!(value);
++      }
+       return null;
+     }
+ 
+@@ -465,6 +470,7 @@
+   final String? valueLabel;
+   final int? keyMaxLength;
+   final int? valueMaxLength;
++  final String? Function(String value)? valueValidator;
+ 
+   const MapInputPage({
+     super.key,
+@@ -477,6 +483,7 @@
+     this.subtitleBuilder,
+     this.keyMaxLength,
+     this.valueMaxLength,
++    this.valueValidator,
+   });
+ 
+   @override
+@@ -536,6 +543,9 @@
+     final valueField = Field(
+       label: widget.valueLabel ?? appLocalizations.value,
+       value: item == null ? '' : item.value,
++      validator: widget.valueValidator == null
++          ? null
++          : (value) => value == null ? null : widget.valueValidator!(value),
+     );
+ 
+     final value = await globalState.showCommonDialog<MapEntry<String, String>>(
+diff -ruN orig/FlClash-0.8.95-0.9.1/lib/widgets/scaffold.dart fl/FlClash-0.8.95-0.9.1/lib/widgets/scaffold.dart
+--- orig/FlClash-0.8.95-0.9.1/lib/widgets/scaffold.dart	2026-10-18 16:26:14.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/lib/widgets/scaffold.dart	2026-10-22 19:09:24.306467749 +0900
+@@ -265,7 +265,9 @@
+ 
+   PreferredSizeWidget _buildAppBar(VoidCallback? backAction) {
+     return PreferredSize(
+-      preferredSize: const Size.fromHeight(kToolbarHeight),
++      // A custom app bar may carry a `bottom` row, so use its own height.
++      preferredSize:
++          widget.appBar?.preferredSize ?? const Size.fromHeight(kToolbarHeight),
+       child: Stack(
+         alignment: Alignment.bottomCenter,
+         children: [
+diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/dns_validator_test.dart fl/FlClash-0.8.95-0.9.1/test/common/dns_validator_test.dart
+--- orig/FlClash-0.8.95-0.9.1/test/common/dns_validator_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/test/common/dns_validator_test.dart	2026-10-22 13:27:24.004950629 +0900
+@@ -0,0 +1,52 @@
++import 'package:fl_clash/common/dns_validator.dart';
++import 'package:flutter_test/flutter_test.dart';
++
++void main() {
++  test('valid dns servers', () {
++    for (final s in [
++      '223.5.5.5',
++      '223.5.5.5:53',
++      '2400:3200::1',
++      '[2400:3200::1]:53',
++      'dns.alidns.com',
++      'tls://dns.google:853',
++      'https://dns.alidns.com/dns-query',
++      'https://1.1.1.1/dns-query#proxy',
++      'quic://dns.adguard.com',
++      'udp://8.8.8.8',
++      'system',
++      'dhcp://en0',
++      'rcode://success',
++    ]) {
++      expect(isValidDnsServer(s), isTrue, reason: s);
++    }
++  });
++
++  test('invalid dns servers', () {
++    for (final s in [
++      '',
++      ' ',
++      '8.8.8.8:99999',
++      '8.8.8.8:0',
++      'ftp://8.8.8.8',
++      'tls://',
++      'tls://dns.google/path',
++      'a b',
++      '#proxy',
++      '1.2.3.4.5:53x',
++      '-bad.com',
++    ]) {
++      expect(isValidDnsServer(s), isFalse, reason: s);
++    }
++  });
++
++  test('server list and cidr', () {
++    expect(isValidDnsServerList('1.1.1.1, tls://dns.google'), isTrue);
++    expect(isValidDnsServerList('1.1.1.1,,'), isFalse);
++    expect(isValidCidr('198.18.0.1/16'), isTrue);
++    expect(isValidCidr('fc00::/7'), isTrue);
++    expect(isValidCidr('198.18.0.1/33'), isFalse);
++    expect(isValidCidr('198.18.0.1'), isFalse);
++    expect(isValidCidr('x/8'), isFalse);
++  });
++}
+diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/editor_draft_test.dart fl/FlClash-0.8.95-0.9.1/test/common/editor_draft_test.dart
+--- orig/FlClash-0.8.95-0.9.1/test/common/editor_draft_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/test/common/editor_draft_test.dart	2026-10-22 18:55:26.802268120 +0900
+@@ -0,0 +1,47 @@
++import 'dart:io';
++
++import 'package:fl_clash/common/editor_draft.dart';
++import 'package:flutter_test/flutter_test.dart';
++
++void main() {
++  late Directory dir;
++  late EditorDraft draft;
++
++  setUp(() async {
++    dir = await Directory.systemTemp.createTemp('draft_test');
++    draft = EditorDraft(dir);
++  });
++
++  tearDown(() async {
++    await dir.delete(recursive: true);
++  });
++
++  test('stableHash is deterministic and content sensitive', () {
++    expect(stableHash('abc'), stableHash('abc'));
++    expect(stableHash('abc'), isNot(stableHash('abd')));
++  });
++
++  test('round trip', () async {
++    await draft.save('p/1', 'base', 'edited');
++    expect(await draft.load('p/1', 'base'), 'edited');
++  });
++
++  test('stale draft (base changed) is dropped and deleted', () async {
++    await draft.save('k', 'old', 'edited');
++    expect(await draft.load('k', 'new'), isNull);
++    expect(await draft.load('k', 'old'), isNull);
++  });
++
++  test('draft equal to base is not offered', () async {
++    await draft.save('k', 'same', 'same');
++    expect(await draft.load('k', 'same'), isNull);
++  });
++
++  test('clear and corrupt file', () async {
++    await draft.save('k', 'a', 'b');
++    await draft.clear('k');
++    expect(await draft.load('k', 'a'), isNull);
++    await File('${dir.path}/bad.json').writeAsString('not json');
++    expect(await draft.load('bad', 'a'), isNull);
++  });
++}
+diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/geo_mirror_test.dart fl/FlClash-0.8.95-0.9.1/test/common/geo_mirror_test.dart
+--- orig/FlClash-0.8.95-0.9.1/test/common/geo_mirror_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/test/common/geo_mirror_test.dart	2026-10-22 08:22:15.118075805 +0900
+@@ -0,0 +1,21 @@
++import 'package:fl_clash/common/geo_mirror.dart';
++import 'package:fl_clash/enum/enum.dart';
++import 'package:fl_clash/models/clash_config.dart';
++import 'package:flutter_test/flutter_test.dart';
++
++void main() {
++  test('every preset covers all geo resources with https urls', () {
++    for (final preset in geoMirrorPresets) {
++      for (final r in GeoResource.values) {
++        expect(preset.urls[r], startsWith('https://'), reason: preset.name);
++      }
++    }
++  });
++
++  test('detects presets and custom', () {
++    expect(detectGeoMirrorPreset(defaultGeoXUrl)?.name, 'GitHub');
++    expect(detectGeoMirrorPreset(geoMirrorPresets[1].urls)?.name, 'jsDelivr');
++    final custom = {...defaultGeoXUrl, GeoResource.GEOIP: 'https://x.test/a'};
++    expect(detectGeoMirrorPreset(custom), isNull);
++  });
++}
 diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart fl/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart
 --- orig/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart	1970-01-01 09:00:00.000000000 +0900
 +++ fl/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart	2026-10-21 19:06:36.926442923 +0900
@@ -1729,6 +3724,54 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart fl/FlClash-0.8.
 +    final labels = ['微信', 'Chrome', '支付宝', 'Alipay', '淘宝', 'WeChat'];
 +    labels.sort(compareWithPinyin);
 +    expect(labels, ['Alipay', 'Chrome', '淘宝', 'WeChat', '微信', '支付宝']);
++  });
++}
+diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/yaml_folding_test.dart fl/FlClash-0.8.95-0.9.1/test/common/yaml_folding_test.dart
+--- orig/FlClash-0.8.95-0.9.1/test/common/yaml_folding_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/test/common/yaml_folding_test.dart	2026-10-22 18:58:39.143340884 +0900
+@@ -0,0 +1,44 @@
++import 'package:fl_clash/common/yaml_folding.dart';
++import 'package:flutter_test/flutter_test.dart';
++
++List<FoldRange> fold(String text) => computeYamlFoldRanges(text.split('\n'));
++
++void main() {
++  test('nested mappings', () {
++    final r = fold('a:\n  b:\n    c: 1\n  d: 2\ne: 3');
++    expect(r, [const FoldRange(0, 3), const FoldRange(1, 2)]);
++  });
++
++  test('sequence at the same column folds under its key', () {
++    final r = fold('proxies:\n- name: a\n  type: x\n- name: b\n  type: y\nrules:\n- A\n- B');
++    expect(r, contains(const FoldRange(0, 4)));
++    expect(r, contains(const FoldRange(1, 2)));
++    expect(r, contains(const FoldRange(3, 4)));
++    expect(r, contains(const FoldRange(5, 7)));
++  });
++
++  test('indented sequence still works', () {
++    final r = fold('rules:\n  - A\n  - B\nnext: 1');
++    expect(r, [const FoldRange(0, 2)]);
++  });
++
++  test('trailing blank and comment lines are excluded', () {
++    final r = fold('a:\n  b: 1\n\n# note\nc: 2');
++    expect(r, [const FoldRange(0, 1)]);
++  });
++
++  test('comments do not close or open blocks', () {
++    final r = fold('a:\n  b: 1\n# top comment\n  c: 2\nd: 3');
++    expect(r, [const FoldRange(0, 3)]);
++  });
++
++  test('block scalar content folds with its key', () {
++    final r = fold('script: |\n  line1\n\n  line2\nnext: 1');
++    expect(r, [const FoldRange(0, 3)]);
++  });
++
++  test('top-level sequence items and empty input', () {
++    expect(fold('- a: 1\n  b: 2\n- c: 3'), [const FoldRange(0, 1)]);
++    expect(fold(''), isEmpty);
 +  });
 +}
 diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart fl/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart
@@ -1881,5 +3924,51 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/test/providers/filter_groups_test.dart fl/Fl
 +
 +  test('groups without matches are dropped', () {
 +    expect(filter('zzz'), isEmpty);
++  });
++}
+diff -ruN orig/FlClash-0.8.95-0.9.1/test/views/settings_search_test.dart fl/FlClash-0.8.95-0.9.1/test/views/settings_search_test.dart
+--- orig/FlClash-0.8.95-0.9.1/test/views/settings_search_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ fl/FlClash-0.8.95-0.9.1/test/views/settings_search_test.dart	2026-10-22 08:17:21.080970983 +0900
+@@ -0,0 +1,42 @@
++import 'package:fl_clash/views/settings_search.dart';
++import 'package:flutter/widgets.dart';
++import 'package:flutter_test/flutter_test.dart';
++
++SettingsSearchEntry _e(String title, {String? desc, String path = 'Tools'}) {
++  return SettingsSearchEntry(
++    title: title,
++    description: desc,
++    path: path,
++    pageBuilder: (_) => const SizedBox(),
++  );
++}
++
++void main() {
++  final entries = [
++    _e('主题', desc: '设置应用主题'),
++    _e('网络', path: '高级配置'),
++    _e('允许局域网', desc: '允许局域网连接', path: '基础配置'),
++    _e('Hosts', desc: 'Override hosts'),
++    _e('Hosts', desc: 'Override hosts'),
++  ];
++
++  test('empty or blank query returns nothing', () {
++    expect(filterSettingsEntries(entries, ''), isEmpty);
++    expect(filterSettingsEntries(entries, '   '), isEmpty);
++  });
++
++  test('matches pinyin initials', () {
++    final r = filterSettingsEntries(entries, 'zt');
++    expect(r.map((e) => e.title), ['主题']);
++  });
++
++  test('title matches rank before description/path matches', () {
++    final r = filterSettingsEntries(entries, '主题');
++    expect(r.first.title, '主题');
++  });
++
++  test('matches path and description, case-insensitive, dedupes', () {
++    expect(filterSettingsEntries(entries, '高级').map((e) => e.title), ['网络']);
++    expect(filterSettingsEntries(entries, 'HOSTS').length, 1);
 +  });
 +}
