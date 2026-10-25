@@ -5,6 +5,26 @@
 
 ---
 
+## v0.9.6（浅色模式 / Android 插件 / 应用设置 / 添加配置小组件）
+
+### 新增功能
+- **浅色模式（light mode）**：提供亮色主题切换，对应深色模式互补。
+  - [`lib/common/light_mode.dart`](lib/common/light_mode.dart) — 浅色模式工具与判定
+  - [`lib/providers/light_mode.dart`](lib/providers/light_mode.dart) — 浅色模式 Provider
+  - [`test/common/light_mode_test.dart`](test/common/light_mode_test.dart) — 单元测试
+- **Android 原生插件**：通过 Kotlin AppPlugin 暴露原生能力给 Flutter 层。
+  - [`android/app/src/main/kotlin/com/follow/clash/plugins/AppPlugin.kt`](android/app/src/main/kotlin/com/follow/clash/plugins/AppPlugin.kt) — 原生插件入口
+  - [`lib/plugins/app.dart`](lib/plugins/app.dart) — Flutter 侧插件通道
+  - [`lib/manager/android_manager.dart`](lib/manager/android_manager.dart) — Android 平台管理器
+- **应用设置页**：[`lib/views/application_setting.dart`](lib/views/application_setting.dart) — 集中的应用设置入口。
+- **添加配置小组件**：[`lib/views/dashboard/widgets/add_profile.dart`](lib/views/dashboard/widgets/add_profile.dart) — 仪表盘快速添加配置入口。
+
+### 改进
+- 补丁格式由 context diff（`diff -ruN`，`-p2`）切换为 git unified diff（`a/` `b/`，`-p1`），更利于 review 与生成。
+- editor-fixes.patch 覆盖文件数从 51 → 59，全面整合 v0.9.2~v0.9.6 全部增强。
+
+---
+
 ## v0.9.5（收藏代理与体验优化）
 
 ### 新增功能

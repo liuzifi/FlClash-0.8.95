@@ -1,7 +1,22 @@
-diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_en.arb fl/FlClash-0.8.95-0.9.1/arb/intl_en.arb
---- orig/FlClash-0.8.95-0.9.1/arb/intl_en.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_en.arb	2026-10-23 20:22:07.453151804 +0900
-@@ -553,5 +553,27 @@
+diff -ruN a/android/app/src/main/kotlin/com/follow/clash/plugins/AppPlugin.kt b/android/app/src/main/kotlin/com/follow/clash/plugins/AppPlugin.kt
+--- a/android/app/src/main/kotlin/com/follow/clash/plugins/AppPlugin.kt	2026-10-26 00:36:12.836145794 +0900
++++ b/android/app/src/main/kotlin/com/follow/clash/plugins/AppPlugin.kt	2026-10-26 00:55:23.712539914 +0900
+@@ -71,6 +71,11 @@
+                 result.success(true)
+             }
+ 
++            "finishActivity" -> {
++                activity?.finish()
++                result.success(true)
++            }
++
+             "updateExcludeFromRecents" -> {
+                 val value = call.argument<Boolean>("value")
+                 updateExcludeFromRecents(value)
+diff -ruN a/arb/intl_en.arb b/arb/intl_en.arb
+--- a/arb/intl_en.arb	2026-10-26 00:36:12.837468928 +0900
++++ b/arb/intl_en.arb	2026-10-26 00:55:23.683952921 +0900
+@@ -553,5 +553,31 @@
    "geoSkipped": "{name} is already up to date",
    "geoUpdated": "{name} updated",
    "secondsCount": "{count} seconds",
@@ -28,12 +43,16 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_en.arb fl/FlClash-0.8.95-0.9.1/arb/
 +  "restoreDraftTip": "An unsaved draft of this file was found. Restore it?",
 +  "favoriteProxies": "Favorite nodes",
 +  "favoriteEmptyTip": "Tap the star on a node card to add it here",
-+  "favoriteMissing": "Node not found in this profile"
++  "favoriteMissing": "Node not found in this profile",
++  "lightMode": "Light mode",
++  "lightModeDesc": "After staying in the background, close the app interface and keep only the core running to save power",
++  "lightModeDelay": "Enter light mode after",
++  "minutes": "minutes"
  }
-diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ja.arb fl/FlClash-0.8.95-0.9.1/arb/intl_ja.arb
---- orig/FlClash-0.8.95-0.9.1/arb/intl_ja.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_ja.arb	2026-10-23 20:22:07.464062995 +0900
-@@ -553,5 +553,27 @@
+diff -ruN a/arb/intl_ja.arb b/arb/intl_ja.arb
+--- a/arb/intl_ja.arb	2026-10-26 00:36:12.837486751 +0900
++++ b/arb/intl_ja.arb	2026-10-26 00:55:23.687519059 +0900
+@@ -553,5 +553,31 @@
    "geoSkipped": "{name} はすでに最新です",
    "geoUpdated": "{name} 更新済み",
    "secondsCount": "{count} 秒",
@@ -60,12 +79,16 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ja.arb fl/FlClash-0.8.95-0.9.1/arb/
 +  "restoreDraftTip": "このファイルの未保存の下書きが見つかりました。復元しますか?",
 +  "favoriteProxies": "お気に入りノード",
 +  "favoriteEmptyTip": "ノードカードの星をタップするとここに追加されます",
-+  "favoriteMissing": "このプロファイルにノードが見つかりません"
++  "favoriteMissing": "このプロファイルにノードが見つかりません",
++  "lightMode": "ライトモード",
++  "lightModeDesc": "バックグラウンドにしばらく置いた後、アプリの画面を閉じてコアのみを実行し、電力を節約します",
++  "lightModeDelay": "バックグラウンドから移行するまでの時間",
++  "minutes": "分"
  }
-diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ru.arb fl/FlClash-0.8.95-0.9.1/arb/intl_ru.arb
---- orig/FlClash-0.8.95-0.9.1/arb/intl_ru.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_ru.arb	2026-10-23 20:22:07.466590851 +0900
-@@ -553,5 +553,27 @@
+diff -ruN a/arb/intl_ru.arb b/arb/intl_ru.arb
+--- a/arb/intl_ru.arb	2026-10-26 00:36:12.837524809 +0900
++++ b/arb/intl_ru.arb	2026-10-26 00:55:23.689284257 +0900
+@@ -553,5 +553,31 @@
    "geoSkipped": "Для {name} уже установлена последняя версия",
    "geoUpdated": "{name} обновлено",
    "secondsCount": "{count} секунд",
@@ -92,12 +115,16 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_ru.arb fl/FlClash-0.8.95-0.9.1/arb/
 +  "restoreDraftTip": "Найден несохранённый черновик этого файла. Восстановить?",
 +  "favoriteProxies": "Избранные узлы",
 +  "favoriteEmptyTip": "Нажмите на звезду на карточке узла, чтобы добавить его сюда",
-+  "favoriteMissing": "Узел не найден в этом профиле"
++  "favoriteMissing": "Узел не найден в этом профиле",
++  "lightMode": "Легкий режим",
++  "lightModeDesc": "После пребывания в фоне закрывать интерфейс приложения и оставлять работать только ядро для экономии энергии",
++  "lightModeDelay": "Включать через",
++  "minutes": "мин."
  }
-diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb fl/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb
---- orig/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb	2026-10-23 20:22:07.459853344 +0900
-@@ -553,5 +553,27 @@
+diff -ruN a/arb/intl_zh_CN.arb b/arb/intl_zh_CN.arb
+--- a/arb/intl_zh_CN.arb	2026-10-26 00:36:12.837548049 +0900
++++ b/arb/intl_zh_CN.arb	2026-10-26 00:55:23.686200002 +0900
+@@ -553,5 +553,31 @@
    "geoSkipped": "{name} 已是最新版本",
    "geoUpdated": "{name} 已更新",
    "secondsCount": "{count} 秒",
@@ -124,14 +151,16 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/arb/intl_zh_CN.arb fl/FlClash-0.8.95-0.9.1/a
 +  "restoreDraftTip": "发现这个文件有未保存的草稿,要恢复吗?",
 +  "favoriteProxies": "收藏节点",
 +  "favoriteEmptyTip": "在节点卡片上点星标,即可收藏到这里",
-+  "favoriteMissing": "当前订阅中找不到该节点"
++  "favoriteMissing": "当前订阅中找不到该节点",
++  "lightMode": "轻量模式",
++  "lightModeDesc": "进入后台一段时间后关闭应用界面,仅保留内核运行,以节省电量",
++  "lightModeDelay": "进入后台后多久进入",
++  "minutes": "分钟"
  }
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart fl/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart
---- orig/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart	2026-10-22 13:27:06.073923324 +0900
-@@ -0,0 +1,102 @@
-+/// Lightweight format checks for DNS settings. They only reject input that is
-+/// obviously wrong; anything mihomo may accept is allowed through.
+diff -ruN a/lib/common/dns_validator.dart b/lib/common/dns_validator.dart
+--- a/lib/common/dns_validator.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/common/dns_validator.dart	2026-10-26 00:37:15.478192750 +0900
+@@ -0,0 +1,95 @@
 +const _dnsSchemes = {
 +  'udp', 'tcp', 'tls', 'https', 'quic', 'h3', 'dhcp', 'system', 'rcode',
 +};
@@ -167,7 +196,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart fl/FlClash-0.8
 +  return n != null && n > 0 && n <= 65535 && s == n.toString();
 +}
 +
-+/// Validates `host`, `host:port`, `[v6]:port`, bare IPv6.
 +bool _isHostPort(String s) {
 +  if (s.isEmpty) return false;
 +  if (s.startsWith('[')) {
@@ -188,8 +216,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart fl/FlClash-0.8
 +  return _isIpv4(s) || _isHostname(s);
 +}
 +
-+/// One nameserver entry, e.g. `223.5.5.5`, `tls://dns.google:853`,
-+/// `https://dns.alidns.com/dns-query#proxy`, `system`, `dhcp://en0`.
 +bool isValidDnsServer(String input) {
 +  var value = input.trim();
 +  if (value.isEmpty || value.contains(RegExp(r'\s'))) return false;
@@ -214,13 +240,11 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart fl/FlClash-0.8
 +  return _isHostPort(rest);
 +}
 +
-+/// Value of a nameserver-policy entry: one server or a comma separated list.
 +bool isValidDnsServerList(String input) {
 +  final parts = input.split(',').map((e) => e.trim()).toList();
 +  return parts.isNotEmpty && parts.every(isValidDnsServer);
 +}
 +
-+/// `198.18.0.1/16` or `fc00::/7`.
 +bool isValidCidr(String input) {
 +  final value = input.trim();
 +  final slash = value.indexOf('/');
@@ -232,15 +256,13 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/dns_validator.dart fl/FlClash-0.8
 +  if (_isIpv6(ip)) return bits <= 128;
 +  return false;
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/editor_draft.dart fl/FlClash-0.8.95-0.9.1/lib/common/editor_draft.dart
---- orig/FlClash-0.8.95-0.9.1/lib/common/editor_draft.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/common/editor_draft.dart	2026-10-22 18:55:26.799828060 +0900
-@@ -0,0 +1,62 @@
+diff -ruN a/lib/common/editor_draft.dart b/lib/common/editor_draft.dart
+--- a/lib/common/editor_draft.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/common/editor_draft.dart	2026-10-26 00:37:15.482102774 +0900
+@@ -0,0 +1,55 @@
 +import 'dart:convert';
 +import 'dart:io';
 +
-+/// FNV-1a 32-bit hash. Unlike [String.hashCode] it is stable across runs, so
-+/// it can be persisted next to a draft.
 +int stableHash(String text) {
 +  var hash = 0x811c9dc5;
 +  for (final unit in text.codeUnits) {
@@ -250,9 +272,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/editor_draft.dart fl/FlClash-0.8.
 +  return hash;
 +}
 +
-+/// Crash-safe drafts for the editor. A draft remembers the hash of the
-+/// content it was based on; once the real file changes (for example after a
-+/// save) the draft no longer matches and is discarded instead of offered.
 +class EditorDraft {
 +  final Directory dir;
 +
@@ -271,8 +290,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/editor_draft.dart fl/FlClash-0.8.
 +    );
 +  }
 +
-+  /// The draft text, or null when there is none, it is stale, or it equals
-+  /// [base]. Stale and unreadable drafts are deleted.
 +  Future<String?> load(String key, String base) async {
 +    final file = _file(key);
 +    if (!await file.exists()) {
@@ -298,15 +315,14 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/editor_draft.dart fl/FlClash-0.8.
 +    }
 +  }
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/favorite_proxies.dart fl/FlClash-0.8.95-0.9.1/lib/common/favorite_proxies.dart
---- orig/FlClash-0.8.95-0.9.1/lib/common/favorite_proxies.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/common/favorite_proxies.dart	2026-10-23 20:22:07.478777647 +0900
-@@ -0,0 +1,104 @@
+diff -ruN a/lib/common/favorite_proxies.dart b/lib/common/favorite_proxies.dart
+--- a/lib/common/favorite_proxies.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/common/favorite_proxies.dart	2026-10-26 00:37:15.482900897 +0900
+@@ -0,0 +1,99 @@
 +import 'dart:convert';
 +
 +import 'package:fl_clash/models/models.dart';
 +
-+/// A favorite node, identified by the group it is selected in and its name.
 +class FavoriteProxy {
 +  final String group;
 +  final String name;
@@ -333,7 +349,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/favorite_proxies.dart fl/FlClash-
 +  }
 +}
 +
-+/// Favorites per profile, keyed by profile id.
 +typedef FavoriteMap = Map<String, List<FavoriteProxy>>;
 +
 +String encodeFavorites(FavoriteMap map) {
@@ -342,7 +357,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/favorite_proxies.dart fl/FlClash-
 +  );
 +}
 +
-+/// Tolerant: anything unreadable yields an empty map or is skipped.
 +FavoriteMap decodeFavorites(String? raw) {
 +  if (raw == null || raw.isEmpty) return {};
 +  try {
@@ -375,8 +389,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/favorite_proxies.dart fl/FlClash-
 +  return [...list, favorite];
 +}
 +
-+/// Drops entries of profiles that no longer exist. An empty [validProfileIds]
-+/// means the profile list is not loaded yet, so nothing is dropped.
 +FavoriteMap pruneFavorites(FavoriteMap map, Set<String> validProfileIds) {
 +  if (validProfileIds.isEmpty) return map;
 +  return {
@@ -406,10 +418,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/favorite_proxies.dart fl/FlClash-
 +    index == -1 ? null : group.all[index],
 +  );
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/geo_mirror.dart fl/FlClash-0.8.95-0.9.1/lib/common/geo_mirror.dart
---- orig/FlClash-0.8.95-0.9.1/lib/common/geo_mirror.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/common/geo_mirror.dart	2026-10-22 08:22:15.093493521 +0900
-@@ -0,0 +1,33 @@
+diff -ruN a/lib/common/geo_mirror.dart b/lib/common/geo_mirror.dart
+--- a/lib/common/geo_mirror.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/common/geo_mirror.dart	2026-10-26 00:37:15.483417560 +0900
+@@ -0,0 +1,32 @@
 +import 'package:fl_clash/enum/enum.dart';
 +import 'package:fl_clash/models/clash_config.dart';
 +
@@ -433,7 +445,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/geo_mirror.dart fl/FlClash-0.8.95
 +  }),
 +];
 +
-+/// The preset whose URLs exactly equal [current], or null for custom URLs.
 +GeoMirrorPreset? detectGeoMirrorPreset(Map<GeoResource, String> current) {
 +  for (final preset in geoMirrorPresets) {
 +    final same = preset.urls.entries.every((e) => current[e.key] == e.value);
@@ -443,9 +454,132 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/geo_mirror.dart fl/FlClash-0.8.95
 +  }
 +  return null;
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/path.dart fl/FlClash-0.8.95-0.9.1/lib/common/path.dart
---- orig/FlClash-0.8.95-0.9.1/lib/common/path.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/common/path.dart	2026-10-22 13:28:51.951937000 +0900
+diff -ruN a/lib/common/light_mode.dart b/lib/common/light_mode.dart
+--- a/lib/common/light_mode.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/common/light_mode.dart	2026-10-26 00:55:23.698045011 +0900
+@@ -0,0 +1,119 @@
++import 'dart:async';
++import 'dart:convert';
++
++import 'package:flutter/widgets.dart';
++
++const defaultLightModeDelayMinutes = 5;
++const lightModeDelayOptions = [1, 3, 5, 10, 15, 30, 60];
++
++class LightModeSetting {
++  final bool enabled;
++  final int delayMinutes;
++
++  const LightModeSetting({
++    this.enabled = false,
++    this.delayMinutes = defaultLightModeDelayMinutes,
++  });
++
++  LightModeSetting copyWith({bool? enabled, int? delayMinutes}) {
++    return LightModeSetting(
++      enabled: enabled ?? this.enabled,
++      delayMinutes: delayMinutes ?? this.delayMinutes,
++    );
++  }
++
++  @override
++  bool operator ==(Object other) =>
++      other is LightModeSetting &&
++      other.enabled == enabled &&
++      other.delayMinutes == delayMinutes;
++
++  @override
++  int get hashCode => Object.hash(enabled, delayMinutes);
++}
++
++String encodeLightMode(LightModeSetting setting) {
++  return json.encode({
++    'enabled': setting.enabled,
++    'delayMinutes': setting.delayMinutes,
++  });
++}
++
++LightModeSetting decodeLightMode(String? raw) {
++  if (raw == null || raw.isEmpty) {
++    return const LightModeSetting();
++  }
++  try {
++    final data = json.decode(raw);
++    if (data is! Map) {
++      return const LightModeSetting();
++    }
++    final enabled = data['enabled'];
++    final delay = data['delayMinutes'];
++    return LightModeSetting(
++      enabled: enabled is bool && enabled,
++      delayMinutes: delay is int && delay >= 1 && delay <= 600
++          ? delay
++          : defaultLightModeDelayMinutes,
++    );
++  } catch (_) {
++    return const LightModeSetting();
++  }
++}
++
++typedef LightModeTimerFactory =
++    Timer Function(Duration duration, void Function() callback);
++
++class LightModeScheduler {
++  final LightModeSetting Function() readSetting;
++  final bool Function() isCoreRunning;
++  final Future<void> Function() enter;
++  final LightModeTimerFactory _createTimer;
++  Timer? _timer;
++
++  LightModeScheduler({
++    required this.readSetting,
++    required this.isCoreRunning,
++    required this.enter,
++    LightModeTimerFactory? createTimer,
++  }) : _createTimer = createTimer ?? ((d, cb) => Timer(d, cb));
++
++  bool get isScheduled => _timer != null;
++
++  void onLifecycleChanged(AppLifecycleState state) {
++    switch (state) {
++      case AppLifecycleState.paused:
++      case AppLifecycleState.hidden:
++        _schedule();
++      case AppLifecycleState.resumed:
++      case AppLifecycleState.detached:
++        cancel();
++      case AppLifecycleState.inactive:
++        break;
++    }
++  }
++
++  void _schedule() {
++    if (_timer != null) {
++      return;
++    }
++    final setting = readSetting();
++    if (!setting.enabled) {
++      return;
++    }
++    _timer = _createTimer(Duration(minutes: setting.delayMinutes), _fire);
++  }
++
++  void _fire() {
++    _timer = null;
++    if (!readSetting().enabled || !isCoreRunning()) {
++      return;
++    }
++    unawaited(enter().catchError((_) {}));
++  }
++
++  void cancel() {
++    _timer?.cancel();
++    _timer = null;
++  }
++}
+diff -ruN a/lib/common/path.dart b/lib/common/path.dart
+--- a/lib/common/path.dart	2026-10-26 00:36:12.858841355 +0900
++++ b/lib/common/path.dart	2026-10-26 00:37:15.484100672 +0900
 @@ -68,6 +68,11 @@
      return join(mHomeDirPath, 'backup.zip');
    }
@@ -458,9 +592,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/path.dart fl/FlClash-0.8.95-0.9.1
    Future<String> get restoreDirPath async {
      final mHomeDirPath = await homeDirPath;
      return join(mHomeDirPath, 'restore');
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart fl/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart
---- orig/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart	2026-10-21 19:06:27.673532987 +0900
+diff -ruN a/lib/common/pinyin.dart b/lib/common/pinyin.dart
+--- a/lib/common/pinyin.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/common/pinyin.dart	2026-10-26 00:37:15.484869796 +0900
 @@ -0,0 +1,261 @@
 +const int _firstHan = 0x4E00;
 +const int _lastHan = 0x9FA5;
@@ -723,10 +857,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/pinyin.dart fl/FlClash-0.8.95-0.9
 +  }
 +  return a.compareTo(b);
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/preferences.dart fl/FlClash-0.8.95-0.9.1/lib/common/preferences.dart
---- orig/FlClash-0.8.95-0.9.1/lib/common/preferences.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/common/preferences.dart	2026-10-23 20:22:07.497746753 +0900
-@@ -85,6 +85,16 @@
+diff -ruN a/lib/common/preferences.dart b/lib/common/preferences.dart
+--- a/lib/common/preferences.dart	2026-10-26 00:36:12.858871041 +0900
++++ b/lib/common/preferences.dart	2026-10-26 00:55:23.711372064 +0900
+@@ -85,6 +85,26 @@
      return preferences?.setString(configKey, json.encode(config)) ?? false;
    }
  
@@ -740,13 +874,23 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/preferences.dart fl/FlClash-0.8.9
 +    return preferences?.setString('favorite_proxies', value) ?? false;
 +  }
 +
++  Future<String?> getLightMode() async {
++    final preferences = await sharedPreferencesCompleter.future;
++    return preferences?.getString('light_mode');
++  }
++
++  Future<bool> saveLightMode(String value) async {
++    final preferences = await sharedPreferencesCompleter.future;
++    return preferences?.setString('light_mode', value) ?? false;
++  }
++
    Future<void> clearPreferences() async {
      final sharedPreferencesIns = await sharedPreferencesCompleter.future;
      await sharedPreferencesIns?.clear();
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart fl/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart
---- orig/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart	2026-10-22 18:58:39.095340886 +0900
-@@ -0,0 +1,87 @@
+diff -ruN a/lib/common/yaml_folding.dart b/lib/common/yaml_folding.dart
+--- a/lib/common/yaml_folding.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/common/yaml_folding.dart	2026-10-26 00:37:15.485999450 +0900
+@@ -0,0 +1,79 @@
 +class FoldRange {
 +  final int start;
 +  final int end;
@@ -766,15 +910,12 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart fl/FlClash-0.8.
 +
 +class _Entry {
 +  final int index;
-+  // Doubled indent; a sequence item sitting at the same column as its parent
-+  // key gets +1 so that it nests under that key.
 +  final int level;
 +  final bool opensBlock;
 +
 +  const _Entry(this.index, this.level, this.opensBlock);
 +}
 +
-+/// Indent of [text] in spaces, or -1 for blank and comment-only lines.
 +int _indentOf(String text) {
 +  var i = 0;
 +  while (i < text.length && text.codeUnitAt(i) == 0x20) {
@@ -789,8 +930,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart fl/FlClash-0.8.
 +bool _isSequenceItem(String trimmed) =>
 +    trimmed == '-' || trimmed.startsWith('- ');
 +
-+/// True for `key:` / `key: |` / `key: >-` style lines whose value continues
-+/// on the following, more indented lines.
 +bool _opensBlock(String trimmed) {
 +  var line = trimmed;
 +  final comment = line.indexOf(' #');
@@ -799,9 +938,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart fl/FlClash-0.8.
 +  return RegExp(r':\s+[|>][+\-0-9]*$').hasMatch(line);
 +}
 +
-+/// Foldable regions of a YAML document, one per line that has more indented
-+/// content below it. A region ends on its last content line, so trailing
-+/// blank and comment lines stay visible after folding.
 +List<FoldRange> computeYamlFoldRanges(List<String> lines) {
 +  final ranges = <FoldRange>[];
 +  final stack = <_Entry>[];
@@ -834,10 +970,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_folding.dart fl/FlClash-0.8.
 +  ranges.sort((a, b) => a.start - b.start);
 +  return ranges;
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart fl/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart
---- orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart	2026-10-23 19:56:23.532531865 +0900
-@@ -0,0 +1,200 @@
+diff -ruN a/lib/common/yaml_outline.dart b/lib/common/yaml_outline.dart
+--- a/lib/common/yaml_outline.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/common/yaml_outline.dart	2026-10-26 00:37:15.486573610 +0900
+@@ -0,0 +1,197 @@
 +class OutlineItem {
 +  final int line;
 +  final String title;
@@ -1019,7 +1155,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart fl/FlClash-0.8.
 +  return items;
 +}
 +
-+/// Line index of the top-level key [key] (`key:` at column 0), or null.
 +int? findTopLevelKeyLine(List<String> lines, String key) {
 +  final reg = RegExp('^${RegExp.escape(key)}:(?:\\s|\$)');
 +  for (var i = 0; i < lines.length; i++) {
@@ -1030,32 +1165,31 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/common/yaml_outline.dart fl/FlClash-0.8.
 +  return null;
 +}
 +
-+/// Drops the entries before the top-level `proxies` entry. Without a
-+/// `proxies` key the outline is returned unchanged.
 +List<OutlineItem> outlineFromProxies(List<OutlineItem> items) {
 +  final index = items.indexWhere(
 +    (item) => item.level == 0 && item.title == 'proxies',
 +  );
 +  return index <= 0 ? items : items.sublist(index);
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/enum/enum.dart fl/FlClash-0.8.95-0.9.1/lib/enum/enum.dart
---- orig/FlClash-0.8.95-0.9.1/lib/enum/enum.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/enum/enum.dart	2026-10-23 20:22:37.927232435 +0900
-@@ -268,7 +268,9 @@
+diff -ruN a/lib/enum/enum.dart b/lib/enum/enum.dart
+--- a/lib/enum/enum.dart	2026-10-26 00:36:12.859532819 +0900
++++ b/lib/enum/enum.dart	2026-10-26 00:57:54.973341794 +0900
+@@ -268,7 +268,10 @@
      platforms: desktopPlatforms,
    ),
    intranetIp(GridItem(crossAxisCellCount: 4, child: IntranetIP())),
 -  memoryInfo(GridItem(crossAxisCellCount: 4, child: MemoryInfo()));
 +  memoryInfo(GridItem(crossAxisCellCount: 4, child: MemoryInfo())),
 +  currentProfile(GridItem(crossAxisCellCount: 8, child: CurrentProfileCard())),
-+  favoriteProxies(GridItem(crossAxisCellCount: 8, child: FavoriteProxiesCard()));
++  favoriteProxies(GridItem(crossAxisCellCount: 8, child: FavoriteProxiesCard())),
++  addProfile(GridItem(crossAxisCellCount: 8, child: AddProfileCard()));
  
    final GridItem widget;
    final List<SupportPlatform> platforms;
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart
---- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart	2026-10-23 20:22:07.458166384 +0900
-@@ -1084,6 +1084,24 @@
+diff -ruN a/lib/l10n/intl/messages_en.dart b/lib/l10n/intl/messages_en.dart
+--- a/lib/l10n/intl/messages_en.dart	2026-10-26 00:36:12.859663227 +0900
++++ b/lib/l10n/intl/messages_en.dart	2026-10-26 00:55:23.685589945 +0900
+@@ -1084,6 +1084,28 @@
      ),
      "whitelistMode": MessageLookupByLibrary.simpleMessage("Whitelist mode"),
      "wordWrap": MessageLookupByLibrary.simpleMessage("Word Wrap"),
@@ -1063,6 +1197,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart fl/FlClash-0.
 +    "outline": MessageLookupByLibrary.simpleMessage("Outline"),
 +    "editInfo": MessageLookupByLibrary.simpleMessage("Edit info"),
 +    "editFile": MessageLookupByLibrary.simpleMessage("Edit file"),
++    "lightMode": MessageLookupByLibrary.simpleMessage("Light mode"),
++    "lightModeDesc": MessageLookupByLibrary.simpleMessage("After staying in the background, close the app interface and keep only the core running to save power"),
++    "lightModeDelay": MessageLookupByLibrary.simpleMessage("Enter light mode after"),
++    "minutes": MessageLookupByLibrary.simpleMessage("minutes"),
 +    "favoriteProxies": MessageLookupByLibrary.simpleMessage("Favorite nodes"),
 +    "favoriteEmptyTip": MessageLookupByLibrary.simpleMessage("Tap the star on a node card to add it here"),
 +    "favoriteMissing": MessageLookupByLibrary.simpleMessage("Node not found in this profile"),
@@ -1080,10 +1218,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_en.dart fl/FlClash-0.
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("Simplified Chinese"),
    };
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart
---- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart	2026-10-23 20:22:07.465433172 +0900
-@@ -884,6 +884,24 @@
+diff -ruN a/lib/l10n/intl/messages_ja.dart b/lib/l10n/intl/messages_ja.dart
+--- a/lib/l10n/intl/messages_ja.dart	2026-10-26 00:36:12.859693093 +0900
++++ b/lib/l10n/intl/messages_ja.dart	2026-10-26 00:55:23.688469939 +0900
+@@ -884,6 +884,28 @@
      "webDAVConfiguration": MessageLookupByLibrary.simpleMessage("WebDAV設定"),
      "whitelistMode": MessageLookupByLibrary.simpleMessage("ホワイトリストモード"),
      "wordWrap": MessageLookupByLibrary.simpleMessage("折り返し"),
@@ -1091,6 +1229,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart fl/FlClash-0.
 +    "outline": MessageLookupByLibrary.simpleMessage("アウトライン"),
 +    "editInfo": MessageLookupByLibrary.simpleMessage("情報を編集"),
 +    "editFile": MessageLookupByLibrary.simpleMessage("ファイルを編集"),
++    "lightMode": MessageLookupByLibrary.simpleMessage("ライトモード"),
++    "lightModeDesc": MessageLookupByLibrary.simpleMessage("バックグラウンドにしばらく置いた後、アプリの画面を閉じてコアのみを実行し、電力を節約します"),
++    "lightModeDelay": MessageLookupByLibrary.simpleMessage("バックグラウンドから移行するまでの時間"),
++    "minutes": MessageLookupByLibrary.simpleMessage("分"),
 +    "favoriteProxies": MessageLookupByLibrary.simpleMessage("お気に入りノード"),
 +    "favoriteEmptyTip": MessageLookupByLibrary.simpleMessage("ノードカードの星をタップするとここに追加されます"),
 +    "favoriteMissing": MessageLookupByLibrary.simpleMessage("このプロファイルにノードが見つかりません"),
@@ -1108,10 +1250,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ja.dart fl/FlClash-0.
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("簡体字中国語"),
    };
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart
---- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart	2026-10-23 20:22:07.469486020 +0900
-@@ -1149,6 +1149,24 @@
+diff -ruN a/lib/l10n/intl/messages_ru.dart b/lib/l10n/intl/messages_ru.dart
+--- a/lib/l10n/intl/messages_ru.dart	2026-10-26 00:36:12.859719956 +0900
++++ b/lib/l10n/intl/messages_ru.dart	2026-10-26 00:55:23.690436325 +0900
+@@ -1149,6 +1149,28 @@
        "Режим белого списка",
      ),
      "wordWrap": MessageLookupByLibrary.simpleMessage("Перенос строк"),
@@ -1119,6 +1261,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart fl/FlClash-0.
 +    "outline": MessageLookupByLibrary.simpleMessage("Структура"),
 +    "editInfo": MessageLookupByLibrary.simpleMessage("Изменить данные"),
 +    "editFile": MessageLookupByLibrary.simpleMessage("Изменить файл"),
++    "lightMode": MessageLookupByLibrary.simpleMessage("Легкий режим"),
++    "lightModeDesc": MessageLookupByLibrary.simpleMessage("После пребывания в фоне закрывать интерфейс приложения и оставлять работать только ядро для экономии энергии"),
++    "lightModeDelay": MessageLookupByLibrary.simpleMessage("Включать через"),
++    "minutes": MessageLookupByLibrary.simpleMessage("мин."),
 +    "favoriteProxies": MessageLookupByLibrary.simpleMessage("Избранные узлы"),
 +    "favoriteEmptyTip": MessageLookupByLibrary.simpleMessage("Нажмите на звезду на карточке узла, чтобы добавить его сюда"),
 +    "favoriteMissing": MessageLookupByLibrary.simpleMessage("Узел не найден в этом профиле"),
@@ -1136,10 +1282,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_ru.dart fl/FlClash-0.
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("Упрощенный китайский"),
    };
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart
---- orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart	2026-10-23 20:22:07.462297930 +0900
-@@ -766,6 +766,24 @@
+diff -ruN a/lib/l10n/intl/messages_zh_CN.dart b/lib/l10n/intl/messages_zh_CN.dart
+--- a/lib/l10n/intl/messages_zh_CN.dart	2026-10-26 00:36:12.859745506 +0900
++++ b/lib/l10n/intl/messages_zh_CN.dart	2026-10-26 00:55:23.686985880 +0900
+@@ -766,6 +766,28 @@
      "webDAVConfiguration": MessageLookupByLibrary.simpleMessage("WebDAV配置"),
      "whitelistMode": MessageLookupByLibrary.simpleMessage("白名单模式"),
      "wordWrap": MessageLookupByLibrary.simpleMessage("自动换行"),
@@ -1147,6 +1293,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart fl/FlClash
 +    "outline": MessageLookupByLibrary.simpleMessage("大纲"),
 +    "editInfo": MessageLookupByLibrary.simpleMessage("编辑信息"),
 +    "editFile": MessageLookupByLibrary.simpleMessage("编辑配置文件"),
++    "lightMode": MessageLookupByLibrary.simpleMessage("轻量模式"),
++    "lightModeDesc": MessageLookupByLibrary.simpleMessage("进入后台一段时间后关闭应用界面,仅保留内核运行,以节省电量"),
++    "lightModeDelay": MessageLookupByLibrary.simpleMessage("进入后台后多久进入"),
++    "minutes": MessageLookupByLibrary.simpleMessage("分钟"),
 +    "favoriteProxies": MessageLookupByLibrary.simpleMessage("收藏节点"),
 +    "favoriteEmptyTip": MessageLookupByLibrary.simpleMessage("在节点卡片上点星标,即可收藏到这里"),
 +    "favoriteMissing": MessageLookupByLibrary.simpleMessage("当前订阅中找不到该节点"),
@@ -1164,10 +1314,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/intl/messages_zh_CN.dart fl/FlClash
      "yearsAgo": m25,
      "zh_CN": MessageLookupByLibrary.simpleMessage("中文简体"),
    };
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart fl/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart
---- orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart	2026-10-23 20:22:07.471453308 +0900
-@@ -2294,6 +2294,96 @@
+diff -ruN a/lib/l10n/l10n.dart b/lib/l10n/l10n.dart
+--- a/lib/l10n/l10n.dart	2026-10-26 00:36:12.859775153 +0900
++++ b/lib/l10n/l10n.dart	2026-10-26 00:55:23.692315364 +0900
+@@ -2294,6 +2294,116 @@
      return Intl.message('Expand All', name: 'expandAll', desc: '', args: []);
    }
  
@@ -1194,6 +1344,26 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart fl/FlClash-0.8.95-0.9.1/l
 +  /// `Edit file`
 +  String get editFile {
 +    return Intl.message('Edit file', name: 'editFile', desc: '', args: []);
++  }
++
++  /// `Light mode`
++  String get lightMode {
++    return Intl.message('Light mode', name: 'lightMode', desc: '', args: []);
++  }
++
++  /// `After staying in the background, close the app interface and keep only the core running to save power`
++  String get lightModeDesc {
++    return Intl.message('After staying in the background, close the app interface and keep only the core running to save power', name: 'lightModeDesc', desc: '', args: []);
++  }
++
++  /// `Enter light mode after`
++  String get lightModeDelay {
++    return Intl.message('Enter light mode after', name: 'lightModeDelay', desc: '', args: []);
++  }
++
++  /// `minutes`
++  String get minutes {
++    return Intl.message('minutes', name: 'minutes', desc: '', args: []);
 +  }
 +
 +  /// `Favorite nodes`
@@ -1264,16 +1434,64 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/l10n/l10n.dart fl/FlClash-0.8.95-0.9.1/l
    /// `none`
    String get none {
      return Intl.message('none', name: 'none', desc: '', args: []);
-@@ -4667,4 +4757,4 @@
+@@ -4667,4 +4777,4 @@
      }
      return false;
    }
 -}
 +}
 \ No newline at end of file
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/models/common.dart fl/FlClash-0.8.95-0.9.1/lib/models/common.dart
---- orig/FlClash-0.8.95-0.9.1/lib/models/common.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/models/common.dart	2026-10-21 19:06:53.432349849 +0900
+diff -ruN a/lib/manager/android_manager.dart b/lib/manager/android_manager.dart
+--- a/lib/manager/android_manager.dart	2026-10-26 00:36:12.859836796 +0900
++++ b/lib/manager/android_manager.dart	2026-10-26 00:55:23.712918382 +0900
+@@ -1,4 +1,5 @@
+ import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/common/light_mode.dart';
+ import 'package:fl_clash/core/core.dart';
+ import 'package:fl_clash/enum/enum.dart';
+ import 'package:fl_clash/models/models.dart';
+@@ -18,10 +19,28 @@
+ }
+ 
+ class _AndroidContainerState extends ConsumerState<AndroidManager>
+-    with ServiceListener {
++    with ServiceListener, WidgetsBindingObserver {
++  late final LightModeScheduler _lightModeScheduler;
++
++  Future<void> _enterLightMode() async {
++    await preferences.saveConfig(ref.read(configProvider));
++    await app?.finishActivity();
++  }
++
++  @override
++  void didChangeAppLifecycleState(AppLifecycleState state) {
++    _lightModeScheduler.onLifecycleChanged(state);
++  }
++
+   @override
+   void initState() {
+     super.initState();
++    _lightModeScheduler = LightModeScheduler(
++      readSetting: () => ref.read(lightModeSettingProvider),
++      isCoreRunning: () => ref.read(isStartProvider),
++      enter: _enterLightMode,
++    );
++    WidgetsBinding.instance.addObserver(this);
+     ref.listenManual(appSettingProvider.select((state) => state.hidden), (
+       prev,
+       next,
+@@ -43,6 +62,8 @@
+ 
+   @override
+   Future<void> dispose() async {
++    WidgetsBinding.instance.removeObserver(this);
++    _lightModeScheduler.cancel();
+     service?.removeListener(this);
+     super.dispose();
+   }
+diff -ruN a/lib/models/common.dart b/lib/models/common.dart
+--- a/lib/models/common.dart	2026-10-26 00:36:12.860034540 +0900
++++ b/lib/models/common.dart	2026-10-26 00:37:15.488628883 +0900
 @@ -4,6 +4,7 @@
  
  import 'package:collection/collection.dart';
@@ -1291,9 +1509,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/models/common.dart fl/FlClash-0.8.95-0.9
          AccessSortType.time => b.lastUpdateTime.compareTo(a.lastUpdateTime),
        };
      });
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/models/config.dart fl/FlClash-0.8.95-0.9.1/lib/models/config.dart
---- orig/FlClash-0.8.95-0.9.1/lib/models/config.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/models/config.dart	2026-10-22 13:28:14.332755216 +0900
+diff -ruN a/lib/models/config.dart b/lib/models/config.dart
+--- a/lib/models/config.dart	2026-10-26 00:36:12.860052184 +0900
++++ b/lib/models/config.dart	2026-10-26 00:37:15.489293505 +0900
 @@ -37,6 +37,7 @@
  const defaultThemeProps = ThemeProps(primaryColor: defaultPrimaryColor);
  
@@ -1302,21 +1520,22 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/models/config.dart fl/FlClash-0.8.95-0.9
    DashboardWidget.networkSpeed,
    DashboardWidget.systemProxyButton,
    DashboardWidget.tunButton,
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/models/generated/config.g.dart fl/FlClash-0.8.95-0.9.1/lib/models/generated/config.g.dart
---- orig/FlClash-0.8.95-0.9.1/lib/models/generated/config.g.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/models/generated/config.g.dart	2026-10-23 20:22:37.928010886 +0900
-@@ -81,6 +81,8 @@
+diff -ruN a/lib/models/generated/config.g.dart b/lib/models/generated/config.g.dart
+--- a/lib/models/generated/config.g.dart	2026-10-26 00:36:12.860804602 +0900
++++ b/lib/models/generated/config.g.dart	2026-10-26 00:57:54.973837588 +0900
+@@ -81,6 +81,9 @@
    DashboardWidget.systemProxyButton: 'systemProxyButton',
    DashboardWidget.intranetIp: 'intranetIp',
    DashboardWidget.memoryInfo: 'memoryInfo',
 +  DashboardWidget.currentProfile: 'currentProfile',
 +  DashboardWidget.favoriteProxies: 'favoriteProxies',
++  DashboardWidget.addProfile: 'addProfile',
  };
  
  _AccessControlProps _$AccessControlPropsFromJson(Map<String, dynamic> json) =>
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.1/lib/pages/editor.dart
---- orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/pages/editor.dart	2026-10-23 19:56:23.531778313 +0900
+diff -ruN a/lib/pages/editor.dart b/lib/pages/editor.dart
+--- a/lib/pages/editor.dart	2026-10-26 00:36:12.861122831 +0900
++++ b/lib/pages/editor.dart	2026-10-26 00:37:15.491451088 +0900
 @@ -1,6 +1,11 @@
 +import 'dart:async';
  import 'dart:convert';
@@ -1329,7 +1548,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
  import 'package:fl_clash/enum/enum.dart';
  import 'package:fl_clash/models/common.dart';
  import 'package:fl_clash/providers/app.dart';
-@@ -19,12 +24,29 @@
+@@ -19,12 +24,27 @@
  typedef EditingValueChangeBuilder = Widget Function(CodeLineEditingValue value);
  typedef TextEditingValueChangeBuilder = Widget Function(TextEditingValue value);
  
@@ -1353,13 +1572,11 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
    final bool supportRemoteDownload;
    final bool titleEditable;
 +
-+  /// When set, unsaved edits are kept as a draft under this key and offered
-+  /// for restoring the next time the same content is opened.
 +  final String? draftKey;
    final Function(BuildContext context, String title, String content)? onSave;
    final Future<bool> Function(
      BuildContext context,
-@@ -38,6 +60,7 @@
+@@ -38,6 +58,7 @@
      required this.title,
      required this.content,
      this.titleEditable = false,
@@ -1367,7 +1584,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
      this.onSave,
      this.onPop,
      this.supportRemoteDownload = false,
-@@ -58,23 +81,39 @@
+@@ -58,23 +79,39 @@
    late bool _wordWrap = system.isAndroid;
    CodeChunkController? _chunkController;
    late final SelectionToolbarController _toolbarController;
@@ -1409,7 +1626,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
          return KeyEventResult.ignored;
        }
        if (key == LogicalKeyboardKey.arrowUp) {
-@@ -84,7 +123,6 @@
+@@ -84,7 +121,6 @@
          _controller.moveCursor(AxisDirection.down);
          return KeyEventResult.handled;
        } else if (key == LogicalKeyboardKey.arrowLeft) {
@@ -1417,7 +1634,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
          _controller.moveCursor(AxisDirection.left);
          return KeyEventResult.handled;
        } else if (key == LogicalKeyboardKey.arrowRight) {
-@@ -107,8 +145,84 @@
+@@ -107,8 +143,84 @@
      });
    }
  
@@ -1502,7 +1719,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
      _toolbarController.hide(context);
      _findController.dispose();
      _controller.dispose();
-@@ -125,6 +239,76 @@
+@@ -125,6 +237,74 @@
      );
    }
  
@@ -1532,8 +1749,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
 +    return button;
 +  }
 +
-+  /// Slim row under the app bar: history on the left, quick editing tools on
-+  /// the right. Only shown while the editor is writable.
 +  Widget _buildEditToolbar() {
 +    final appLocalizations = context.appLocalizations;
 +    return CodeEditorTapRegion(
@@ -1579,7 +1794,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
    Widget _wrapTitleController(TextEditingValueChangeBuilder builder) {
      return ValueListenableBuilder(
        valueListenable: _titleController,
-@@ -135,19 +319,116 @@
+@@ -135,19 +315,116 @@
    }
  
    void _handleSearch() {
@@ -1598,8 +1813,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
 +    if (!readOnly) {
 +      _focusNode.requestFocus();
 +    }
-+  }
-+
+   }
+ 
+-  void _handleReplaceNext() {
+-    _findController.replaceMatch();
 +  bool _hasCollapsedChunk() {
 +    final codeLines = _controller.codeLines;
 +    for (int i = 0; i < codeLines.length; i++) {
@@ -1608,8 +1825,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
 +      }
 +    }
 +    return false;
-+  }
-+
+   }
+ 
+-  void _handleReplaceAll() {
+-    _findController.replaceAllMatches();
 +  void _jumpToLine(int index) {
 +    for (int i = 0; i < 5 && _hasCollapsedChunk(); i++) {
 +      _handleExpandAll();
@@ -1632,10 +1851,8 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
 +        _controller.makeCursorVisible();
 +      }
 +    });
-   }
- 
--  void _handleReplaceNext() {
--    _findController.replaceMatch();
++  }
++
 +  Future<void> showValidationError(String message) async {
 +    final appLocalizations = context.appLocalizations;
 +    final line = parseErrorLine(message);
@@ -1647,10 +1864,8 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
 +    if (res == true && line != null && mounted) {
 +      _jumpToLine(line - 1);
 +    }
-   }
- 
--  void _handleReplaceAll() {
--    _findController.replaceAllMatches();
++  }
++
 +  Future<void> _handleGoToLine() async {
 +    final appLocalizations = context.appLocalizations;
 +    final total = _controller.text.split('\n').length;
@@ -1702,12 +1917,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
    }
  
    void _toggleWordWrap() {
-@@ -166,6 +447,39 @@
+@@ -166,6 +443,37 @@
      }
    }
  
-+  /// Folds every top-level section that comes before `proxies:`, which is
-+  /// the part people actually edit. Waits a few frames for the chunk analyzer.
 +  void _collapseBeforeProxies([int attempt = 0]) {
 +    if (!mounted || widget.content == null) {
 +      return;
@@ -1742,7 +1955,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
    void _handleCollapseAll() {
      final controller = _chunkController;
      if (controller == null) return;
-@@ -235,6 +549,7 @@
+@@ -235,6 +543,7 @@
      return CommonPopScope(
        onPop: (context) async {
          if (widget.onPop == null) {
@@ -1750,16 +1963,15 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
            return true;
          }
          final res = await widget.onPop!(
-@@ -243,6 +558,8 @@
+@@ -243,6 +552,7 @@
            _controller.text,
          );
          if (res && context.mounted) {
-+          // Leaving without saving is a deliberate discard.
 +          _clearDraft();
            return true;
          }
          return false;
-@@ -261,14 +578,32 @@
+@@ -261,14 +571,32 @@
              style: context.textTheme.titleLarge,
              autofocus: false,
            ),
@@ -1797,7 +2009,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                          ? () {
                              widget.onSave!(
                                context,
-@@ -277,7 +612,6 @@
+@@ -277,7 +605,6 @@
                              );
                            }
                          : null,
@@ -1805,7 +2017,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                    ),
                  ),
                ),
-@@ -306,15 +640,16 @@
+@@ -306,15 +633,16 @@
                          onPressed: _handleReplace,
                        ),
                      PopupMenuItemData(
@@ -1830,7 +2042,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                      PopupMenuItemData(
                        icon: _wordWrap
                            ? Icons.wrap_text
-@@ -353,7 +688,10 @@
+@@ -353,7 +681,10 @@
              ),
            ]),
          ),
@@ -1842,7 +2054,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
            children: [
              // re_editor 的 _CodeEditorState.build 内部已经会读取
              // FindPanel.preferredSize.height 并将其加入 editable 的
-@@ -368,6 +706,7 @@
+@@ -368,6 +699,7 @@
                  controller: controller,
                  readOnly: readOnly,
                  isMobileView: isMobileView,
@@ -1850,7 +2062,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                ),
                padding: const EdgeInsets.only(right: 16),
                wordWrap: _wordWrap,
-@@ -437,11 +776,28 @@
+@@ -437,11 +769,28 @@
              ),
            ],
          ),
@@ -1879,7 +2091,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
  const double _kInputHeight = 40;
  const double _kActionHeight = 32;
  const double _kGap = 6;
-@@ -450,12 +806,14 @@
+@@ -450,12 +799,14 @@
    final CodeFindController controller;
    final bool readOnly;
    final bool isMobileView;
@@ -1894,7 +2106,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
    });
  
    @override
-@@ -510,7 +868,7 @@
+@@ -510,7 +861,7 @@
              onPressed: value.result == null ? null : controller.nextMatch,
              icon: Icons.arrow_downward,
            ),
@@ -1903,7 +2115,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
          ],
        ),
      );
-@@ -550,7 +908,7 @@
+@@ -550,7 +901,7 @@
          padding: EdgeInsets.zero,
          iconSize: 16,
          icon: Icon(isReplaceMode ? Icons.expand_less : Icons.expand_more),
@@ -1912,7 +2124,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
        ),
      );
    }
-@@ -624,12 +982,14 @@
+@@ -624,12 +975,14 @@
                    controller.replaceMatch();
                    controller.replaceInputFocusNode.requestFocus();
                  },
@@ -1927,7 +2139,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                ),
              ],
            ),
-@@ -642,13 +1002,16 @@
+@@ -642,13 +995,16 @@
      BuildContext context,
      String text,
      bool selected,
@@ -1947,7 +2159,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
            decoration: BoxDecoration(
              color: selected ? context.colorScheme.primaryContainer : null,
-@@ -663,6 +1026,10 @@
+@@ -663,6 +1019,10 @@
          ),
        ),
      );
@@ -1958,7 +2170,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
    }
  
    Widget _buildIconBtn({required IconData icon, VoidCallback? onPressed}) {
-@@ -677,6 +1044,8 @@
+@@ -677,6 +1037,8 @@
  class ContextMenuControllerImpl implements SelectionToolbarController {
    OverlayEntry? _overlayEntry;
    bool readOnly = false;
@@ -1967,7 +2179,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
  
    ContextMenuControllerImpl(this.readOnly);
  
-@@ -700,20 +1069,31 @@
+@@ -700,20 +1062,31 @@
      required ValueNotifier<bool> visibility,
    }) {
      _removeOverLayEntry();
@@ -2004,7 +2216,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                  PopupMenuItemData(
                    label: appLocalizations.copy,
                    onPressed: controller.copy,
-@@ -723,12 +1103,12 @@
+@@ -723,12 +1096,12 @@
                    label: appLocalizations.paste,
                    onPressed: controller.paste,
                  ),
@@ -2019,7 +2231,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
                  PopupMenuItemData(
                    label: appLocalizations.selectAll,
                    onPressed: controller.selectAll,
-@@ -769,39 +1149,93 @@
+@@ -769,39 +1142,93 @@
    }
  }
  
@@ -2137,7 +2349,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
        ),
      );
    }
-@@ -812,55 +1246,90 @@
+@@ -812,55 +1239,86 @@
  
    @override
    List<CodeChunk> run(CodeLines codeLines) {
@@ -2210,8 +2422,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
 +  '>',
 +];
 +
-+/// Row of symbols that are awkward to reach on a phone keyboard but common
-+/// in YAML. Taps never take focus away from the editor.
 +class _SymbolBar extends StatelessWidget {
 +  final ValueChanged<String> onInsert;
 +  final ValueChanged<AxisDirection> onMove;
@@ -2242,8 +2452,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
 +    final style = context.textTheme.titleMedium?.copyWith(
 +      fontFamily: FontFamily.jetBrainsMono.value,
 +    );
-+    // Without CodeEditorTapRegion the editor treats a tap here as a tap
-+    // outside, drops focus and the keyboard closes.
 +    return CodeEditorTapRegion(
 +      child: Material(
 +      color: context.colorScheme.surfaceContainerHigh,
@@ -2275,10 +2483,24 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/pages/editor.dart fl/FlClash-0.8.95-0.9.
 +    );
 +  }
  }
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/actions/backup.dart fl/FlClash-0.8.95-0.9.1/lib/providers/actions/backup.dart
---- orig/FlClash-0.8.95-0.9.1/lib/providers/actions/backup.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/providers/actions/backup.dart	2026-10-22 13:28:51.952251849 +0900
-@@ -17,13 +17,45 @@
+diff -ruN a/lib/plugins/app.dart b/lib/plugins/app.dart
+--- a/lib/plugins/app.dart	2026-10-26 00:36:12.861207442 +0900
++++ b/lib/plugins/app.dart	2026-10-26 00:55:23.712111830 +0900
+@@ -30,6 +30,10 @@
+     return _instance!;
+   }
+ 
++  Future<bool?> finishActivity() async {
++    return methodChannel.invokeMethod<bool>('finishActivity');
++  }
++
+   Future<bool?> moveTaskToBack() async {
+     return methodChannel.invokeMethod<bool>('moveTaskToBack');
+   }
+diff -ruN a/lib/providers/actions/backup.dart b/lib/providers/actions/backup.dart
+--- a/lib/providers/actions/backup.dart	2026-10-26 00:36:12.861290532 +0900
++++ b/lib/providers/actions/backup.dart	2026-10-26 00:37:15.492252947 +0900
+@@ -17,13 +17,43 @@
      return backupTask(configMap, [...profileFileNames, ...scriptFileNames]);
    }
  
@@ -2287,8 +2509,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/actions/backup.dart fl/FlClash
 +    return File(await appPath.preRestoreSnapshotPath).exists();
 +  }
 +
-+  /// Saves the current data before it is replaced by a restore. Best effort:
-+  /// a failure here must not block the restore itself.
 +  Future<void> _saveSnapshot() async {
 +    try {
 +      final tempPath = await backup();
@@ -2326,18 +2546,16 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/actions/backup.dart fl/FlClash
      try {
        final migrationData = await restoreTask();
        if (!await restoreDir.exists()) {
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/favorite_proxies.dart fl/FlClash-0.8.95-0.9.1/lib/providers/favorite_proxies.dart
---- orig/FlClash-0.8.95-0.9.1/lib/providers/favorite_proxies.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/providers/favorite_proxies.dart	2026-10-23 20:22:07.480558136 +0900
-@@ -0,0 +1,49 @@
+diff -ruN a/lib/providers/favorite_proxies.dart b/lib/providers/favorite_proxies.dart
+--- a/lib/providers/favorite_proxies.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/providers/favorite_proxies.dart	2026-10-26 00:37:15.492809315 +0900
+@@ -0,0 +1,45 @@
 +import 'package:fl_clash/common/common.dart';
 +import 'package:fl_clash/common/favorite_proxies.dart';
 +import 'package:fl_clash/providers/config.dart';
 +import 'package:fl_clash/providers/database.dart';
 +import 'package:flutter_riverpod/flutter_riverpod.dart';
 +
-+/// Favorite nodes of every profile. Kept in its own SharedPreferences key
-+/// and written by hand, so no generated code is involved.
 +class FavoriteProxiesNotifier extends Notifier<FavoriteMap> {
 +  @override
 +  FavoriteMap build() {
@@ -2347,7 +2565,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/favorite_proxies.dart fl/FlCla
 +
 +  Future<void> _load() async {
 +    final loaded = decodeFavorites(await preferences.getFavoriteProxies());
-+    // Changes made before the load finished win.
 +    state = {...loaded, ...state};
 +  }
 +
@@ -2373,24 +2590,59 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/favorite_proxies.dart fl/FlCla
 +      FavoriteProxiesNotifier.new,
 +    );
 +
-+/// Favorites of the active profile.
 +final currentFavoriteProxiesProvider = Provider<List<FavoriteProxy>>((ref) {
 +  final profileId = ref.watch(currentProfileIdProvider);
 +  if (profileId == null) return const [];
 +  return ref.watch(favoriteProxiesProvider)[profileId.toString()] ?? const [];
 +});
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/providers.dart fl/FlClash-0.8.95-0.9.1/lib/providers/providers.dart
---- orig/FlClash-0.8.95-0.9.1/lib/providers/providers.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/providers/providers.dart	2026-10-23 20:22:07.499325993 +0900
-@@ -2,4 +2,5 @@
+diff -ruN a/lib/providers/light_mode.dart b/lib/providers/light_mode.dart
+--- a/lib/providers/light_mode.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/providers/light_mode.dart	2026-10-26 00:55:23.699529602 +0900
+@@ -0,0 +1,31 @@
++import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/common/light_mode.dart';
++import 'package:flutter_riverpod/flutter_riverpod.dart';
++
++class LightModeSettingNotifier extends Notifier<LightModeSetting> {
++  bool _changed = false;
++
++  @override
++  LightModeSetting build() {
++    _load();
++    return const LightModeSetting();
++  }
++
++  Future<void> _load() async {
++    final loaded = decodeLightMode(await preferences.getLightMode());
++    if (!_changed) {
++      state = loaded;
++    }
++  }
++
++  void update(LightModeSetting Function(LightModeSetting state) builder) {
++    _changed = true;
++    state = builder(state);
++    preferences.saveLightMode(encodeLightMode(state));
++  }
++}
++
++final lightModeSettingProvider =
++    NotifierProvider<LightModeSettingNotifier, LightModeSetting>(
++      LightModeSettingNotifier.new,
++    );
+diff -ruN a/lib/providers/providers.dart b/lib/providers/providers.dart
+--- a/lib/providers/providers.dart	2026-10-26 00:36:12.861705072 +0900
++++ b/lib/providers/providers.dart	2026-10-26 00:55:23.711830681 +0900
+@@ -2,4 +2,6 @@
  export 'app.dart';
  export 'config.dart';
  export 'database.dart';
 +export 'favorite_proxies.dart';
++export 'light_mode.dart';
  export 'state.dart';
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/state.dart fl/FlClash-0.8.95-0.9.1/lib/providers/state.dart
---- orig/FlClash-0.8.95-0.9.1/lib/providers/state.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/providers/state.dart	2026-10-21 19:10:14.249857360 +0900
+diff -ruN a/lib/providers/state.dart b/lib/providers/state.dart
+--- a/lib/providers/state.dart	2026-10-26 00:36:12.861716744 +0900
++++ b/lib/providers/state.dart	2026-10-26 00:37:15.494241994 +0900
 @@ -1,5 +1,6 @@
  import 'package:dynamic_color/dynamic_color.dart';
  import 'package:fl_clash/common/common.dart';
@@ -2420,17 +2672,14 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/providers/state.dart fl/FlClash-0.8.95-0
                .toList(),
          );
        })
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/state.dart fl/FlClash-0.8.95-0.9.1/lib/state.dart
---- orig/FlClash-0.8.95-0.9.1/lib/state.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/state.dart	2026-10-23 20:36:51.630096879 +0900
-@@ -356,23 +356,31 @@
+diff -ruN a/lib/state.dart b/lib/state.dart
+--- a/lib/state.dart	2026-10-26 00:36:12.861734452 +0900
++++ b/lib/state.dart	2026-10-26 00:37:15.495087638 +0900
+@@ -356,23 +356,28 @@
      await container.read(systemActionProvider.notifier).handleExit();
    }
  
 -  Future<bool> showDisclaimer() async {
-+  /// The first-run gate: the user must agree or exit. With [readOnly] the
-+  /// text is only shown again (for example from the tools page), so there is
-+  /// nothing to decline and it can be dismissed freely.
 +  Future<bool> showDisclaimer({bool readOnly = false}) async {
      return await showCommonDialog<bool>(
 -          dismissible: false,
@@ -2464,9 +2713,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/state.dart fl/FlClash-0.8.95-0.9.1/lib/s
                ),
              ],
              child: Text(currentAppLocalizations.disclaimerDesc),
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/access.dart fl/FlClash-0.8.95-0.9.1/lib/views/access.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/access.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/access.dart	2026-10-21 19:06:45.265693671 +0900
+diff -ruN a/lib/views/access.dart b/lib/views/access.dart
+--- a/lib/views/access.dart	2026-10-26 00:36:12.861782638 +0900
++++ b/lib/views/access.dart	2026-10-26 00:37:15.496147825 +0900
 @@ -1,6 +1,7 @@
  import 'dart:async';
  
@@ -2527,9 +2776,88 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/access.dart fl/FlClash-0.8.95-0.9.
        title: context.appLocalizations.appAccessControl,
        actions: _buildActions(context, enable: accessControl.enable),
        body: DisabledMask(
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/backup_and_restore.dart fl/FlClash-0.8.95-0.9.1/lib/views/backup_and_restore.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/backup_and_restore.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/backup_and_restore.dart	2026-10-22 13:28:51.952863578 +0900
+diff -ruN a/lib/views/application_setting.dart b/lib/views/application_setting.dart
+--- a/lib/views/application_setting.dart	2026-10-26 00:36:12.861809637 +0900
++++ b/lib/views/application_setting.dart	2026-10-26 00:55:55.623345441 +0900
+@@ -1,5 +1,7 @@
+ import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/common/light_mode.dart';
+ import 'package:fl_clash/providers/config.dart';
++import 'package:fl_clash/providers/light_mode.dart';
+ import 'package:fl_clash/widgets/widgets.dart';
+ import 'package:flutter/material.dart';
+ import 'package:flutter_riverpod/flutter_riverpod.dart';
+@@ -158,6 +160,54 @@
+   }
+ }
+ 
++class LightModeItem extends ConsumerWidget {
++  const LightModeItem({super.key});
++
++  @override
++  Widget build(BuildContext context, WidgetRef ref) {
++    final appLocalizations = context.appLocalizations;
++    final enabled = ref.watch(
++      lightModeSettingProvider.select((state) => state.enabled),
++    );
++    return ListItem.toggle(
++      title: Text(appLocalizations.lightMode),
++      subtitle: Text(appLocalizations.lightModeDesc),
++      value: enabled,
++      onChanged: (value) {
++        ref
++            .read(lightModeSettingProvider.notifier)
++            .update((state) => state.copyWith(enabled: value));
++      },
++    );
++  }
++}
++
++class LightModeDelayItem extends ConsumerWidget {
++  const LightModeDelayItem({super.key});
++
++  @override
++  Widget build(BuildContext context, WidgetRef ref) {
++    final appLocalizations = context.appLocalizations;
++    final setting = ref.watch(lightModeSettingProvider);
++    return ListItem<int>.options(
++      title: Text(appLocalizations.lightModeDelay),
++      subtitle: Text('${setting.delayMinutes} ${appLocalizations.minutes}'),
++      dialogTitle: appLocalizations.lightModeDelay,
++      options: lightModeDelayOptions,
++      value: setting.delayMinutes,
++      textBuilder: (value) => '$value ${appLocalizations.minutes}',
++      onChanged: (value) {
++        if (value == null) {
++          return;
++        }
++        ref
++            .read(lightModeSettingProvider.notifier)
++            .update((state) => state.copyWith(delayMinutes: value));
++      },
++    );
++  }
++}
++
+ class AnimateTabItem extends ConsumerWidget {
+   const AnimateTabItem({super.key});
+ 
+@@ -258,7 +308,11 @@
+         const SilentLaunchItem(),
+       ],
+       const AutoRunItem(),
+-      if (system.isAndroid) ...[const HiddenItem()],
++      if (system.isAndroid) ...[
++        const HiddenItem(),
++        const LightModeItem(),
++        const LightModeDelayItem(),
++      ],
+       const AnimateTabItem(),
+       const OpenLogsItem(),
+       const CloseConnectionsItem(),
+diff -ruN a/lib/views/backup_and_restore.dart b/lib/views/backup_and_restore.dart
+--- a/lib/views/backup_and_restore.dart	2026-10-26 00:36:12.861823284 +0900
++++ b/lib/views/backup_and_restore.dart	2026-10-26 00:37:15.497052426 +0900
 @@ -164,6 +164,37 @@
      );
    }
@@ -2582,9 +2910,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/backup_and_restore.dart fl/FlClash
            ListHeader(title: appLocalizations.options),
            Consumer(
              builder: (_, ref, _) {
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/advanced.dart fl/FlClash-0.8.95-0.9.1/lib/views/config/advanced.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/config/advanced.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/config/advanced.dart	2026-10-22 08:16:53.528820697 +0900
+diff -ruN a/lib/views/config/advanced.dart b/lib/views/config/advanced.dart
+--- a/lib/views/config/advanced.dart	2026-10-26 00:36:12.861851009 +0900
++++ b/lib/views/config/advanced.dart	2026-10-26 00:37:15.497744574 +0900
 @@ -13,6 +13,53 @@
  
  import 'rules.dart';
@@ -2686,9 +3014,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/advanced.dart fl/FlClash-0.
          blur: false,
        ),
        ListItem.open(
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/dns.dart fl/FlClash-0.8.95-0.9.1/lib/views/config/dns.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/config/dns.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/config/dns.dart	2026-10-22 13:27:24.001605710 +0900
+diff -ruN a/lib/views/config/dns.dart b/lib/views/config/dns.dart
+--- a/lib/views/config/dns.dart	2026-10-26 00:36:12.861872766 +0900
++++ b/lib/views/config/dns.dart	2026-10-26 00:37:15.498716398 +0900
 @@ -1,4 +1,5 @@
  import 'package:fl_clash/common/common.dart';
 +import 'package:fl_clash/common/dns_validator.dart';
@@ -2816,9 +3144,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/dns.dart fl/FlClash-0.8.95-
    DnsOptions(),
    FallbackFilterOptions(),
  ];
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart fl/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart	2026-10-22 18:55:41.799180255 +0900
+diff -ruN a/lib/views/config/scripts.dart b/lib/views/config/scripts.dart
+--- a/lib/views/config/scripts.dart	2026-10-26 00:36:12.861947319 +0900
++++ b/lib/views/config/scripts.dart	2026-10-26 00:37:15.499322402 +0900
 @@ -152,10 +152,8 @@
      );
      if (res == true && mounted) {
@@ -2839,10 +3167,119 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/config/scripts.dart fl/FlClash-0.8
          title: title,
          supportRemoteDownload: true,
          onSave: (context, title, content) {
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/current_profile.dart fl/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/current_profile.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/current_profile.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/current_profile.dart	2026-10-22 13:28:14.316546870 +0900
-@@ -0,0 +1,80 @@
+diff -ruN a/lib/views/dashboard/widgets/add_profile.dart b/lib/views/dashboard/widgets/add_profile.dart
+--- a/lib/views/dashboard/widgets/add_profile.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/views/dashboard/widgets/add_profile.dart	2026-10-26 00:57:54.974025223 +0900
+@@ -0,0 +1,105 @@
++import 'package:fl_clash/common/common.dart';
++import 'package:fl_clash/pages/scan.dart';
++import 'package:fl_clash/providers/action.dart';
++import 'package:fl_clash/state.dart';
++import 'package:fl_clash/views/profiles/add.dart';
++import 'package:fl_clash/widgets/widgets.dart';
++import 'package:flutter/material.dart';
++
++class AddProfileCard extends StatelessWidget {
++  const AddProfileCard({super.key});
++
++  void _showAddSheet() {
++    final context = globalState.navigatorKey.currentState!.context;
++    showExtend(
++      context,
++      builder: (_) {
++        return AdaptiveSheetScaffold(
++          body: AddProfileView(context: context),
++          title: context.appLocalizations.addProfile,
++        );
++      },
++    );
++  }
++
++  Future<void> _handleScan(BuildContext context) async {
++    final action = globalState.container.read(profilesActionProvider.notifier);
++    if (system.isDesktop) {
++      action.addProfileFormQrCode();
++      return;
++    }
++    final url = await BaseNavigator.push(context, const ScanPage());
++    if (url != null) {
++      WidgetsBinding.instance.addPostFrameCallback((_) {
++        action.addProfileFormURL(url);
++      });
++    }
++  }
++
++  void _handleClipboard() {
++    globalState.container
++        .read(profilesActionProvider.notifier)
++        .addProfileFormClipboard();
++  }
++
++  void _handleFile() {
++    globalState.container
++        .read(profilesActionProvider.notifier)
++        .addProfileFormFile();
++  }
++
++  @override
++  Widget build(BuildContext context) {
++    final appLocalizations = context.appLocalizations;
++    return SizedBox(
++      height: getWidgetHeight(1),
++      child: CommonCard(
++        onPressed: _showAddSheet,
++        child: Padding(
++          padding: const EdgeInsets.only(left: 16, right: 8),
++          child: Row(
++            children: [
++              Icon(
++                Icons.add_circle_outline,
++                color: context.colorScheme.onSurfaceVariant,
++              ),
++              const SizedBox(width: 8),
++              Expanded(
++                child: TooltipText(
++                  text: Text(
++                    appLocalizations.addProfile,
++                    maxLines: 1,
++                    overflow: TextOverflow.ellipsis,
++                    style: context.textTheme.titleSmall?.copyWith(
++                      color: context.colorScheme.onSurfaceVariant,
++                    ),
++                  ),
++                ),
++              ),
++              IconButton(
++                tooltip: appLocalizations.qrcode,
++                onPressed: () => _handleScan(context),
++                icon: const Icon(Icons.qr_code_sharp),
++              ),
++              IconButton(
++                tooltip: appLocalizations.clipboardImport,
++                onPressed: _handleClipboard,
++                icon: const Icon(Icons.content_paste_sharp),
++              ),
++              IconButton(
++                tooltip: appLocalizations.file,
++                onPressed: _handleFile,
++                icon: const Icon(Icons.upload_file_sharp),
++              ),
++              IconButton(
++                tooltip: appLocalizations.url,
++                onPressed: _showAddSheet,
++                icon: const Icon(Icons.cloud_download_sharp),
++              ),
++            ],
++          ),
++        ),
++      ),
++    );
++  }
++}
+diff -ruN a/lib/views/dashboard/widgets/current_profile.dart b/lib/views/dashboard/widgets/current_profile.dart
+--- a/lib/views/dashboard/widgets/current_profile.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/views/dashboard/widgets/current_profile.dart	2026-10-26 00:37:15.499718368 +0900
+@@ -0,0 +1,77 @@
 +import 'package:fl_clash/common/common.dart';
 +import 'package:fl_clash/enum/enum.dart';
 +import 'package:fl_clash/providers/providers.dart';
@@ -2851,9 +3288,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/current_profile.
 +import 'package:flutter/material.dart';
 +import 'package:flutter_riverpod/flutter_riverpod.dart';
 +
-+/// Shows the active profile and the node currently selected in its main
-+/// group. Tapping it opens the proxies page (or the profiles page when there
-+/// are no proxies yet).
 +class CurrentProfileCard extends ConsumerWidget {
 +  const CurrentProfileCard({super.key});
 +
@@ -2923,10 +3357,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/current_profile.
 +    );
 +  }
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/favorite_proxies.dart fl/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/favorite_proxies.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/favorite_proxies.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/favorite_proxies.dart	2026-10-23 20:22:37.910909530 +0900
-@@ -0,0 +1,175 @@
+diff -ruN a/lib/views/dashboard/widgets/favorite_proxies.dart b/lib/views/dashboard/widgets/favorite_proxies.dart
+--- a/lib/views/dashboard/widgets/favorite_proxies.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/views/dashboard/widgets/favorite_proxies.dart	2026-10-26 00:37:15.500126512 +0900
+@@ -0,0 +1,230 @@
 +import 'package:fl_clash/common/common.dart';
 +import 'package:fl_clash/common/favorite_proxies.dart';
 +import 'package:fl_clash/enum/enum.dart';
@@ -2938,8 +3372,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/favorite_proxies
 +import 'package:flutter/material.dart';
 +import 'package:flutter_riverpod/flutter_riverpod.dart';
 +
-+/// Favorite nodes of the active profile. Tap a row to switch to that node;
-+/// the list scrolls inside the card when there are more rows than fit.
 +class FavoriteProxiesCard extends ConsumerStatefulWidget {
 +  const FavoriteProxiesCard({super.key});
 +
@@ -2950,11 +3382,59 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/favorite_proxies
 +
 +class _FavoriteProxiesCardState extends ConsumerState<FavoriteProxiesCard> {
 +  final ScrollController _scrollController = ScrollController();
++  bool _testing = false;
 +
 +  @override
 +  void dispose() {
 +    _scrollController.dispose();
 +    super.dispose();
++  }
++
++  Future<void> _handleTestAll(List<ResolvedFavorite> items) async {
++    if (_testing) {
++      return;
++    }
++    final targets = items.where((item) => item.exists).toList();
++    if (targets.isEmpty) {
++      return;
++    }
++    setState(() {
++      _testing = true;
++    });
++    try {
++      for (final batch in targets.batch(100)) {
++        await Future.wait(
++          batch.map((item) => proxyDelayTest(item.proxy!, item.group!.testUrl)),
++        );
++      }
++      globalState.container.read(sortNumProvider.notifier).add();
++    } finally {
++      if (mounted) {
++        setState(() {
++          _testing = false;
++        });
++      }
++    }
++  }
++
++  Widget _buildTestButton(List<ResolvedFavorite> items) {
++    if (_testing) {
++      return const Padding(
++        padding: EdgeInsets.all(12),
++        child: SizedBox(
++          width: 20,
++          height: 20,
++          child: CommonCircleLoading(),
++        ),
++      );
++    }
++    return IconButton(
++      tooltip: context.appLocalizations.delayTest,
++      onPressed: items.any((item) => item.exists)
++          ? () => _handleTestAll(items)
++          : null,
++      icon: const Icon(Icons.bolt),
++    );
 +  }
 +
 +  @override
@@ -2966,32 +3446,41 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/favorite_proxies
 +    return SizedBox(
 +      height: getWidgetHeight(4),
 +      child: CommonCard(
-+        info: Info(
-+          label: appLocalizations.favoriteProxies,
-+          iconData: Icons.star_outline,
-+        ),
 +        onPressed: () {},
-+        child: resolved.isEmpty
-+            ? Padding(
-+                padding: baseInfoEdgeInsets.copyWith(top: 0),
-+                child: Align(
-+                  alignment: Alignment.centerLeft,
-+                  child: Text(
-+                    appLocalizations.favoriteEmptyTip,
-+                    style: context.textTheme.bodyMedium?.toLight,
-+                  ),
-+                ),
-+              )
-+            : CommonScrollBar(
-+                controller: _scrollController,
-+                child: ListView.builder(
-+                  controller: _scrollController,
-+                  padding: const EdgeInsets.only(bottom: 8),
-+                  itemCount: resolved.length,
-+                  itemBuilder: (_, index) =>
-+                      _FavoriteRow(item: resolved[index]),
-+                ),
++        child: Column(
++          children: [
++            InfoHeader(
++              info: Info(
++                label: appLocalizations.favoriteProxies,
++                iconData: Icons.star_outline,
 +              ),
++              actions: [_buildTestButton(resolved)],
++            ),
++            Expanded(
++              child: resolved.isEmpty
++                  ? Padding(
++                      padding: baseInfoEdgeInsets.copyWith(top: 0),
++                      child: Align(
++                        alignment: Alignment.topLeft,
++                        child: Text(
++                          appLocalizations.favoriteEmptyTip,
++                          style: context.textTheme.bodyMedium?.toLight,
++                        ),
++                      ),
++                    )
++                  : CommonScrollBar(
++                      controller: _scrollController,
++                      child: ListView.builder(
++                        controller: _scrollController,
++                        padding: const EdgeInsets.only(bottom: 8),
++                        itemCount: resolved.length,
++                        itemBuilder: (_, index) =>
++                            _FavoriteRow(item: resolved[index]),
++                      ),
++                    ),
++            ),
++          ],
++        ),
 +      ),
 +    );
 +  }
@@ -3102,18 +3591,23 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/favorite_proxies
 +    );
 +  }
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/widgets.dart fl/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/widgets.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/widgets.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/dashboard/widgets/widgets.dart	2026-10-23 20:22:37.926159429 +0900
-@@ -1,3 +1,5 @@
+diff -ruN a/lib/views/dashboard/widgets/widgets.dart b/lib/views/dashboard/widgets/widgets.dart
+--- a/lib/views/dashboard/widgets/widgets.dart	2026-10-26 00:36:12.862183456 +0900
++++ b/lib/views/dashboard/widgets/widgets.dart	2026-10-26 00:57:54.972828271 +0900
+@@ -1,7 +1,10 @@
 +export 'current_profile.dart';
 +export 'favorite_proxies.dart';
  export 'intranet_ip.dart';
  export 'network_detection.dart';
  export 'network_speed.dart';
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart fl/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart	2026-10-22 18:55:41.800227980 +0900
+ export 'outbound_mode.dart';
++export 'add_profile.dart';
+ export 'quick_options.dart';
+ export 'traffic_usage.dart';
+ export 'memory_info.dart';
+diff -ruN a/lib/views/profiles/edit.dart b/lib/views/profiles/edit.dart
+--- a/lib/views/profiles/edit.dart	2026-10-26 00:36:12.862259973 +0900
++++ b/lib/views/profiles/edit.dart	2026-10-26 00:37:15.501031961 +0900
 @@ -111,10 +111,7 @@
        return message;
      }, silence: false);
@@ -3153,9 +3647,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/edit.dart fl/FlClash-0.8.
        },
      );
      final data = await BaseNavigator.push<String>(context, editorPage);
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart	2026-10-22 18:55:41.799752990 +0900
+diff -ruN a/lib/views/profiles/profiles.dart b/lib/views/profiles/profiles.dart
+--- a/lib/views/profiles/profiles.dart	2026-10-26 00:36:12.862466873 +0900
++++ b/lib/views/profiles/profiles.dart	2026-10-26 00:45:15.505854768 +0900
 @@ -29,23 +29,25 @@
  class _ProfilesViewState extends State<ProfilesView> {
    Function? applyConfigDebounce;
@@ -3470,28 +3964,27 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/profiles/profiles.dart fl/FlClash-
                            ],
                          ),
                          targetBuilder: (open) {
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/proxies/card.dart fl/FlClash-0.8.95-0.9.1/lib/views/proxies/card.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/proxies/card.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/proxies/card.dart	2026-10-23 20:22:21.906345576 +0900
+diff -ruN a/lib/views/proxies/card.dart b/lib/views/proxies/card.dart
+--- a/lib/views/proxies/card.dart	2026-10-26 00:36:12.862535857 +0900
++++ b/lib/views/proxies/card.dart	2026-10-26 00:37:15.502695769 +0900
 @@ -1,4 +1,5 @@
  import 'package:fl_clash/common/common.dart';
 +import 'package:fl_clash/common/favorite_proxies.dart';
  import 'package:fl_clash/enum/enum.dart';
  import 'package:fl_clash/models/models.dart';
  import 'package:fl_clash/providers/providers.dart';
-@@ -154,7 +155,10 @@
+@@ -154,7 +155,9 @@
                    const SizedBox(height: 6),
                    delayText,
                  ] else
 -                  SizedBox(
 +                  Padding(
-+                    // Leaves room for the favorite star in the corner.
 +                    padding: const EdgeInsets.only(right: 22),
 +                    child: SizedBox(
                      height: measure.bodySmallHeight,
                      child: Row(
                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-@@ -180,6 +184,7 @@
+@@ -180,6 +183,7 @@
                        ],
                      ),
                    ),
@@ -3499,7 +3992,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/proxies/card.dart fl/FlClash-0.8.9
                ],
              ),
            ),
-@@ -190,10 +195,52 @@
+@@ -190,10 +194,52 @@
              right: 0,
              child: _ProxyComputedMark(groupName: groupName, proxy: proxy),
            ),
@@ -3552,9 +4045,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/proxies/card.dart fl/FlClash-0.8.9
  
  class _ProxyDesc extends ConsumerWidget {
    final Proxy proxy;
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/proxies/list.dart fl/FlClash-0.8.95-0.9.1/lib/views/proxies/list.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/proxies/list.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/proxies/list.dart	2026-10-21 19:10:14.253492322 +0900
+diff -ruN a/lib/views/proxies/list.dart b/lib/views/proxies/list.dart
+--- a/lib/views/proxies/list.dart	2026-10-26 00:36:12.862576577 +0900
++++ b/lib/views/proxies/list.dart	2026-10-26 00:37:15.503604067 +0900
 @@ -3,6 +3,7 @@
  import 'package:fl_clash/common/common.dart';
  import 'package:fl_clash/enum/enum.dart';
@@ -3653,9 +4146,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/proxies/list.dart fl/FlClash-0.8.9
                            columns: columns,
                            cardType: state.proxyCardType,
                          ),
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/resources.dart fl/FlClash-0.8.95-0.9.1/lib/views/resources.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/resources.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/resources.dart	2026-10-22 08:22:15.110383617 +0900
+diff -ruN a/lib/views/resources.dart b/lib/views/resources.dart
+--- a/lib/views/resources.dart	2026-10-26 00:36:12.862657990 +0900
++++ b/lib/views/resources.dart	2026-10-26 00:37:15.504319050 +0900
 @@ -1,6 +1,7 @@
  import 'dart:io';
  
@@ -3680,7 +4173,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/resources.dart fl/FlClash-0.8.95-0
                  for (final geoResource in geoResources)
                    _GeoResourceListItem(geoResource),
                ],
-@@ -98,6 +101,89 @@
+@@ -98,6 +101,88 @@
      );
    }
  }
@@ -3733,7 +4226,6 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/resources.dart fl/FlClash-0.8.95-0
 +    });
 +    try {
 +      for (final geoResource in GeoResource.values) {
-+        // One failure should not stop the remaining resources.
 +        await globalState.safeRun<void>(() async {
 +          await ref
 +              .read(geoResourceActionProvider.notifier)
@@ -3770,10 +4262,10 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/resources.dart fl/FlClash-0.8.95-0
  
  class _GeoResourceListItem extends ConsumerStatefulWidget {
    final GeoResource type;
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/settings_search.dart fl/FlClash-0.8.95-0.9.1/lib/views/settings_search.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/settings_search.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/settings_search.dart	2026-10-22 08:15:50.266783347 +0900
-@@ -0,0 +1,198 @@
+diff -ruN a/lib/views/settings_search.dart b/lib/views/settings_search.dart
+--- a/lib/views/settings_search.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/lib/views/settings_search.dart	2026-10-26 00:55:35.682014628 +0900
+@@ -0,0 +1,202 @@
 +import 'package:fl_clash/common/common.dart';
 +import 'package:fl_clash/common/pinyin.dart';
 +import 'package:fl_clash/l10n/l10n.dart';
@@ -3963,7 +4455,11 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/settings_search.dart fl/FlClash-0.
 +      applicationItem(l.silentLaunch, l.silentLaunchDesc),
 +    ],
 +    applicationItem(l.autoRun, l.autoRunDesc),
-+    if (system.isAndroid) applicationItem(l.exclude, l.excludeDesc),
++    if (system.isAndroid) ...[
++      applicationItem(l.exclude, l.excludeDesc),
++      applicationItem(l.lightMode, l.lightModeDesc),
++      applicationItem(l.lightModeDelay),
++    ],
 +    applicationItem(l.tabAnimation, l.tabAnimationDesc),
 +    applicationItem(l.logcat, l.logcatDesc),
 +    applicationItem(l.autoCloseConnections, l.autoCloseConnectionsDesc),
@@ -3972,9 +4468,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/settings_search.dart fl/FlClash-0.
 +    applicationItem(l.autoCheckUpdate, l.autoCheckUpdateDesc),
 +  ];
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/tools.dart fl/FlClash-0.8.95-0.9.1/lib/views/tools.dart
---- orig/FlClash-0.8.95-0.9.1/lib/views/tools.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/views/tools.dart	2026-10-23 20:36:51.630978383 +0900
+diff -ruN a/lib/views/tools.dart b/lib/views/tools.dart
+--- a/lib/views/tools.dart	2026-10-26 00:36:12.862690755 +0900
++++ b/lib/views/tools.dart	2026-10-26 00:37:15.505741060 +0900
 @@ -11,6 +11,7 @@
  import 'package:fl_clash/views/backup_and_restore.dart';
  import 'package:fl_clash/views/config/config.dart';
@@ -4104,7 +4600,7 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/tools.dart fl/FlClash-0.8.95-0.9.1
        ),
      );
    }
-@@ -269,19 +367,17 @@
+@@ -269,19 +367,16 @@
    }
  }
  
@@ -4124,14 +4620,13 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/views/tools.dart fl/FlClash-0.8.95-0.9.1
 -          await ref.read(systemActionProvider.notifier).handleExit();
 -        }
 +      onTap: () {
-+        // Reading it again must never quit the app.
 +        globalState.showDisclaimer(readOnly: true);
        },
      );
    }
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/widgets/input.dart fl/FlClash-0.8.95-0.9.1/lib/widgets/input.dart
---- orig/FlClash-0.8.95-0.9.1/lib/widgets/input.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/widgets/input.dart	2026-10-22 13:27:06.090590403 +0900
+diff -ruN a/lib/widgets/input.dart b/lib/widgets/input.dart
+--- a/lib/widgets/input.dart	2026-10-26 00:36:12.862995287 +0900
++++ b/lib/widgets/input.dart	2026-10-26 00:37:15.506814045 +0900
 @@ -224,6 +224,7 @@
    final Widget Function(String item)? leadingBuilder;
    final String? valueLabel;
@@ -4184,23 +4679,22 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/lib/widgets/input.dart fl/FlClash-0.8.95-0.9
      );
  
      final value = await globalState.showCommonDialog<MapEntry<String, String>>(
-diff -ruN orig/FlClash-0.8.95-0.9.1/lib/widgets/scaffold.dart fl/FlClash-0.8.95-0.9.1/lib/widgets/scaffold.dart
---- orig/FlClash-0.8.95-0.9.1/lib/widgets/scaffold.dart	2026-10-18 16:26:14.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/lib/widgets/scaffold.dart	2026-10-22 19:09:24.306467749 +0900
-@@ -265,7 +265,9 @@
+diff -ruN a/lib/widgets/scaffold.dart b/lib/widgets/scaffold.dart
+--- a/lib/widgets/scaffold.dart	2026-10-26 00:36:12.863159766 +0900
++++ b/lib/widgets/scaffold.dart	2026-10-26 00:37:15.507587408 +0900
+@@ -265,7 +265,8 @@
  
    PreferredSizeWidget _buildAppBar(VoidCallback? backAction) {
      return PreferredSize(
 -      preferredSize: const Size.fromHeight(kToolbarHeight),
-+      // A custom app bar may carry a `bottom` row, so use its own height.
 +      preferredSize:
 +          widget.appBar?.preferredSize ?? const Size.fromHeight(kToolbarHeight),
        child: Stack(
          alignment: Alignment.bottomCenter,
          children: [
-diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/dns_validator_test.dart fl/FlClash-0.8.95-0.9.1/test/common/dns_validator_test.dart
---- orig/FlClash-0.8.95-0.9.1/test/common/dns_validator_test.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/test/common/dns_validator_test.dart	2026-10-22 13:27:24.004950629 +0900
+diff -ruN a/test/common/dns_validator_test.dart b/test/common/dns_validator_test.dart
+--- a/test/common/dns_validator_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/test/common/dns_validator_test.dart	2026-10-26 00:37:15.508093459 +0900
 @@ -0,0 +1,52 @@
 +import 'package:fl_clash/common/dns_validator.dart';
 +import 'package:flutter_test/flutter_test.dart';
@@ -4254,9 +4748,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/dns_validator_test.dart fl/FlCla
 +    expect(isValidCidr('x/8'), isFalse);
 +  });
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/editor_draft_test.dart fl/FlClash-0.8.95-0.9.1/test/common/editor_draft_test.dart
---- orig/FlClash-0.8.95-0.9.1/test/common/editor_draft_test.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/test/common/editor_draft_test.dart	2026-10-22 18:55:26.802268120 +0900
+diff -ruN a/test/common/editor_draft_test.dart b/test/common/editor_draft_test.dart
+--- a/test/common/editor_draft_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/test/common/editor_draft_test.dart	2026-10-26 00:37:15.508675506 +0900
 @@ -0,0 +1,47 @@
 +import 'dart:io';
 +
@@ -4305,9 +4799,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/editor_draft_test.dart fl/FlClas
 +    expect(await draft.load('bad', 'a'), isNull);
 +  });
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/favorite_proxies_test.dart fl/FlClash-0.8.95-0.9.1/test/common/favorite_proxies_test.dart
---- orig/FlClash-0.8.95-0.9.1/test/common/favorite_proxies_test.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/test/common/favorite_proxies_test.dart	2026-10-23 20:22:47.253585239 +0900
+diff -ruN a/test/common/favorite_proxies_test.dart b/test/common/favorite_proxies_test.dart
+--- a/test/common/favorite_proxies_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/test/common/favorite_proxies_test.dart	2026-10-26 00:37:15.509080081 +0900
 @@ -0,0 +1,62 @@
 +import 'package:fl_clash/common/favorite_proxies.dart';
 +import 'package:fl_clash/enum/enum.dart';
@@ -4371,9 +4865,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/favorite_proxies_test.dart fl/Fl
 +        isNull);
 +  });
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/geo_mirror_test.dart fl/FlClash-0.8.95-0.9.1/test/common/geo_mirror_test.dart
---- orig/FlClash-0.8.95-0.9.1/test/common/geo_mirror_test.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/test/common/geo_mirror_test.dart	2026-10-22 08:22:15.118075805 +0900
+diff -ruN a/test/common/geo_mirror_test.dart b/test/common/geo_mirror_test.dart
+--- a/test/common/geo_mirror_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/test/common/geo_mirror_test.dart	2026-10-26 00:37:15.509541086 +0900
 @@ -0,0 +1,21 @@
 +import 'package:fl_clash/common/geo_mirror.dart';
 +import 'package:fl_clash/enum/enum.dart';
@@ -4396,9 +4890,143 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/geo_mirror_test.dart fl/FlClash-
 +    expect(detectGeoMirrorPreset(custom), isNull);
 +  });
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart fl/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart
---- orig/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart	2026-10-21 19:06:36.926442923 +0900
+diff -ruN a/test/common/light_mode_test.dart b/test/common/light_mode_test.dart
+--- a/test/common/light_mode_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/test/common/light_mode_test.dart	2026-10-26 00:55:55.627826347 +0900
+@@ -0,0 +1,130 @@
++import 'dart:async';
++
++import 'package:fl_clash/common/light_mode.dart';
++import 'package:flutter/widgets.dart';
++import 'package:flutter_test/flutter_test.dart';
++
++class _FakeTimer implements Timer {
++  _FakeTimer(this.duration, this.callback);
++
++  final Duration duration;
++  final void Function() callback;
++  bool cancelled = false;
++
++  @override
++  void cancel() {
++    cancelled = true;
++  }
++
++  @override
++  bool get isActive => !cancelled;
++
++  @override
++  int get tick => 0;
++}
++
++void main() {
++  group('setting codec', () {
++    test('round trip', () {
++      const setting = LightModeSetting(enabled: true, delayMinutes: 15);
++      expect(decodeLightMode(encodeLightMode(setting)), setting);
++    });
++
++    test('garbage falls back to defaults', () {
++      expect(decodeLightMode(null), const LightModeSetting());
++      expect(decodeLightMode('nope'), const LightModeSetting());
++      expect(decodeLightMode('[1]'), const LightModeSetting());
++      expect(
++        decodeLightMode('{"enabled":true,"delayMinutes":-3}'),
++        const LightModeSetting(enabled: true),
++      );
++    });
++  });
++
++  group('scheduler', () {
++    late List<_FakeTimer> timers;
++    late LightModeSetting setting;
++    late bool running;
++    late int entered;
++    late LightModeScheduler scheduler;
++
++    setUp(() {
++      timers = [];
++      setting = const LightModeSetting(enabled: true, delayMinutes: 3);
++      running = true;
++      entered = 0;
++      scheduler = LightModeScheduler(
++        readSetting: () => setting,
++        isCoreRunning: () => running,
++        enter: () async {
++          entered++;
++        },
++        createTimer: (duration, callback) {
++          final timer = _FakeTimer(duration, callback);
++          timers.add(timer);
++          return timer;
++        },
++      );
++    });
++
++    test('schedules once when going to background', () {
++      scheduler.onLifecycleChanged(AppLifecycleState.hidden);
++      scheduler.onLifecycleChanged(AppLifecycleState.paused);
++      expect(timers, hasLength(1));
++      expect(timers.single.duration, const Duration(minutes: 3));
++    });
++
++    test('resume cancels', () {
++      scheduler.onLifecycleChanged(AppLifecycleState.paused);
++      scheduler.onLifecycleChanged(AppLifecycleState.resumed);
++      expect(timers.single.cancelled, isTrue);
++      expect(scheduler.isScheduled, isFalse);
++    });
++
++    test('inactive does not schedule or cancel', () {
++      scheduler.onLifecycleChanged(AppLifecycleState.inactive);
++      expect(timers, isEmpty);
++      scheduler.onLifecycleChanged(AppLifecycleState.paused);
++      scheduler.onLifecycleChanged(AppLifecycleState.inactive);
++      expect(timers.single.cancelled, isFalse);
++    });
++
++    test('disabled setting never schedules', () {
++      setting = const LightModeSetting();
++      scheduler.onLifecycleChanged(AppLifecycleState.paused);
++      expect(timers, isEmpty);
++    });
++
++    test('fires only when still enabled and the core is running', () {
++      scheduler.onLifecycleChanged(AppLifecycleState.paused);
++      timers.single.callback();
++      expect(entered, 1);
++
++      scheduler.onLifecycleChanged(AppLifecycleState.paused);
++      running = false;
++      timers.last.callback();
++      expect(entered, 1);
++
++      scheduler.onLifecycleChanged(AppLifecycleState.paused);
++      setting = const LightModeSetting();
++      timers.last.callback();
++      expect(entered, 1);
++    });
++
++    test('a failing enter does not escape', () async {
++      final failing = LightModeScheduler(
++        readSetting: () => setting,
++        isCoreRunning: () => true,
++        enter: () async => throw StateError('boom'),
++        createTimer: (duration, callback) {
++          final timer = _FakeTimer(duration, callback);
++          timers.add(timer);
++          return timer;
++        },
++      );
++      failing.onLifecycleChanged(AppLifecycleState.paused);
++      timers.single.callback();
++      await Future<void>.delayed(Duration.zero);
++    });
++  });
++}
+diff -ruN a/test/common/pinyin_test.dart b/test/common/pinyin_test.dart
+--- a/test/common/pinyin_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/test/common/pinyin_test.dart	2026-10-26 00:37:15.509936774 +0900
 @@ -0,0 +1,25 @@
 +import 'package:fl_clash/common/pinyin.dart';
 +import 'package:flutter_test/flutter_test.dart';
@@ -4425,9 +5053,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/pinyin_test.dart fl/FlClash-0.8.
 +    expect(labels, ['Alipay', 'Chrome', '淘宝', 'WeChat', '微信', '支付宝']);
 +  });
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/yaml_folding_test.dart fl/FlClash-0.8.95-0.9.1/test/common/yaml_folding_test.dart
---- orig/FlClash-0.8.95-0.9.1/test/common/yaml_folding_test.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/test/common/yaml_folding_test.dart	2026-10-22 18:58:39.143340884 +0900
+diff -ruN a/test/common/yaml_folding_test.dart b/test/common/yaml_folding_test.dart
+--- a/test/common/yaml_folding_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/test/common/yaml_folding_test.dart	2026-10-26 00:37:15.510289204 +0900
 @@ -0,0 +1,44 @@
 +import 'package:fl_clash/common/yaml_folding.dart';
 +import 'package:flutter_test/flutter_test.dart';
@@ -4473,9 +5101,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/yaml_folding_test.dart fl/FlClas
 +    expect(fold(''), isEmpty);
 +  });
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart fl/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart
---- orig/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart	2026-10-23 19:56:28.636498909 +0900
+diff -ruN a/test/common/yaml_outline_test.dart b/test/common/yaml_outline_test.dart
+--- a/test/common/yaml_outline_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/test/common/yaml_outline_test.dart	2026-10-26 00:37:15.510711062 +0900
 @@ -0,0 +1,100 @@
 +import 'package:fl_clash/common/yaml_outline.dart';
 +import 'package:flutter_test/flutter_test.dart';
@@ -4577,9 +5205,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/test/common/yaml_outline_test.dart fl/FlClas
 +    expect(findTopLevelKeyLine(['proxies-x: 1'], 'proxies'), isNull);
 +  });
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/test/providers/filter_groups_test.dart fl/FlClash-0.8.95-0.9.1/test/providers/filter_groups_test.dart
---- orig/FlClash-0.8.95-0.9.1/test/providers/filter_groups_test.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/test/providers/filter_groups_test.dart	2026-10-21 19:10:32.251006617 +0900
+diff -ruN a/test/providers/filter_groups_test.dart b/test/providers/filter_groups_test.dart
+--- a/test/providers/filter_groups_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/test/providers/filter_groups_test.dart	2026-10-26 00:37:15.511074821 +0900
 @@ -0,0 +1,68 @@
 +import 'package:fl_clash/enum/enum.dart';
 +import 'package:fl_clash/models/models.dart';
@@ -4649,9 +5277,9 @@ diff -ruN orig/FlClash-0.8.95-0.9.1/test/providers/filter_groups_test.dart fl/Fl
 +    expect(filter('zzz'), isEmpty);
 +  });
 +}
-diff -ruN orig/FlClash-0.8.95-0.9.1/test/views/settings_search_test.dart fl/FlClash-0.8.95-0.9.1/test/views/settings_search_test.dart
---- orig/FlClash-0.8.95-0.9.1/test/views/settings_search_test.dart	1970-01-01 09:00:00.000000000 +0900
-+++ fl/FlClash-0.8.95-0.9.1/test/views/settings_search_test.dart	2026-10-22 08:17:21.080970983 +0900
+diff -ruN a/test/views/settings_search_test.dart b/test/views/settings_search_test.dart
+--- a/test/views/settings_search_test.dart	1970-01-01 09:00:00.000000000 +0900
++++ b/test/views/settings_search_test.dart	2026-10-26 00:37:15.511434616 +0900
 @@ -0,0 +1,42 @@
 +import 'package:fl_clash/views/settings_search.dart';
 +import 'package:flutter/widgets.dart';

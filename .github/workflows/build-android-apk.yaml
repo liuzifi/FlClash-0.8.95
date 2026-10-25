@@ -2,8 +2,8 @@ name: build-android-apk
 
 # 仅在 Actions 页面手动触发（Run workflow）。
 #
-# 触发时可输入完整版本号（如 0.9.6、0.9.7），直接覆盖默认版本号。
-# 不填则版本号保持 BASE_VERSION（0.9.5），versionCode 用时间戳自动生成。
+# 触发时可输入完整版本号（如 0.9.7、0.9.8），直接覆盖默认版本号。
+# 不填则版本号保持 BASE_VERSION（0.9.6），versionCode 用时间戳自动生成。
 #
 # 产出：
 #   - APK：FlClash-{version}-android-arm64-v8a.apk（固定签名）
@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
     inputs:
       version_override:
-        description: '完整版本号，如 0.9.6（留空则使用默认 0.9.5）'
+        description: '完整版本号，如 0.9.7（留空则使用默认 0.9.6）'
         required: false
         default: ''
       create_release:
@@ -28,11 +28,11 @@ on:
 
 env:
   FLUTTER_VERSION: '3.44.4'
-  # FlClash 0.9.5 锁定的内核提交（= tag flclash/v0.8.95）
+  # FlClash 0.9.6 锁定的内核提交（= tag flclash/v0.8.95）
   CLASH_META_REPO: https://github.com/chen08209/Clash.Meta.git
   CLASH_META_REF: 0f7f05adff5e2c49775a112dcfe05a6aa36fda0c
   # 基础版本号（不含后缀）
-  BASE_VERSION: '0.9.5'
+  BASE_VERSION: '0.9.6'
 
 jobs:
   apk:
@@ -47,12 +47,12 @@ jobs:
           # 完整历史：Release 说明需要用 git log 对比上一个 tag 以来的提交
           fetch-depth: 0
 
-      # 应用编辑器功能补丁（YAML 大纲、跳转到行、搜索预填、上下文菜单修复等）。
-      # patch 由 diff -ruN 生成，路径前缀为 orig/FlClash-0.8.95-0.9.1/，用 -p2 剥离。
+      # 应用编辑器功能补丁（YAML 大纲、跳转到行、搜索预填、上下文菜单修复、浅色模式、Android 插件等）。
+      # patch 由 git diff 生成，路径前缀为 a/ b/，用 -p1 剥离。
       - name: Apply editor fixes patch
         run: |
           set -euo pipefail
-          git apply -p2 -v "$GITHUB_WORKSPACE/editor-fixes.patch"
+          git apply -p1 -v "$GITHUB_WORKSPACE/editor-fixes.patch"
           echo "--- editor fixes applied, changed files ---"
           git --no-pager diff --stat
 
