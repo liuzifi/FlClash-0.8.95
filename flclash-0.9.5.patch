@@ -1,12 +1,12 @@
 diff -ruN a/android/app/src/main/kotlin/com/follow/clash/plugins/AppPlugin.kt b/android/app/src/main/kotlin/com/follow/clash/plugins/AppPlugin.kt
 --- a/android/app/src/main/kotlin/com/follow/clash/plugins/AppPlugin.kt	2026-10-26 00:36:12.836145794 +0900
-+++ b/android/app/src/main/kotlin/com/follow/clash/plugins/AppPlugin.kt	2026-10-26 00:55:23.712539914 +0900
++++ b/android/app/src/main/kotlin/com/follow/clash/plugins/AppPlugin.kt	2026-10-26 19:15:12.556129317 +0900
 @@ -71,6 +71,11 @@
                  result.success(true)
              }
  
 +            "finishActivity" -> {
-+                activity?.finish()
++                activity?.finishAndRemoveTask()
 +                result.success(true)
 +            }
 +
@@ -1443,14 +1443,14 @@ diff -ruN a/lib/l10n/l10n.dart b/lib/l10n/l10n.dart
 \ No newline at end of file
 diff -ruN a/lib/manager/android_manager.dart b/lib/manager/android_manager.dart
 --- a/lib/manager/android_manager.dart	2026-10-26 00:36:12.859836796 +0900
-+++ b/lib/manager/android_manager.dart	2026-10-26 00:55:23.712918382 +0900
++++ b/lib/manager/android_manager.dart	2026-10-26 19:15:12.556939487 +0900
 @@ -1,4 +1,5 @@
  import 'package:fl_clash/common/common.dart';
 +import 'package:fl_clash/common/light_mode.dart';
  import 'package:fl_clash/core/core.dart';
  import 'package:fl_clash/enum/enum.dart';
  import 'package:fl_clash/models/models.dart';
-@@ -18,10 +19,28 @@
+@@ -18,10 +19,30 @@
  }
  
  class _AndroidContainerState extends ConsumerState<AndroidManager>
@@ -1459,6 +1459,7 @@ diff -ruN a/lib/manager/android_manager.dart b/lib/manager/android_manager.dart
 +  late final LightModeScheduler _lightModeScheduler;
 +
 +  Future<void> _enterLightMode() async {
++    commonPrint.log('enter light mode');
 +    await preferences.saveConfig(ref.read(configProvider));
 +    await app?.finishActivity();
 +  }
@@ -1477,10 +1478,11 @@ diff -ruN a/lib/manager/android_manager.dart b/lib/manager/android_manager.dart
 +      enter: _enterLightMode,
 +    );
 +    WidgetsBinding.instance.addObserver(this);
++    ref.listenManual(lightModeSettingProvider, (_, _) {});
      ref.listenManual(appSettingProvider.select((state) => state.hidden), (
        prev,
        next,
-@@ -43,6 +62,8 @@
+@@ -43,6 +64,8 @@
  
    @override
    Future<void> dispose() async {
@@ -3169,8 +3171,8 @@ diff -ruN a/lib/views/config/scripts.dart b/lib/views/config/scripts.dart
          onSave: (context, title, content) {
 diff -ruN a/lib/views/dashboard/widgets/add_profile.dart b/lib/views/dashboard/widgets/add_profile.dart
 --- a/lib/views/dashboard/widgets/add_profile.dart	1970-01-01 09:00:00.000000000 +0900
-+++ b/lib/views/dashboard/widgets/add_profile.dart	2026-10-26 00:57:54.974025223 +0900
-@@ -0,0 +1,105 @@
++++ b/lib/views/dashboard/widgets/add_profile.dart	2026-10-26 19:13:10.398246880 +0900
+@@ -0,0 +1,138 @@
 +import 'package:fl_clash/common/common.dart';
 +import 'package:fl_clash/pages/scan.dart';
 +import 'package:fl_clash/providers/action.dart';
@@ -3178,6 +3180,35 @@ diff -ruN a/lib/views/dashboard/widgets/add_profile.dart b/lib/views/dashboard/w
 +import 'package:fl_clash/views/profiles/add.dart';
 +import 'package:fl_clash/widgets/widgets.dart';
 +import 'package:flutter/material.dart';
++
++class _QuickAction extends StatelessWidget {
++  final String tooltip;
++  final IconData icon;
++  final int tone;
++  final VoidCallback onTap;
++
++  const _QuickAction({
++    required this.tooltip,
++    required this.icon,
++    required this.tone,
++    required this.onTap,
++  });
++
++  @override
++  Widget build(BuildContext context) {
++    return Tooltip(
++      message: tooltip,
++      child: InkWell(
++        borderRadius: BorderRadius.circular(16),
++        onTap: onTap,
++        child: Padding(
++          padding: const EdgeInsets.all(4),
++          child: AddOptionIcon(icon: icon, tone: tone, size: 40),
++        ),
++      ),
++    );
++  }
++}
 +
 +class AddProfileCard extends StatelessWidget {
 +  const AddProfileCard({super.key});
@@ -3249,25 +3280,29 @@ diff -ruN a/lib/views/dashboard/widgets/add_profile.dart b/lib/views/dashboard/w
 +                  ),
 +                ),
 +              ),
-+              IconButton(
++              _QuickAction(
 +                tooltip: appLocalizations.qrcode,
-+                onPressed: () => _handleScan(context),
-+                icon: const Icon(Icons.qr_code_sharp),
++                icon: Icons.qr_code_sharp,
++                tone: 0,
++                onTap: () => _handleScan(context),
 +              ),
-+              IconButton(
++              _QuickAction(
 +                tooltip: appLocalizations.clipboardImport,
-+                onPressed: _handleClipboard,
-+                icon: const Icon(Icons.content_paste_sharp),
++                icon: Icons.content_paste_sharp,
++                tone: 1,
++                onTap: _handleClipboard,
 +              ),
-+              IconButton(
++              _QuickAction(
 +                tooltip: appLocalizations.file,
-+                onPressed: _handleFile,
-+                icon: const Icon(Icons.upload_file_sharp),
++                icon: Icons.upload_file_sharp,
++                tone: 2,
++                onTap: _handleFile,
 +              ),
-+              IconButton(
++              _QuickAction(
 +                tooltip: appLocalizations.url,
-+                onPressed: _showAddSheet,
-+                icon: const Icon(Icons.cloud_download_sharp),
++                icon: Icons.cloud_download_sharp,
++                tone: 0,
++                onTap: showImportProfileUrlDialog,
 +              ),
 +            ],
 +          ),
@@ -3605,6 +3640,153 @@ diff -ruN a/lib/views/dashboard/widgets/widgets.dart b/lib/views/dashboard/widge
  export 'quick_options.dart';
  export 'traffic_usage.dart';
  export 'memory_info.dart';
+diff -ruN a/lib/views/profiles/add.dart b/lib/views/profiles/add.dart
+--- a/lib/views/profiles/add.dart	2026-10-26 00:36:12.862243644 +0900
++++ b/lib/views/profiles/add.dart	2026-10-26 19:20:36.284535322 +0900
+@@ -6,6 +6,68 @@
+ import 'package:fl_clash/widgets/widgets.dart';
+ import 'package:flutter/material.dart';
+ 
++Future<void> showImportProfileUrlDialog() async {
++  final appLocalizations = globalState.navigatorKey.currentContext!
++      .appLocalizations;
++  final url = await globalState.showCommonDialog<String>(
++    child: InputDialog(
++      autovalidateMode: AutovalidateMode.onUnfocus,
++      title: appLocalizations.importFromURL,
++      labelText: appLocalizations.url,
++      value: '',
++      inputFormatters: TextInputLimits.limit(TextInputLimits.url),
++      validator: (value) {
++        if (value == null || value.isEmpty) {
++          return appLocalizations.emptyTip('').trim();
++        }
++        if (!value.isUrl) {
++          return appLocalizations.urlTip('').trim();
++        }
++        return null;
++      },
++    ),
++  );
++  if (url != null) {
++    globalState.container
++        .read(profilesActionProvider.notifier)
++        .addProfileFormURL(url);
++  }
++}
++
++class AddOptionIcon extends StatelessWidget {
++  final IconData icon;
++  final int tone;
++  final double size;
++
++  const AddOptionIcon({
++    super.key,
++    required this.icon,
++    this.tone = 0,
++    this.size = 44,
++  });
++
++  @override
++  Widget build(BuildContext context) {
++    final scheme = context.colorScheme;
++    final pairs = [
++      (scheme.primaryContainer, scheme.onPrimaryContainer),
++      (scheme.secondaryContainer, scheme.onSecondaryContainer),
++      (scheme.tertiaryContainer, scheme.onTertiaryContainer),
++    ];
++    final (background, foreground) = pairs[tone % pairs.length];
++    return Container(
++      width: size,
++      height: size,
++      alignment: Alignment.center,
++      decoration: BoxDecoration(
++        color: background,
++        borderRadius: BorderRadius.circular(size * 0.32),
++      ),
++      child: Icon(icon, color: foreground, size: size * 0.5),
++    );
++  }
++}
++
+ class AddProfileView extends StatelessWidget {
+   final BuildContext context;
+ 
+@@ -55,28 +117,7 @@
+   /// 输入框接受 http/https/ftp 远程地址，也支持 file:// 本地文件 URI
+   /// （[String.isUrl] 验证器对 file 协议直接放行）。
+   Future<void> _toAdd() async {
+-    final appLocalizations = context.appLocalizations;
+-    final url = await globalState.showCommonDialog<String>(
+-      child: InputDialog(
+-        autovalidateMode: AutovalidateMode.onUnfocus,
+-        title: appLocalizations.importFromURL,
+-        labelText: appLocalizations.url,
+-        value: '',
+-        inputFormatters: TextInputLimits.limit(TextInputLimits.url),
+-        validator: (value) {
+-          if (value == null || value.isEmpty) {
+-            return appLocalizations.emptyTip('').trim();
+-          }
+-          if (!value.isUrl) {
+-            return appLocalizations.urlTip('').trim();
+-          }
+-          return null;
+-        },
+-      ),
+-    );
+-    if (url != null) {
+-      _handleAddProfileFormURL(url);
+-    }
++    await showImportProfileUrlDialog();
+   }
+ 
+   Future<void> _toAddByPath() async {
+@@ -126,31 +167,39 @@
+     return ListView(
+       children: [
+         ListItem(
+-          leading: const Icon(Icons.qr_code_sharp),
++          leading: const AddOptionIcon(icon: Icons.qr_code_sharp, tone: 0),
++          trailing: const Icon(Icons.chevron_right),
+           title: Text(appLocalizations.qrcode),
+           subtitle: Text(appLocalizations.qrcodeDesc),
+           onTap: _toScan,
+         ),
+         ListItem(
+-          leading: const Icon(Icons.upload_file_sharp),
++          leading: const AddOptionIcon(icon: Icons.upload_file_sharp, tone: 1),
++          trailing: const Icon(Icons.chevron_right),
+           title: Text(appLocalizations.file),
+           subtitle: Text(appLocalizations.fileDesc),
+           onTap: _handleAddProfileFormFile,
+         ),
+         ListItem(
+-          leading: const Icon(Icons.drive_folder_upload_sharp),
++          leading: const AddOptionIcon(
++            icon: Icons.drive_folder_upload_sharp,
++            tone: 2,
++          ),
++          trailing: const Icon(Icons.chevron_right),
+           title: Text(appLocalizations.pathImport),
+           subtitle: Text(appLocalizations.pathImportDesc),
+           onTap: _toAddByPath,
+         ),
+         ListItem(
+-          leading: const Icon(Icons.content_paste_sharp),
++          leading: const AddOptionIcon(icon: Icons.content_paste_sharp, tone: 0),
++          trailing: const Icon(Icons.chevron_right),
+           title: Text(appLocalizations.clipboardImport),
+           subtitle: Text(appLocalizations.clipboardImportDesc),
+           onTap: _handleAddProfileFormClipboard,
+         ),
+         ListItem(
+-          leading: const Icon(Icons.cloud_download_sharp),
++          leading: const AddOptionIcon(icon: Icons.cloud_download_sharp, tone: 1),
++          trailing: const Icon(Icons.chevron_right),
+           title: Text(appLocalizations.url),
+           subtitle: Text(appLocalizations.urlDesc),
+           onTap: _toAdd,
 diff -ruN a/lib/views/profiles/edit.dart b/lib/views/profiles/edit.dart
 --- a/lib/views/profiles/edit.dart	2026-10-26 00:36:12.862259973 +0900
 +++ b/lib/views/profiles/edit.dart	2026-10-26 00:37:15.501031961 +0900
@@ -4626,7 +4808,7 @@ diff -ruN a/lib/views/tools.dart b/lib/views/tools.dart
    }
 diff -ruN a/lib/widgets/input.dart b/lib/widgets/input.dart
 --- a/lib/widgets/input.dart	2026-10-26 00:36:12.862995287 +0900
-+++ b/lib/widgets/input.dart	2026-10-26 00:37:15.506814045 +0900
++++ b/lib/widgets/input.dart	2026-10-26 19:20:36.285994620 +0900
 @@ -224,6 +224,7 @@
    final Widget Function(String item)? leadingBuilder;
    final String? valueLabel;

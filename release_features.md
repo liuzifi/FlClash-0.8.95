@@ -5,6 +5,20 @@
 
 ---
 
+## v0.9.7（配置脚本页 / Dashboard 组件聚合 / 添加配置页 / 输入组件更新）
+
+### 新增功能
+- **配置脚本页**：[`lib/views/config/scripts.dart`](lib/views/config/scripts.dart) — 在配置编辑中支持自定义脚本片段管理。
+- **Dashboard 组件聚合**：[`lib/views/dashboard/widgets/widgets.dart`](lib/views/dashboard/widgets/widgets.dart) — 统一导出仪表盘小组件，便于按需引用。
+- **添加配置页**：[`lib/views/profiles/add.dart`](lib/views/profiles/add.dart) — 独立的添加配置入口页面。
+- **输入组件更新**：[`lib/widgets/input.dart`](lib/widgets/input.dart) — 通用输入组件内容修订。
+
+### 改进
+- editor-fixes.patch 文件数 59 → 63，覆盖范围进一步扩展。
+- 补丁尾部补齐换行符（LF），避免 `git apply` 报 corrupt patch。
+
+---
+
 ## v0.9.6（浅色模式 / Android 插件 / 应用设置 / 添加配置小组件）
 
 ### 新增功能
